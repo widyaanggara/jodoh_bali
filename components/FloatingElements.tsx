@@ -11,7 +11,7 @@ interface Flower {
     duration: number;
 }
 
-interface Particle {
+interface Sparkle {
     id: number;
     left: string;
     top: string;
@@ -20,40 +20,40 @@ interface Particle {
 
 export default function FloatingElements() {
     const [flowers, setFlowers] = useState<Flower[]>([]);
-    const [particles, setParticles] = useState<Particle[]>([]);
+    const [sparkles, setSparkles] = useState<Sparkle[]>([]);
 
     useEffect(() => {
-        // Generate random flowers
-        const newFlowers: Flower[] = Array.from({ length: 8 }, (_, i) => ({
+        // Generate random flowers - fewer and more subtle
+        const newFlowers: Flower[] = Array.from({ length: 5 }, (_, i) => ({
             id: i,
-            left: `${Math.random() * 90 + 5}%`,
-            top: `${Math.random() * 80 + 10}%`,
-            size: Math.random() * 20 + 20,
-            delay: Math.random() * 5,
-            duration: Math.random() * 10 + 10,
+            left: `${Math.random() * 85 + 5}%`,
+            top: `${Math.random() * 70 + 15}%`,
+            size: Math.random() * 16 + 16,
+            delay: Math.random() * 8,
+            duration: Math.random() * 15 + 15,
         }));
         setFlowers(newFlowers);
 
-        // Generate random particles
-        const newParticles: Particle[] = Array.from({ length: 20 }, (_, i) => ({
+        // Generate gold sparkles
+        const newSparkles: Sparkle[] = Array.from({ length: 12 }, (_, i) => ({
             id: i,
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            delay: Math.random() * 3,
+            delay: Math.random() * 4,
         }));
-        setParticles(newParticles);
+        setSparkles(newSparkles);
     }, []);
 
     return (
         <>
-            {/* Background Pattern */}
+            {/* Subtle Background Pattern */}
             <div className="bali-pattern" />
 
             {/* Floating Flowers */}
             {flowers.map((flower) => (
                 <div
                     key={flower.id}
-                    className="floating-flower text-2xl sm:text-3xl"
+                    className="floating-flower"
                     style={{
                         left: flower.left,
                         top: flower.top,
@@ -66,15 +66,15 @@ export default function FloatingElements() {
                 </div>
             ))}
 
-            {/* Gold Particles */}
-            {particles.map((particle) => (
+            {/* Gold Sparkles */}
+            {sparkles.map((sparkle) => (
                 <div
-                    key={particle.id}
-                    className="gold-particle"
+                    key={sparkle.id}
+                    className="gold-sparkle"
                     style={{
-                        left: particle.left,
-                        top: particle.top,
-                        animationDelay: `${particle.delay}s`,
+                        left: sparkle.left,
+                        top: sparkle.top,
+                        animationDelay: `${sparkle.delay}s`,
                     }}
                 />
             ))}

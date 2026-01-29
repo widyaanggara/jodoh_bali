@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import FloatingElements from '@/components/FloatingElements';
 import DateInput from '@/components/DateInput';
 import ResultCard from '@/components/ResultCard';
-import CompatibilityMeter from '@/components/CompatibilityMeter';
+import HeartMeter from '@/components/HeartMeter';
 import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
 
@@ -14,6 +14,7 @@ export default function KecocokanPasangan() {
     const [date2, setDate2] = useState('');
     const [result, setResult] = useState<CompatibilityResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showResults, setShowResults] = useState(false);
 
     const handleCalculate = () => {
         if (!date1 || !date2) {
@@ -22,8 +23,8 @@ export default function KecocokanPasangan() {
         }
 
         setIsLoading(true);
+        setShowResults(false);
 
-        // Simulate loading for smooth animation
         setTimeout(() => {
             const compatibility = calculateCompatibility(
                 new Date(date1),
@@ -31,13 +32,17 @@ export default function KecocokanPasangan() {
             );
             setResult(compatibility);
             setIsLoading(false);
-        }, 500);
+
+            // Delay showing results for smooth animation
+            setTimeout(() => setShowResults(true), 100);
+        }, 800);
     };
 
     const handleReset = () => {
         setDate1('');
         setDate2('');
         setResult(null);
+        setShowResults(false);
     };
 
     return (
@@ -45,32 +50,32 @@ export default function KecocokanPasangan() {
             <FloatingElements />
             <Header />
 
-            <main className="relative z-10 pt-32 pb-20 px-4">
+            <main className="relative z-10 pt-28 pb-20 px-4">
                 <div className="max-w-4xl mx-auto">
                     {/* Page Title */}
                     <div className="text-center mb-12 slide-up">
-                        <span className="text-5xl mb-4 block">💕</span>
-                        <h1 className="heading-1 text-gold-gradient mb-4">
-                            Kecocokan Pasangan
+                        <span className="text-6xl mb-6 block">💕</span>
+                        <h1 className="heading-1 mb-4">
+                            Cek <span className="text-gold-gradient">Kecocokan</span> Pasangan
                         </h1>
-                        <p className="text-bali-cream/70 max-w-xl mx-auto">
+                        <p className="text-bali-brown/60 max-w-lg mx-auto">
                             Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan
                             berdasarkan kalender tradisional Bali.
                         </p>
                     </div>
 
                     {/* Input Form */}
-                    <div className="glass-card p-8 mb-8 fade-in" style={{ animationDelay: '200ms' }}>
+                    <div className="clean-card p-8 md:p-10 mb-10 fade-in glow-gold" style={{ animationDelay: '200ms' }}>
                         <div className="grid md:grid-cols-2 gap-6 mb-8">
                             <DateInput
                                 id="date1"
-                                label="Tanggal Lahir Anda"
+                                label="📅 Tanggal Lahir Anda"
                                 value={date1}
                                 onChange={setDate1}
                             />
                             <DateInput
                                 id="date2"
-                                label="Tanggal Lahir Pasangan"
+                                label="💝 Tanggal Lahir Pasangan"
                                 value={date2}
                                 onChange={setDate2}
                             />
@@ -80,11 +85,11 @@ export default function KecocokanPasangan() {
                             <button
                                 onClick={handleCalculate}
                                 disabled={isLoading}
-                                className="btn-bali flex items-center justify-center gap-2"
+                                className="btn-primary flex items-center justify-center gap-2 min-w-[200px]"
                             >
                                 {isLoading ? (
                                     <>
-                                        <span className="animate-spin">⏳</span>
+                                        <span className="animate-spin">💫</span>
                                         Menghitung...
                                     </>
                                 ) : (
@@ -97,7 +102,7 @@ export default function KecocokanPasangan() {
                             {result && (
                                 <button
                                     onClick={handleReset}
-                                    className="btn-bali-outline"
+                                    className="btn-secondary"
                                 >
                                     🔄 Reset
                                 </button>
@@ -107,52 +112,53 @@ export default function KecocokanPasangan() {
 
                     {/* Results */}
                     {result && (
-                        <div className="space-y-8">
+                        <div className="space-y-10">
+                            {/* Heart Meter - Main Focus */}
+                            <HeartMeter
+                                percentage={result.percentage}
+                                kategori={result.kategori}
+                                isVisible={showResults}
+                            />
+
                             {/* Profile Cards */}
                             <div className="grid md:grid-cols-2 gap-6">
                                 <ResultCard
                                     title="Profil Anda"
                                     balineseDate={result.person1}
-                                    delay={0}
+                                    delay={600}
                                 />
                                 <ResultCard
                                     title="Profil Pasangan"
                                     balineseDate={result.person2}
-                                    delay={200}
+                                    delay={800}
                                 />
                             </div>
 
-                            {/* Compatibility Meter */}
-                            <CompatibilityMeter
-                                percentage={result.percentage}
-                                kategori={result.kategori}
-                            />
-
-                            {/* Additional Insights */}
-                            <div className="glass-card p-6 fade-in" style={{ animationDelay: '600ms' }}>
-                                <h3 className="heading-3 text-gold-gradient mb-4 text-center">💡 Insight</h3>
+                            {/* Insights */}
+                            <div className="clean-card p-8 fade-in" style={{ animationDelay: '1000ms' }}>
+                                <h3 className="heading-3 text-center mb-6">💡 Insight Tambahan</h3>
                                 <div className="space-y-4">
                                     {result.person1.wuku.rekomendasi_pasangan.includes(result.person2.wuku.nama_wuku) && (
-                                        <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
-                                            <p className="text-green-400 text-center">
+                                        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                                            <p className="text-green-700 text-center text-sm">
                                                 ✨ Wuku <strong>{result.person2.wuku.nama_wuku}</strong> adalah salah satu wuku yang direkomendasikan untuk pasangan wuku <strong>{result.person1.wuku.nama_wuku}</strong>!
                                             </p>
                                         </div>
                                     )}
 
                                     {result.person2.wuku.rekomendasi_pasangan.includes(result.person1.wuku.nama_wuku) && (
-                                        <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
-                                            <p className="text-green-400 text-center">
+                                        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                                            <p className="text-green-700 text-center text-sm">
                                                 ✨ Wuku <strong>{result.person1.wuku.nama_wuku}</strong> adalah salah satu wuku yang direkomendasikan untuk pasangan wuku <strong>{result.person2.wuku.nama_wuku}</strong>!
                                             </p>
                                         </div>
                                     )}
 
-                                    <div className="bg-black/30 rounded-xl p-4">
-                                        <p className="text-bali-cream/70 text-center text-sm">
-                                            Total nilai urip gabungan: <span className="text-bali-gold font-bold">{result.totalUrip}</span>
+                                    <div className="bg-bali-cream rounded-xl p-4 text-center">
+                                        <p className="text-bali-brown/70 text-sm">
+                                            Total nilai urip gabungan: <span className="text-bali-gold font-bold text-lg">{result.totalUrip}</span>
                                             <br />
-                                            <span className="text-bali-cream/50">({result.person1.totalUrip} + {result.person2.totalUrip})</span>
+                                            <span className="text-bali-brown/40 text-xs">({result.person1.totalUrip} + {result.person2.totalUrip})</span>
                                         </p>
                                     </div>
                                 </div>

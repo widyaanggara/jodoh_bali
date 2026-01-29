@@ -12,7 +12,7 @@ export default function DateInput({ label, value, onChange, id }: DateInputProps
         <div className="flex flex-col gap-2">
             <label
                 htmlFor={id}
-                className="text-bali-gold font-medium text-sm tracking-wide"
+                className="text-bali-brown font-medium text-sm tracking-wide"
             >
                 {label}
             </label>
@@ -21,7 +21,7 @@ export default function DateInput({ label, value, onChange, id }: DateInputProps
                 id={id}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="input-bali"
+                className="input-clean"
                 max={new Date().toISOString().split('T')[0]}
             />
         </div>

@@ -2,11 +2,10 @@ import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh } from '
 import { wukuData, pancawaraData, saptawaraData, kategoriJodohData } from './data';
 
 // Reference date for Balinese calendar calculation
-// 1 Januari 2000 adalah Redite (Minggu), Umanis, Wuku Sinta
+// 1 Januari 2000 adalah Saniscara (Sabtu), Umanis, Wuku Sinta
 const REFERENCE_DATE = new Date(2000, 0, 1);
 const REFERENCE_WUKU_INDEX = 0; // Sinta
 const REFERENCE_PANCAWARA_INDEX = 0; // Umanis
-const REFERENCE_SAPTAWARA_INDEX = 0; // Redite/Minggu
 
 /**
  * Calculate the number of days between two dates
@@ -16,6 +15,17 @@ function daysBetween(date1: Date, date2: Date): number {
     const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
     const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
     return Math.round((d2.getTime() - d1.getTime()) / oneDay);
+}
+
+/**
+ * Map JavaScript getDay() (0=Sunday) to Saptawara index
+ * Saptawara: 0=Redite(Minggu), 1=Soma(Senin), 2=Anggara(Selasa), 3=Buda(Rabu), 
+ *            4=Wraspati(Kamis), 5=Sukra(Jumat), 6=Saniscara(Sabtu)
+ */
+function getSaptawaraIndex(date: Date): number {
+    const jsDay = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    // Map: Sunday(0) -> Redite(0), Monday(1) -> Soma(1), ..., Saturday(6) -> Saniscara(6)
+    return jsDay;
 }
 
 /**
@@ -31,12 +41,12 @@ export function getBalineseDate(date: Date): BalineseDate {
     // Pancawara cycles every 5 days
     const pancawaraIndex = ((days % 5) + 5) % 5;
 
-    // Saptawara cycles every 7 days (same as day of week)
-    const saptawaraIndex = ((days % 7) + 7) % 7;
+    // Saptawara - use native JavaScript getDay() for accuracy
+    const saptawaraIndex = getSaptawaraIndex(date);
 
     const wuku = wukuData[(REFERENCE_WUKU_INDEX + wukuIndex) % 30];
     const pancawara = pancawaraData[(REFERENCE_PANCAWARA_INDEX + pancawaraIndex) % 5];
-    const saptawara = saptawaraData[(REFERENCE_SAPTAWARA_INDEX + saptawaraIndex) % 7];
+    const saptawara = saptawaraData[saptawaraIndex];
 
     // Total urip is sum of pancawara urip and wuku position value
     const totalUrip = pancawara.urip + (wuku.id_wuku % 10);
