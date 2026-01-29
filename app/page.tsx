@@ -1,179 +1,164 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
-import FloatingElements from '@/components/FloatingElements';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <FloatingElements />
+    <div className="bg-background-light dark:bg-background-dark font-sans text-stone-800 dark:text-stone-200 transition-colors duration-300 min-h-screen">
       <Header />
 
-      <main className="relative z-10">
+      <main>
         {/* Hero Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 pt-20">
-          <div className="max-w-3xl mx-auto text-center slide-up">
-            {/* Decorative Element */}
-            <div className="mb-8">
-              <span className="text-7xl sm:text-8xl drop-shadow-lg">🌺</span>
+        <section className="relative overflow-hidden pt-16 pb-32">
+          {/* Decorations */}
+          <img 
+            alt="Hibiscus illustration" 
+            className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5" 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw" 
+          />
+          <img 
+            alt="Lotus illustration" 
+            className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5" 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q" 
+          />
+          
+          <div className="max-w-4xl mx-auto px-6 text-center relative z-10 slide-up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-gold/10 border border-accent-gold/20 text-accent-gold text-xs font-bold uppercase tracking-widest mb-8">
+              <span className="material-icons-outlined text-sm">favorite</span>
+              Aplikasi Kencan #1 di Bali
             </div>
-
-            <h1 className="heading-1 mb-6">
-              Temukan <span className="text-gold-gradient">Jodoh</span> Anda
-              <br />Menurut Kalender Bali
+            
+            <h1 className="font-display text-5xl md:text-7xl font-bold text-stone-900 dark:text-stone-50 leading-tight mb-6">
+              Jodoh Bali <br/>
+              <span className="italic text-primary font-normal">Cinta Sejati Berdasarkan</span> <br/>
+              Kalender & Nilai Tradisi
             </h1>
-
-            <p className="text-lg sm:text-xl text-bali-brown/60 max-w-xl mx-auto mb-12 leading-relaxed">
-              Perhitungan tradisional berdasarkan <span className="text-bali-gold font-semibold">Wuku</span>,
-              <span className="text-bali-gold font-semibold"> Pancawara</span>, dan
-              <span className="text-bali-gold font-semibold"> Saptawara</span> untuk
-              menemukan kecocokan pasangan yang harmonis.
+            
+            <p className="text-lg text-stone-600 dark:text-stone-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Temukan pasangan yang berbagi nilai spiritual, budaya, dan kecintaan pada warisan leluhur Bali. Mulailah perjalanan cintamu hari ini.
             </p>
-
-            {/* CTA Buttons */}
+            
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/kecocokan-pasangan" className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2">
-                <span>💕</span> Cek Kecocokan Pasangan
+              <Link 
+                href="/kecocokan-pasangan" 
+                className="w-full sm:w-auto px-8 py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center"
+              >
+                Cek Kecocokan Pasangan
               </Link>
-              <Link href="/mencari-jodoh" className="btn-secondary w-full sm:w-auto flex items-center justify-center gap-2">
-                <span>🔮</span> Temukan Jodoh Ideal
+              <Link 
+                href="/mencari-jodoh" 
+                className="w-full sm:w-auto px-8 py-4 rounded-full gradient-button text-white font-bold shadow-xl shadow-primary/30 hover:scale-105 transition-transform flex items-center justify-center"
+              >
+                Temukan Jodoh Ideal
               </Link>
             </div>
           </div>
+
+          {/* Search/Input Card */}
+          {/* <div className="max-w-4xl mx-auto px-6 mt-20 slide-up delay-200">
+            <div className="bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-[2.5rem] shadow-2xl shadow-stone-200 dark:shadow-none border border-accent-gold/10">
+              <h3 className="text-center font-display text-xl font-bold text-stone-800 dark:text-stone-100 mb-6">Masukkan Tanggal Lahir Pasangan</h3>
+              <div className="flex flex-col md:flex-row items-end gap-6">
+                <div className="flex-1 w-full space-y-2 group">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-500 ml-1">Tanggal Lahir Anda</label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold/60 group-focus-within:text-accent-gold transition-colors">calendar_month</span>
+                    <input className="w-full pl-12 pr-4 py-3.5 bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 rounded-2xl focus:ring-primary focus:border-primary text-sm transition-all outline-none" type="date"/>
+                  </div>
+                </div>
+                <div className="flex-1 w-full space-y-2 group">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-500 ml-1">Tanggal Lahir Pasangan</label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold/60 group-focus-within:text-accent-gold transition-colors">calendar_month</span>
+                    <input className="w-full pl-12 pr-4 py-3.5 bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 rounded-2xl focus:ring-primary focus:border-primary text-sm transition-all outline-none" type="date"/>
+                  </div>
+                </div>
+                <Link 
+                  href="/kecocokan-pasangan"
+                  className="w-full md:w-auto px-10 py-4 gradient-button text-white rounded-2xl font-bold flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity"
+                >
+                  <span className="material-symbols-outlined">analytics</span>
+                  Cek Sekarang
+                </Link>
+              </div>
+            </div>
+          </div> */}
         </section>
 
         {/* Features Section */}
-        <section className="py-24 px-4 bg-white">
-          <div className="max-w-5xl mx-auto">
+        <section className="py-24 bg-white dark:bg-stone-900/50">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <span className="text-sm font-semibold text-bali-gold tracking-widest uppercase">Fitur</span>
-              <h2 className="heading-2 mt-3">Apa yang Bisa Anda Lakukan?</h2>
+              <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kenapa Bali Love?</h3>
+              <h2 className="font-display text-4xl font-bold text-stone-900 dark:text-stone-50">Pengalaman Kencan Tradisional & Modern</h2>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Feature 1 */}
-              <Link href="/kecocokan-pasangan" className="clean-card p-8 group">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-50 flex items-center justify-center text-3xl mb-6">
-                  💕
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">verified_user</span>
                 </div>
-                <h3 className="heading-3 mb-3 group-hover:text-bali-gold transition-colors">
-                  Kecocokan Pasangan
-                </h3>
-                <p className="text-bali-brown/60 leading-relaxed mb-4">
-                  Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan
-                  berdasarkan perhitungan wuku dan nilai urip tradisional Bali.
+                <h4 className="font-display text-2xl font-bold mb-4">Kecocokan Pasangan</h4>
+                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Keamanan adalah prioritas kami. Semua profil melalui proses verifikasi ketat untuk memastikan keaslian.
                 </p>
-                <span className="text-bali-gold font-medium inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Cek Sekarang <span>→</span>
-                </span>
-              </Link>
-
-              {/* Feature 2 */}
-              <Link href="/mencari-jodoh" className="clean-card p-8 group">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center text-3xl mb-6">
-                  📅
+              </div>
+              
+              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">synagogue</span>
                 </div>
-                <h3 className="heading-3 mb-3 group-hover:text-bali-gold transition-colors">
-                  Mencari Jodoh
-                </h3>
-                <p className="text-bali-brown/60 leading-relaxed mb-4">
-                  Temukan tanggal-tanggal kelahiran yang paling cocok dengan Anda.
-                  Dapatkan rekomendasi wuku pasangan ideal berdasarkan profil Anda.
+                <h4 className="font-display text-2xl font-bold mb-4">Mencari Jodoh</h4>
+                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Algoritma kami mempertimbangkan nilai-nilai tradisional Bali dan aspirasi spiritual dalam memberikan rekomendasi.
                 </p>
-                <span className="text-bali-gold font-medium inline-flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Temukan Jodoh <span>→</span>
-                </span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Wuku Info Section */}
-        <section className="py-24 px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="clean-card p-10 sm:p-14 text-center glow-gold">
-              <span className="text-5xl mb-6 block">📿</span>
-              <h2 className="heading-2 mb-6">
-                Apa itu <span className="text-gold-gradient">Wuku</span>?
-              </h2>
-              <p className="text-bali-brown/60 leading-relaxed mb-10 max-w-2xl mx-auto">
-                Wuku adalah sistem kalender tradisional Bali yang terdiri dari 30 minggu dalam satu siklus 210 hari.
-                Setiap wuku memiliki karakteristik unik dan dewa pelindung yang mempengaruhi sifat serta
-                keberuntungan seseorang berdasarkan hari kelahirannya.
-              </p>
-
-              <div className="grid sm:grid-cols-3 gap-6">
-                <div className="p-6 bg-bali-cream rounded-2xl">
-                  <div className="w-12 h-12 rounded-full bg-bali-gold/10 flex items-center justify-center text-2xl mx-auto mb-4">
-                    🌙
-                  </div>
-                  <h4 className="text-bali-brown font-semibold mb-2">30 Wuku</h4>
-                  <p className="text-bali-brown/50 text-sm">Minggu tradisional Bali dengan karakteristik unik</p>
+              </div>
+              
+              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">lock</span>
                 </div>
-                <div className="p-6 bg-bali-cream rounded-2xl">
-                  <div className="w-12 h-12 rounded-full bg-bali-gold/10 flex items-center justify-center text-2xl mx-auto mb-4">
-                    ⭐
-                  </div>
-                  <h4 className="text-bali-brown font-semibold mb-2">5 Pancawara</h4>
-                  <p className="text-bali-brown/50 text-sm">Siklus 5 hari dengan nilai urip masing-masing</p>
-                </div>
-                <div className="p-6 bg-bali-cream rounded-2xl">
-                  <div className="w-12 h-12 rounded-full bg-bali-gold/10 flex items-center justify-center text-2xl mx-auto mb-4">
-                    ☀️
-                  </div>
-                  <h4 className="text-bali-brown font-semibold mb-2">7 Saptawara</h4>
-                  <p className="text-bali-brown/50 text-sm">7 hari dalam seminggu dengan sifat khasnya</p>
-                </div>
+                <h4 className="font-display text-2xl font-bold mb-4">Apa itu Wuku?</h4>
+                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Berkomunikasi dengan tenang melalui platform terenkripsi kami yang menjaga privasi percakapan Anda.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Kategori Section */}
-        <section className="py-24 px-4 bg-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="text-sm font-semibold text-bali-gold tracking-widest uppercase">Kategori</span>
-            <h2 className="heading-2 mt-3 mb-12">5 Kategori Kecocokan</h2>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="clean-card px-6 py-4 inline-flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
-                <span className="font-semibold text-bali-brown">Sri</span>
-                <span className="text-bali-brown/50 text-sm">Harmonis</span>
+        {/* Categories Section */}
+        <section className="py-24">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Match Categories</h3>
+                <h2 className="font-display text-4xl font-bold text-stone-900 dark:text-stone-50">Temukan Bali Categoria</h2>
               </div>
-              <div className="clean-card px-6 py-4 inline-flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                <span className="font-semibold text-bali-brown">Dana</span>
-                <span className="text-bali-brown/50 text-sm">Kaya</span>
-              </div>
-              <div className="clean-card px-6 py-4 inline-flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-                <span className="font-semibold text-bali-brown">Laba</span>
-                <span className="text-bali-brown/50 text-sm">Beruntung</span>
-              </div>
-              <div className="clean-card px-6 py-4 inline-flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-amber-500"></span>
-                <span className="font-semibold text-bali-brown">Sakti</span>
-                <span className="text-bali-brown/50 text-sm">Tangguh</span>
-              </div>
-              <div className="clean-card px-6 py-4 inline-flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                <span className="font-semibold text-bali-brown">Tiwas</span>
-                <span className="text-bali-brown/50 text-sm">Penuh Rintangan</span>
-              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+              {[
+                { name: 'Sri', sub: '(Kesejahteraan)', icon: 'spa' },
+                { name: 'Dana', sub: '(Kekayaan)', icon: 'savings' },
+                { name: 'Laba', sub: '(Keuntungan)', icon: 'trending_up' },
+                { name: 'Sakti', sub: '(Kekuatan)', icon: 'fitness_center' },
+                { name: 'Tiwas', sub: '(Kematian)', icon: 'self_improvement' },
+              ].map((item) => (
+                <div key={item.name} className="bg-surface-light dark:bg-surface-dark p-8 rounded-[2rem] border border-accent-gold/20 text-center hover:border-primary transition-colors cursor-pointer group">
+                  <div className="mb-6 transform group-hover:scale-110 transition-transform">
+                    <span className="material-icons-outlined text-primary text-5xl">{item.icon}</span>
+                  </div>
+                  <h5 className="font-display text-xl font-bold mb-1">{item.name}</h5>
+                  <p className="text-stone-400 text-sm">{item.sub}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="py-16 px-4 border-t border-bali-gold/10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="text-4xl mb-4">🌺</div>
-            <p className="text-bali-brown font-semibold mb-2">Jodoh Bali</p>
-            <p className="text-bali-brown/50 text-sm">
-              Peramalan Jodoh Berdasarkan Kalender Tradisional Bali
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );

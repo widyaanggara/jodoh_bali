@@ -79,16 +79,16 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
     const colors = getGradientColors();
 
     return (
-        <div className="clean-card p-8 md:p-12 text-center fade-in glow-gold" style={{ animationDelay: '400ms' }}>
-            <h3 className="heading-2 text-gold-gradient mb-8">Hasil Kecocokan</h3>
+        <div className="bg-surface-light dark:bg-surface-dark p-10 md:p-14 text-center rounded-[3rem] border border-accent-gold/10 shadow-2xl shadow-stone-200/50 dark:shadow-none delay-400 slide-up">
+            <h3 className="font-display text-3xl font-bold text-stone-900 dark:text-stone-50 mb-10">Hasil Kecocokan</h3>
 
             {/* Animated Heart */}
-            <div className="heart-container mb-8 relative">
+            <div className="heart-container mb-10 relative">
                 {/* Love Particles */}
                 {particles.map((particle) => (
                     <div
                         key={particle.id}
-                        className="love-particle"
+                        className="love-particle text-2xl"
                         style={{
                             left: `${particle.x}%`,
                             top: `${particle.y}%`,
@@ -100,7 +100,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
 
                 <svg
                     viewBox="0 0 100 100"
-                    className={`heart-svg ${isVisible ? 'heart-pulse' : ''}`}
+                    className={`heart-svg w-full h-full ${isVisible ? 'heart-pulse' : ''}`}
                 >
                     <defs>
                         <linearGradient id="heartGradient" x1="0%" y1="100%" x2="0%" y2="0%">
@@ -115,9 +115,10 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                     {/* Background Heart */}
                     <path
                         d="M50 88 C20 65, 5 45, 10 30 C15 15, 30 10, 50 25 C70 10, 85 15, 90 30 C95 45, 80 65, 50 88 Z"
-                        fill="#F3F0EA"
-                        stroke="#E8D59C"
-                        strokeWidth="2"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        className="text-stone-50 dark:text-stone-900 text-stone-100 dark:text-stone-800"
                     />
 
                     {/* Filled Heart with clip */}
@@ -137,14 +138,14 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                         d="M50 88 C20 65, 5 45, 10 30 C15 15, 30 10, 50 25 C70 10, 85 15, 90 30 C95 45, 80 65, 50 88 Z"
                         fill="none"
                         stroke={colors.start}
-                        strokeWidth="2.5"
-                        opacity="0.6"
+                        strokeWidth="2"
+                        opacity="0.3"
                     />
                 </svg>
 
                 {/* Percentage Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-white/90 rounded-full px-4 py-2 shadow-lg">
+                    <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-full w-20 h-20 flex items-center justify-center shadow-xl border border-white dark:border-stone-700">
                         <span
                             className="text-3xl font-bold"
                             style={{ color: colors.start }}
@@ -156,23 +157,23 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
             </div>
 
             {/* Kategori Badge */}
-            <div className="mb-6">
-                <span className={`badge-soft ${getBadgeClass()} text-lg px-8 py-3`}>
+            <div className="mb-8">
+                <span className={`inline-block px-10 py-3 rounded-full text-white font-bold text-lg shadow-lg shadow-primary/20`} style={{ background: `linear-gradient(135deg, ${colors.start} 0%, ${colors.end} 100%)` }}>
                     {kategori.kategori}
                 </span>
             </div>
 
             {/* Makna */}
-            <p className="text-lg text-bali-brown/70 max-w-md mx-auto leading-relaxed">
-                {kategori.makna}
+            <p className="font-display text-xl text-stone-700 dark:text-stone-300 max-w-md mx-auto leading-relaxed italic">
+                "{kategori.makna}"
             </p>
 
             {/* Divider */}
-            <div className="divider-gold my-8" />
+            <div className="h-px bg-gradient-to-r from-transparent via-accent-gold/20 to-transparent my-10" />
 
             {/* Additional Info */}
-            <p className="text-sm text-bali-brown/50">
-                Perhitungan berdasarkan jumlah nilai urip dari kelahiran kedua pasangan menurut kalender Bali
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-600">
+                Berdasarkan Nilai Urip Gabungan
             </p>
         </div>
     );

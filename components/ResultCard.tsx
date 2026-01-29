@@ -11,78 +11,75 @@ interface ResultCardProps {
 export default function ResultCard({ title, balineseDate, delay = 0 }: ResultCardProps) {
     return (
         <div
-            className="clean-card p-6 fade-in"
+            className="bg-surface-light dark:bg-surface-dark p-8 rounded-[2.5rem] border border-accent-gold/10 shadow-xl shadow-stone-200/40 dark:shadow-none fade-in group hover:border-primary/30 transition-all"
             style={{ animationDelay: `${delay}ms` }}
         >
-            <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-bali-gold-light to-bali-gold/30 flex items-center justify-center">
-                    <span className="text-2xl">🌸</span>
+            <div className="flex items-center gap-4 mb-8">
+                <div className="w-14 h-14 rounded-2xl bg-accent-gold/10 flex items-center justify-center group-hover:bg-accent-gold group-hover:text-white transition-colors">
+                    <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">flare</span>
                 </div>
                 <div>
-                    <p className="text-sm text-bali-brown/50">{title}</p>
-                    <h3 className="heading-3 text-bali-brown">Wuku {balineseDate.wuku.nama_wuku}</h3>
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-extrabold text-accent-gold mb-1">{title}</p>
+                    <h3 className="font-display text-2xl font-bold text-stone-900 dark:text-stone-50">Wuku {balineseDate.wuku.nama_wuku}</h3>
                 </div>
             </div>
 
-            <p className="text-bali-brown/70 text-sm mb-4 leading-relaxed">
-                {balineseDate.wuku.deskripsi}
+            <p className="text-stone-500 dark:text-stone-400 text-sm mb-8 leading-relaxed italic">
+                "{balineseDate.wuku.deskripsi}"
             </p>
 
             {/* Pancawara & Saptawara */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-bali-cream rounded-xl p-3">
-                    <p className="text-bali-gold text-xs font-medium mb-1">Pancawara</p>
-                    <p className="text-bali-brown font-semibold">{balineseDate.pancawara.nama}</p>
-                    <p className="text-bali-brown/50 text-xs">Urip: {balineseDate.pancawara.urip}</p>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-stone-50 dark:bg-stone-900/50 rounded-2xl p-4 border border-stone-100 dark:border-stone-800">
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-accent-gold mb-2">Pancawara</p>
+                    <p className="text-stone-800 dark:text-stone-100 font-bold">{balineseDate.pancawara.nama}</p>
+                    <p className="text-stone-400 text-[10px] mt-1">Urip: {balineseDate.pancawara.urip}</p>
                 </div>
-                <div className="bg-bali-cream rounded-xl p-3">
-                    <p className="text-bali-gold text-xs font-medium mb-1">Saptawara</p>
-                    <p className="text-bali-brown font-semibold">{balineseDate.saptawara.hari.split('/')[0]}</p>
-                    <p className="text-bali-brown/50 text-xs">{balineseDate.saptawara.sifat}</p>
+                <div className="bg-stone-50 dark:bg-stone-900/50 rounded-2xl p-4 border border-stone-100 dark:border-stone-800">
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-accent-gold mb-2">Saptawara</p>
+                    <p className="text-stone-800 dark:text-stone-100 font-bold">{balineseDate.saptawara.hari.split('/')[0]}</p>
+                    <p className="text-stone-400 text-[10px] mt-1">{balineseDate.saptawara.sifat}</p>
                 </div>
             </div>
 
             {/* Sifat */}
-            <div className="bg-bali-cream rounded-xl p-4 mb-4">
-                <p className="text-bali-gold text-xs font-medium mb-1">Sifat Umum</p>
-                <p className="text-bali-brown/80 text-sm">{balineseDate.wuku.sifat_umum}</p>
+            <div className="bg-stone-50/50 dark:bg-stone-900/30 rounded-2xl p-5 mb-6 border border-stone-100 dark:border-stone-800">
+                <p className="text-[10px] uppercase tracking-widest font-bold text-accent-gold mb-2">Sifat Umum</p>
+                <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">{balineseDate.wuku.sifat_umum}</p>
             </div>
 
             {/* Kelebihan & Kelemahan */}
-            <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-green-600 text-xs">✓</span>
+            <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5 text-green-500">
+                        <span className="material-icons-outlined text-sm">done</span>
                     </div>
                     <div>
-                        <p className="text-green-700 text-xs font-medium">Kelebihan</p>
-                        <p className="text-bali-brown/70 text-sm">{balineseDate.wuku.kelebihan}</p>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-green-600 dark:text-green-500 mb-1">Kelebihan</p>
+                        <p className="text-stone-600 dark:text-stone-400 text-sm">{balineseDate.wuku.kelebihan}</p>
                     </div>
                 </div>
-                <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-amber-600 text-xs">!</span>
+                <div className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5 text-amber-500">
+                        <span className="material-icons-outlined text-sm">priority_high</span>
                     </div>
                     <div>
-                        <p className="text-amber-700 text-xs font-medium">Kelemahan</p>
-                        <p className="text-bali-brown/70 text-sm">{balineseDate.wuku.kelemahan}</p>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-amber-600 dark:text-amber-500 mb-1">Kelemahan</p>
+                        <p className="text-stone-600 dark:text-stone-400 text-sm">{balineseDate.wuku.kelemahan}</p>
                     </div>
                 </div>
             </div>
 
-            {/* Divider */}
-            <div className="divider-gold my-5" />
-
             {/* Rekomendasi Pasangan */}
-            <div>
-                <p className="text-bali-gold text-xs font-medium mb-2 flex items-center gap-2">
-                    <span>💕</span> Wuku Pasangan Ideal
+            <div className="pt-6 border-t border-stone-100 dark:border-stone-800">
+                <p className="text-[10px] uppercase tracking-widest font-extrabold text-accent-gold mb-3 flex items-center gap-2">
+                    <span className="material-icons-outlined text-xs">favorite</span> Wuku Pasangan Ideal
                 </p>
                 <div className="flex flex-wrap gap-2">
                     {balineseDate.wuku.rekomendasi_pasangan.map((wuku, index) => (
                         <span
                             key={index}
-                            className="px-3 py-1.5 bg-bali-gold/10 border border-bali-gold/20 rounded-full text-bali-brown text-sm font-medium"
+                            className="px-3 py-1.5 bg-accent-gold/5 border border-accent-gold/10 rounded-full text-stone-600 dark:text-stone-300 text-xs font-bold"
                         >
                             {wuku}
                         </span>

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
-import FloatingElements from '@/components/FloatingElements';
-import DateInput from '@/components/DateInput';
+import Footer from '@/components/Footer';
 import ResultCard from '@/components/ResultCard';
 import HeartMeter from '@/components/HeartMeter';
 import { calculateCompatibility } from '@/lib/balinese-calendar';
@@ -46,74 +46,92 @@ export default function KecocokanPasangan() {
     };
 
     return (
-        <div className="min-h-screen relative overflow-hidden">
-            <FloatingElements />
+        <div className="bg-background-light dark:bg-background-dark font-sans text-stone-800 dark:text-stone-200 transition-colors duration-300 min-h-screen">
             <Header />
 
-            <main className="relative z-10 pt-28 pb-20 px-4">
-                <div className="max-w-4xl mx-auto">
-                    {/* Page Title */}
-                    <div className="text-center mb-12 slide-up">
-                        <span className="text-6xl mb-6 block">💕</span>
-                        <h1 className="heading-1 mb-4">
-                            Cek <span className="text-gold-gradient">Kecocokan</span> Pasangan
+            <main>
+                {/* Hero Section */}
+                <section className="relative overflow-hidden pt-20 pb-16">
+                    <img 
+                        alt="Hibiscus illustration" 
+                        className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5" 
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw" 
+                    />
+                   <img 
+                        alt="Lotus illustration" 
+                        className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5" 
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q" 
+                    />
+                    
+                    <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                        <h1 className="font-display text-5xl md:text-6xl font-bold text-accent-gold leading-tight mb-6 slide-up">
+                            Cek Kecocokan Pasangan
                         </h1>
-                        <p className="text-bali-brown/60 max-w-lg mx-auto">
-                            Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan
-                            berdasarkan kalender tradisional Bali.
+                        <p className="text-lg text-stone-600 dark:text-stone-400 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
+                            Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan berdasarkan kalender tradisional Bali.
                         </p>
-                    </div>
-
-                    {/* Input Form */}
-                    <div className="clean-card p-8 md:p-10 mb-10 fade-in glow-gold" style={{ animationDelay: '200ms' }}>
-                        <div className="grid md:grid-cols-2 gap-6 mb-8">
-                            <DateInput
-                                id="date1"
-                                label="📅 Tanggal Lahir Anda"
-                                value={date1}
-                                onChange={setDate1}
-                            />
-                            <DateInput
-                                id="date2"
-                                label="💝 Tanggal Lahir Pasangan"
-                                value={date2}
-                                onChange={setDate2}
-                            />
+                        
+                        <div className="max-w-xl mx-auto slide-up delay-200">
+                            <div className="bg-surface-light dark:bg-surface-dark p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200 dark:shadow-none border border-accent-gold/10">
+                                <div className="space-y-8">
+                                    <div className="space-y-3 text-left group">
+                                        <label htmlFor="date1" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-500 ml-1">Tanggal Lahir Anda</label>
+                                        <div className="relative">
+                                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold transition-colors">calendar_month</span>
+                                            <input 
+                                                id="date1"
+                                                className="w-full pl-12 pr-4 py-4 bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 rounded-2xl focus:ring-primary focus:border-primary text-sm transition-all outline-none" 
+                                                type="date"
+                                                value={date1}
+                                                onChange={(e) => setDate1(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3 text-left group">
+                                        <label htmlFor="date2" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-500 ml-1">Tanggal Lahir Pasangan</label>
+                                        <div className="relative">
+                                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold transition-colors">favorite</span>
+                                            <input 
+                                                id="date2"
+                                                className="w-full pl-12 pr-4 py-4 bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 rounded-2xl focus:ring-primary focus:border-primary text-sm transition-all outline-none" 
+                                                type="date"
+                                                value={date2}
+                                                onChange={(e) => setDate2(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onClick={handleCalculate}
+                                        disabled={isLoading}
+                                        className="w-full py-5 gradient-button text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform disabled:opacity-70 disabled:hover:scale-100"
+                                    >
+                                        {isLoading ? (
+                                            <span className="material-symbols-outlined animate-spin">autorenew</span>
+                                        ) : (
+                                            <span className="material-symbols-outlined text-xl">auto_awesome</span>
+                                        )}
+                                        {isLoading ? 'Menghitung...' : 'Cek Kecocokan'}
+                                    </button>
+                                    
+                                    {result && (
+                                        <button
+                                            onClick={handleReset}
+                                            className="w-full py-3 text-stone-400 hover:text-primary transition-colors text-sm font-medium"
+                                        >
+                                            Reset Pencarian
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
                         </div>
-
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button
-                                onClick={handleCalculate}
-                                disabled={isLoading}
-                                className="btn-primary flex items-center justify-center gap-2 min-w-[200px]"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <span className="animate-spin">💫</span>
-                                        Menghitung...
-                                    </>
-                                ) : (
-                                    <>
-                                        ✨ Cek Kecocokan
-                                    </>
-                                )}
-                            </button>
-
-                            {result && (
-                                <button
-                                    onClick={handleReset}
-                                    className="btn-secondary"
-                                >
-                                    🔄 Reset
-                                </button>
-                            )}
-                        </div>
                     </div>
+                </section>
 
-                    {/* Results */}
-                    {result && (
-                        <div className="space-y-10">
-                            {/* Heart Meter - Main Focus */}
+                {/* Results Section */}
+                {result && (
+                    <section className="pb-24 px-6 relative z-10 fade-in">
+                        <div className="max-w-4xl mx-auto space-y-12">
+                            {/* Heart Meter */}
                             <HeartMeter
                                 percentage={result.percentage}
                                 kategori={result.kategori}
@@ -121,7 +139,7 @@ export default function KecocokanPasangan() {
                             />
 
                             {/* Profile Cards */}
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-2 gap-8">
                                 <ResultCard
                                     title="Profil Anda"
                                     balineseDate={result.person1}
@@ -135,37 +153,34 @@ export default function KecocokanPasangan() {
                             </div>
 
                             {/* Insights */}
-                            <div className="clean-card p-8 fade-in" style={{ animationDelay: '1000ms' }}>
-                                <h3 className="heading-3 text-center mb-6">💡 Insight Tambahan</h3>
-                                <div className="space-y-4">
-                                    {result.person1.wuku.rekomendasi_pasangan.includes(result.person2.wuku.nama_wuku) && (
-                                        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                                            <p className="text-green-700 text-center text-sm">
-                                                ✨ Wuku <strong>{result.person2.wuku.nama_wuku}</strong> adalah salah satu wuku yang direkomendasikan untuk pasangan wuku <strong>{result.person1.wuku.nama_wuku}</strong>!
+                            <div className="bg-surface-light dark:bg-surface-dark p-8 md:p-10 rounded-[2.5rem] border border-accent-gold/10 shadow-xl shadow-stone-200/50 dark:shadow-none delay-1000 slide-up">
+                                <h3 className="font-display text-2xl font-bold text-center mb-8">💡 Insight Tambahan</h3>
+                                <div className="space-y-6">
+                                    {(result.person1.wuku.rekomendasi_pasangan.includes(result.person2.wuku.nama_wuku) || 
+                                      result.person2.wuku.rekomendasi_pasangan.includes(result.person1.wuku.nama_wuku)) && (
+                                        <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-6">
+                                            <p className="text-green-600 dark:text-green-400 text-center font-medium">
+                                                ✨ Wuku kalian saling merekomendasikan! Ini adalah pertanda kecocokan yang sangat harmonis menurut tradisi.
                                             </p>
                                         </div>
                                     )}
 
-                                    {result.person2.wuku.rekomendasi_pasangan.includes(result.person1.wuku.nama_wuku) && (
-                                        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                                            <p className="text-green-700 text-center text-sm">
-                                                ✨ Wuku <strong>{result.person1.wuku.nama_wuku}</strong> adalah salah satu wuku yang direkomendasikan untuk pasangan wuku <strong>{result.person2.wuku.nama_wuku}</strong>!
-                                            </p>
-                                        </div>
-                                    )}
-
-                                    <div className="bg-bali-cream rounded-xl p-4 text-center">
-                                        <p className="text-bali-brown/70 text-sm">
-                                            Total nilai urip gabungan: <span className="text-bali-gold font-bold text-lg">{result.totalUrip}</span>
+                                    <div className="bg-accent-gold/5 rounded-2xl p-6 text-center border border-accent-gold/10">
+                                        <p className="text-stone-500 dark:text-stone-400 text-sm">
+                                            Total nilai urip gabungan: <span className="text-primary font-bold text-xl ml-2">{result.totalUrip}</span>
                                             <br />
-                                            <span className="text-bali-brown/40 text-xs">({result.person1.totalUrip} + {result.person2.totalUrip})</span>
+                                            <span className="text-[10px] uppercase tracking-widest opacity-50">({result.person1.totalUrip} + {result.person2.totalUrip})</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    )}
-                </div>
+                    </section>
+                )}
+
+
+                {/* Footer */}
+                <Footer />
             </main>
         </div>
     );
