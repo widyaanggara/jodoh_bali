@@ -1,0 +1,304 @@
+import { Wuku, Pancawara, Saptawara, KategoriJodoh } from './types';
+
+// Wuku data (30 wuku dalam kalender Bali)
+export const wukuData: Wuku[] = [
+    {
+        id_wuku: 1,
+        nama_wuku: "Sinta",
+        deskripsi: "Naungan Bathara Yamadipati. Karakter sakral dan penuh wibawa.",
+        sifat_umum: "Tegas, agak kaku, berjiwa pemimpin.",
+        kelebihan: "Cepat memahami ilmu, teliti, mandiri.",
+        kelemahan: "Keras kepala, sulit menerima kritik.",
+        rekomendasi_pasangan: ["Wariga", "Warigadean"]
+    },
+    {
+        id_wuku: 2,
+        nama_wuku: "Landep",
+        deskripsi: "Naungan Bathara Mahadewa. Melambangkan ketajaman pikiran.",
+        sifat_umum: "Cerdas, visioner, jujur.",
+        kelebihan: "Daya tangkap kuat, logis, problem solver.",
+        kelemahan: "Suka pamer kepintaran, agak sombong.",
+        rekomendasi_pasangan: ["Langkir", "Medangsia"]
+    },
+    {
+        id_wuku: 3,
+        nama_wuku: "Ukir",
+        deskripsi: "Naungan Bathara Mahayakti. Karakter yang kaya akan perasaan.",
+        sifat_umum: "Tenang, rendah hati, tertutup.",
+        kelebihan: "Sangat baik hati, penolong, setia.",
+        kelemahan: "Sering memendam perasaan, pendendam.",
+        rekomendasi_pasangan: ["Kulawu", "Dukut"]
+    },
+    {
+        id_wuku: 4,
+        nama_wuku: "Kulantir",
+        deskripsi: "Naungan Bathara Singajalma. Karakter yang dinamis.",
+        sifat_umum: "Lincah, mudah bergaul, aktif.",
+        kelebihan: "Pandai bicara, adaptif, komunikatif.",
+        kelemahan: "Boros, sulit fokus pada satu tujuan.",
+        rekomendasi_pasangan: ["Tolu", "Gumbreg"]
+    },
+    {
+        id_wuku: 5,
+        nama_wuku: "Tolu",
+        deskripsi: "Naungan Bathara Bayu. Sosok yang kuat dan pelindung.",
+        sifat_umum: "Berjiwa pemimpin, sabar, kuat.",
+        kelebihan: "Fisik tangguh, pantang menyerah.",
+        kelemahan: "Kurang peka terhadap perasaan orang lain.",
+        rekomendasi_pasangan: ["Kulantir", "Sungsang"]
+    },
+    {
+        id_wuku: 6,
+        nama_wuku: "Gumbreg",
+        deskripsi: "Naungan Bathara Candra. Melambangkan kemakmuran.",
+        sifat_umum: "Lembut, tenang, religius.",
+        kelebihan: "Murah rezeki, dicintai banyak orang.",
+        kelemahan: "Terlalu perasa, kurang tegas mengambil sikap.",
+        rekomendasi_pasangan: ["Sinta", "Warigadean"]
+    },
+    {
+        id_wuku: 7,
+        nama_wuku: "Wariga",
+        deskripsi: "Naungan Bathara Asmara. Memiliki daya tarik tinggi.",
+        sifat_umum: "Artistik, romantis, teliti.",
+        kelebihan: "Rapi dalam bekerja, setia, artistik.",
+        kelemahan: "Mudah curiga dan sering cemburu.",
+        rekomendasi_pasangan: ["Sinta", "Julungwangi"]
+    },
+    {
+        id_wuku: 8,
+        nama_wuku: "Warigadean",
+        deskripsi: "Naungan Bathara Maharesi. Sosok pembelajar.",
+        sifat_umum: "Cerdas, analitis, logis.",
+        kelebihan: "Logika kuat, pandai bernegosiasi.",
+        kelemahan: "Terlihat dingin dan kurang empati.",
+        rekomendasi_pasangan: ["Sinta", "Gumbreg"]
+    },
+    {
+        id_wuku: 9,
+        nama_wuku: "Julungwangi",
+        deskripsi: "Naungan Bathara Sambu. Sosok yang populer.",
+        sifat_umum: "Rapi, jujur, menjaga reputasi.",
+        kelebihan: "Sangat dipercaya, penampilan menarik.",
+        kelemahan: "Suka dipuji, agak narsis.",
+        rekomendasi_pasangan: ["Wariga", "Sungsang"]
+    },
+    {
+        id_wuku: 10,
+        nama_wuku: "Sungsang",
+        deskripsi: "Naungan Bathara Gana. Penakluk rintangan.",
+        sifat_umum: "Kuat, berani, pantang menyerah.",
+        kelebihan: "Solutif, mental baja.",
+        kelemahan: "Mudah marah (temperamental).",
+        rekomendasi_pasangan: ["Tolu", "Julungwangi"]
+    },
+    {
+        id_wuku: 11,
+        nama_wuku: "Dungulan",
+        deskripsi: "Naungan Bathara Kamajaya. Sosok pemenang.",
+        sifat_umum: "Bijaksana, sabar, tenang.",
+        kelebihan: "Selalu menang dalam argumen, berwibawa.",
+        kelemahan: "Terlalu santai, sering meremehkan lawan.",
+        rekomendasi_pasangan: ["Kuningan", "Langkir"]
+    },
+    {
+        id_wuku: 12,
+        nama_wuku: "Kuningan",
+        deskripsi: "Naungan Bathara Indera. Berjiwa ningrat.",
+        sifat_umum: "Disiplin, perfeksionis, hemat.",
+        kelebihan: "Sangat teliti dalam keuangan dan aturan.",
+        kelemahan: "Cenderung pelit dan terlalu kaku.",
+        rekomendasi_pasangan: ["Dungulan", "Pahang"]
+    },
+    {
+        id_wuku: 13,
+        nama_wuku: "Langkir",
+        deskripsi: "Naungan Bathara Kala. Sosok yang tangguh.",
+        sifat_umum: "Berani, mandiri, nekat.",
+        kelebihan: "Tidak takut tantangan, ulet.",
+        kelemahan: "Keras hati, sulit diajak kompromi.",
+        rekomendasi_pasangan: ["Landep", "Dungulan"]
+    },
+    {
+        id_wuku: 14,
+        nama_wuku: "Medangsia",
+        deskripsi: "Naungan Bathara Brahma. Semangat membara.",
+        sifat_umum: "Ambisius, kompetitif, ceria.",
+        kelebihan: "Motivator ulung, energik.",
+        kelemahan: "Ceroboh, terburu-buru.",
+        rekomendasi_pasangan: ["Landep", "Pujut"]
+    },
+    {
+        id_wuku: 15,
+        nama_wuku: "Pujut",
+        deskripsi: "Naungan Bathara Guritna. Sosok pemikir.",
+        sifat_umum: "Filosofis, introvert, bijak.",
+        kelebihan: "Ide orisinal, pemikiran dalam.",
+        kelemahan: "Lamban bertindak, suka ragu.",
+        rekomendasi_pasangan: ["Medangsia", "Pahang"]
+    },
+    {
+        id_wuku: 16,
+        nama_wuku: "Pahang",
+        deskripsi: "Naungan Bathara Tantra. Pelindung.",
+        sifat_umum: "Setia kawan, protektif.",
+        kelebihan: "Pendengar yang baik, loyal.",
+        kelemahan: "Suka mencampuri urusan orang.",
+        rekomendasi_pasangan: ["Kuningan", "Krulut"]
+    },
+    {
+        id_wuku: 17,
+        nama_wuku: "Krulut",
+        deskripsi: "Naungan Bathara Wisnu. Penuh kasih sayang.",
+        sifat_umum: "Penyayang, lembut, dermawan.",
+        kelebihan: "Murah hati, penyabar.",
+        kelemahan: "Mudah ditipu/dimanfaatkan.",
+        rekomendasi_pasangan: ["Pahang", "Merakih"]
+    },
+    {
+        id_wuku: 18,
+        nama_wuku: "Merakih",
+        deskripsi: "Naungan Bathara Surenggana. Sosok rupawan.",
+        sifat_umum: "Estetik, rapi, diplomatis.",
+        kelebihan: "Pandai bicara, penampilan menarik.",
+        kelemahan: "Boros demi gaya hidup.",
+        rekomendasi_pasangan: ["Krulut", "Tambir"]
+    },
+    {
+        id_wuku: 19,
+        nama_wuku: "Tambir",
+        deskripsi: "Naungan Bathara Siwa. Wibawa tinggi.",
+        sifat_umum: "Religius, serius, berprinsip.",
+        kelebihan: "Sangat memegang janji, jujur.",
+        kelemahan: "Kaku, kurang humoris.",
+        rekomendasi_pasangan: ["Merakih", "Medangkungan"]
+    },
+    {
+        id_wuku: 20,
+        nama_wuku: "Medangkungan",
+        deskripsi: "Naungan Bathara Basuki. Pembawa damai.",
+        sifat_umum: "Tenang, adil, sejuk.",
+        kelebihan: "Penengah konflik yang handal.",
+        kelemahan: "Sering bimbang (plin-plan).",
+        rekomendasi_pasangan: ["Tambir", "Matal"]
+    },
+    {
+        id_wuku: 21,
+        nama_wuku: "Matal",
+        deskripsi: "Naungan Bathara Sakri. Kuat mental.",
+        sifat_umum: "Tangguh, sederhana, jujur.",
+        kelebihan: "Tahan banting hadapi cobaan.",
+        kelemahan: "Kurang kreatif, kaku.",
+        rekomendasi_pasangan: ["Medangkungan", "Uye"]
+    },
+    {
+        id_wuku: 22,
+        nama_wuku: "Uye",
+        deskripsi: "Naungan Bathara Kuwera. Bakat dagang.",
+        sifat_umum: "Hemat, teliti, kalkulatif.",
+        kelebihan: "Pandai mencari peluang uang.",
+        kelemahan: "Sering cemas soal masa depan.",
+        rekomendasi_pasangan: ["Matal", "Menail"]
+    },
+    {
+        id_wuku: 23,
+        nama_wuku: "Menail",
+        deskripsi: "Naungan Bathara Citragotra. Jiwa seni.",
+        sifat_umum: "Kreatif, imajinatif, unik.",
+        kelebihan: "Inovatif, cara berpikir berbeda.",
+        kelemahan: "Kurang realistis, suka menghayal.",
+        rekomendasi_pasangan: ["Uye", "Prangbakat"]
+    },
+    {
+        id_wuku: 24,
+        nama_wuku: "Prangbakat",
+        deskripsi: "Naungan Bathara Bisma. Pejuang tangguh.",
+        sifat_umum: "Disiplin, kuat, kaku.",
+        kelebihan: "Fisik sehat, mental pejuang.",
+        kelemahan: "Sulit beradaptasi dengan perubahan.",
+        rekomendasi_pasangan: ["Menail", "Bala"]
+    },
+    {
+        id_wuku: 25,
+        nama_wuku: "Bala",
+        deskripsi: "Naungan Bathara Durga. Disegani.",
+        sifat_umum: "Misterius, karismatik, dominan.",
+        kelebihan: "Pengaruh besar pada kelompok.",
+        kelemahan: "Cenderung menekan/otoriter.",
+        rekomendasi_pasangan: ["Prangbakat", "Ugu"]
+    },
+    {
+        id_wuku: 26,
+        nama_wuku: "Ugu",
+        deskripsi: "Naungan Bathara Singajalma. Stabil.",
+        sifat_umum: "Konsisten, setia, tenang.",
+        kelebihan: "Tidak mudah berubah pendirian.",
+        kelemahan: "Sangat keras kepala.",
+        rekomendasi_pasangan: ["Bala", "Wayang"]
+    },
+    {
+        id_wuku: 27,
+        nama_wuku: "Wayang",
+        deskripsi: "Naungan Bathara Sri. Keindahan.",
+        sifat_umum: "Lembut, artistik, peka.",
+        kelebihan: "Bakat seni halus, perasa.",
+        kelemahan: "Sangat sensitif, mudah tersinggung.",
+        rekomendasi_pasangan: ["Ugu", "Kulawu"]
+    },
+    {
+        id_wuku: 28,
+        nama_wuku: "Kulawu",
+        deskripsi: "Naungan Bathara Sadana. Kemakmuran.",
+        sifat_umum: "Beruntung, rajin, hemat.",
+        kelebihan: "Rezeki lancar, tekun bekerja.",
+        kelemahan: "Terlalu terpaku pada materi.",
+        rekomendasi_pasangan: ["Wayang", "Ukir"]
+    },
+    {
+        id_wuku: 29,
+        nama_wuku: "Dukut",
+        deskripsi: "Naungan Bathara Baruna. Luas dan dalam.",
+        sifat_umum: "Tenang, misterius, sabar.",
+        kelebihan: "Wawasan luas, bijaksana.",
+        kelemahan: "Sulit ditebak, tertutup.",
+        rekomendasi_pasangan: ["Ukir", "Watugunung"]
+    },
+    {
+        id_wuku: 30,
+        nama_wuku: "Watugunung",
+        deskripsi: "Naungan Bathara Anantaboga. Kokoh.",
+        sifat_umum: "Stabil, teguh, pelindung.",
+        kelebihan: "Menjadi tumpuan banyak orang.",
+        kelemahan: "Sulit menerima perubahan mendadak.",
+        rekomendasi_pasangan: ["Dukut", "Sinta"]
+    }
+];
+
+// Pancawara data (5 hari siklus)
+export const pancawaraData: Pancawara[] = [
+    { id: 1, nama: "Umanis", urip: 5, karakter: "Penggerak, memiliki kemauan kuat, dan pemurah." },
+    { id: 2, nama: "Paing", urip: 9, karakter: "Berani, tegas, namun terkadang emosional." },
+    { id: 3, nama: "Pon", urip: 7, karakter: "Tenang, bijaksana, dan pandai menyimpan rahasia." },
+    { id: 4, nama: "Wage", urip: 4, karakter: "Teguh pada pendirian, pekerja keras, namun kaku." },
+    { id: 5, nama: "Kliwon", urip: 8, karakter: "Pemaaf, pandai berbicara, dan memiliki spiritualitas tinggi." }
+];
+
+// Saptawara data (7 hari minggu)
+export const saptawaraData: Saptawara[] = [
+    { id: 1, hari: "Redite/Minggu", sifat: "Kasih", karakter: "Berjiwa sosial tinggi, berwibawa, dan senang menolong." },
+    { id: 2, hari: "Soma/Senin", sifat: "Luwes", karakter: "Fleksibel, mudah beradaptasi, namun terkadang mudah berubah pikiran." },
+    { id: 3, hari: "Anggara/Selasa", sifat: "Berani", karakter: "Penuh semangat, pemberani, tapi terkadang emosional." },
+    { id: 4, hari: "Buda/Rabu", sifat: "Bijak", karakter: "Cerdas, teliti dalam bekerja, dan sangat menghargai aturan." },
+    { id: 5, hari: "Wraspati/Kamis", sifat: "Mulia", karakter: "Sabar, taat pada agama/prinsip, dan dihormati banyak orang." },
+    { id: 6, hari: "Sukra/Jumat", sifat: "Suci", karakter: "Cenderung religius, menyukai kebersihan, dan memiliki cita rasa seni." },
+    { id: 7, hari: "Saniscara/Sabtu", sifat: "Tangguh", karakter: "Pekerja keras, kuat menghadapi cobaan, namun agak tertutup." }
+];
+
+// Kategori Jodoh data
+export const kategoriJodohData: KategoriJodoh[] = [
+    { sisa: 1, kategori: "Sri", makna: "Rejeki melimpah, hidup makmur, dan harmonis." },
+    { sisa: 2, kategori: "Dana", makna: "Kehidupan ekonomi stabil, berkecukupan (Kaya)." },
+    { sisa: 3, kategori: "Laba", makna: "Selalu beruntung dalam usaha dan pekerjaan." },
+    { sisa: 4, kategori: "Tiwas", makna: "Banyak rintangan, kesulitan ekonomi, atau sering sakit." },
+    { sisa: 0, kategori: "Sakti", makna: "Sering mendapat cobaan tapi memiliki kekuatan untuk bangkit." }
+];
