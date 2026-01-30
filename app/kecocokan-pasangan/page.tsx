@@ -267,6 +267,11 @@ export default function KecocokanPasangan() {
                                                 <p className="text-indigo-900 leading-relaxed text-sm">{result.mod16Result.penjelasan}</p>
                                             </div>
                                         </div>
+                                        <div className="mt-6 text-center">
+                                            <p className="text-xs text-stone-400 italic">
+                                                *Perhitungan ini menggunakan metode penurunan estafet: Nilai Tahun Berikutnya = Nilai Sekarang - (Nilai Sekarang div 5).
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             )}

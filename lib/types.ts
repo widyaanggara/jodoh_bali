@@ -25,12 +25,7 @@ export interface Pancawara {
   karakter: string;
 }
 
-export interface Sadwara {
-  nama: string;
-  arti: string;
-  sifat: string;
-  pesan: string;
-}
+
 
 export interface Saptawara {
   id: number;
@@ -93,6 +88,15 @@ export interface CompatibilityResult {
     content: string;
     sentiment: 'positive' | 'neutral' | 'challenge';
   };
+  marriageCycles?: MarriageCycle[];
+}
+
+export interface MarriageCycle {
+  startYear: number;
+  endYear: number;
+  value: number; // Nilai saat ini (currentValue)
+  result: 'Sri' | 'Gedong' | 'Pete' | 'Pati' | 'Sama';
+  meaning: string;
 }
 
 export interface MatchingDate {

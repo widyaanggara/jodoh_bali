@@ -1,4 +1,10 @@
-import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh, Lintang, Sadwara, SodasaRsi } from './types';
+import {
+    BalineseDate,
+    KategoriJodoh,
+    SodasaRsi,
+    CompatibilityResult,
+    MarriageCycle
+} from "./types";
 import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang, sadwaraData, dataSodasaRsi } from './data';
 
 // Reference date for Balinese calendar calculation
@@ -157,6 +163,66 @@ const POSITIVE_MOD16_LABELS = [
 // Others like Tiwas, Tukaran, Pati, etc. are considered challenging
 
 /**
+ * Calculate 5-year marriage cycles based on diminishing Total Urip logic
+ */
+function calculateMarriageCycles(initialTotalUrip: number): MarriageCycle[] {
+    let currentValue = initialTotalUrip;
+    const cycles: MarriageCycle[] = [];
+    const maxCycles = 10; // Prediksi sampai 50 tahun (10 * 5)
+
+    for (let i = 0; i < maxCycles; i++) {
+        const startYear = i * 5 + 1;
+        const endYear = (i + 1) * 5;
+
+        // Safety check if value becomes too small
+        if (currentValue <= 0) break;
+
+        const hasilBagi = Math.floor(currentValue / 5);
+        const sisa = currentValue % 5;
+
+        let result: 'Sri' | 'Gedong' | 'Pete' | 'Pati' | 'Sama';
+        let meaning: string;
+
+        switch (sisa) {
+            case 1:
+                result = 'Sri';
+                meaning = "Selalu Sejahtera & Bahagia";
+                break;
+            case 2:
+                result = 'Gedong';
+                meaning = "Berkecukupan & Harta Melimpah";
+                break;
+            case 3:
+                result = 'Pete';
+                meaning = "Sering Berselisih / Sakit Hati";
+                break;
+            case 4:
+                result = 'Pati';
+                meaning = "Banyak Masalah & Musibah";
+                break;
+            case 0:
+            default:
+                result = 'Sama';
+                meaning = "Sejahtera & Berkecukupan";
+                break;
+        }
+
+        cycles.push({
+            startYear,
+            endYear,
+            value: currentValue,
+            result,
+            meaning
+        });
+
+        // Update for next cycle: currentValue - hasilBagi
+        currentValue = currentValue - hasilBagi;
+    }
+
+    return cycles;
+}
+
+/**
  * Generate match conclusion narrative based on user request
  */
 function generateMatchConclusion(mod5: KategoriJodoh, mod16: SodasaRsi): { title: string, content: string, sentiment: 'positive' | 'neutral' | 'challenge' } {
@@ -218,6 +284,10 @@ export function calculateCompatibility(date1: Date, date2: Date): CompatibilityR
     // Generate conclusion narrative
     const matchConclusion = generateMatchConclusion(kategori, mod16Result);
 
+    // Calculate Marriage Cycles (using Mod 5 Combined Total Urip: Sapta + Panca)
+    // The previous `totalUrip` variable is sum of both person's Mod 5 Urip
+    const marriageCycles = calculateMarriageCycles(totalUrip);
+
     // Bonus if wuku is recommended partner
     const isRecommended = person1.wuku.rekomendasi_pasangan.includes(person2.wuku.nama_wuku) ||
         person2.wuku.rekomendasi_pasangan.includes(person1.wuku.nama_wuku);
@@ -230,7 +300,8 @@ export function calculateCompatibility(date1: Date, date2: Date): CompatibilityR
         percentage: isRecommended ? Math.min(percentage + 10, 100) : percentage,
         mod16Result,
         combinedTotalUrip,
-        matchConclusion
+        matchConclusion,
+        marriageCycles
     };
 }
 

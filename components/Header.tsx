@@ -15,6 +15,7 @@ export default function Header() {
         { name: 'Kecocokan Pasangan', href: '/kecocokan-pasangan' },
         { name: 'Mencari Jodoh', href: '/mencari-jodoh' },
         { name: 'Ramalan Otonan', href: '/ramalan-otonan' },
+        { name: 'Ramalan Pernikahan', href: '/ramalan-pernikahan' },
     ];
 
     return (
