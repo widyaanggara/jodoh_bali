@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-sans text-stone-800 dark:text-stone-200 transition-colors duration-300 min-h-screen">
+    <div className="bg-background-light font-sans text-stone-800 transition-colors duration-300 min-h-screen">
       <Header />
 
       <main>
@@ -15,12 +15,12 @@ export default function Home() {
           {/* Decorations */}
           <img
             alt="Hibiscus illustration"
-            className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5"
+            className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw"
           />
           <img
             alt="Lotus illustration"
-            className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20 dark:opacity-5"
+            className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q"
           />
 
@@ -30,13 +30,13 @@ export default function Home() {
               Aplikasi Kencan #1 di Bali
             </div>
 
-            <h1 className="font-display text-5xl md:text-7xl font-bold text-stone-900 dark:text-stone-50 leading-tight mb-6">
+            <h1 className="font-display text-5xl md:text-7xl font-bold text-stone-900 leading-tight mb-6">
               Jodoh Bali <br />
               <span className="italic text-primary font-normal">Cinta Sejati Berdasarkan</span> <br />
               Kalender & Nilai Tradisi
             </h1>
 
-            <p className="text-lg text-stone-600 dark:text-stone-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-stone-600 mb-10 max-w-2xl mx-auto leading-relaxed">
               Temukan pasangan yang berbagi nilai spiritual, budaya, dan kecintaan pada warisan leluhur Bali. Mulailah perjalanan cintamu hari ini.
             </p>
 
@@ -58,40 +58,40 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-24 bg-white dark:bg-stone-900/50">
+        <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
               <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kenapa Bali Love?</h3>
-              <h2 className="font-display text-4xl font-bold text-stone-900 dark:text-stone-50">Pengalaman Kencan Tradisional & Modern</h2>
+              <h2 className="font-display text-4xl font-bold text-stone-900">Pengalaman Kencan Tradisional & Modern</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
                   <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">verified_user</span>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Kecocokan Pasangan</h4>
-                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                <p className="text-stone-500 leading-relaxed">
                   Keamanan adalah prioritas kami. Semua profil melalui proses verifikasi ketat untuk memastikan keaslian.
                 </p>
               </div>
 
-              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
                   <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">synagogue</span>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Mencari Jodoh</h4>
-                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                <p className="text-stone-500 leading-relaxed">
                   Algoritma kami mempertimbangkan nilai-nilai tradisional Bali dan aspirasi spiritual dalam memberikan rekomendasi.
                 </p>
               </div>
 
-              <div className="bg-background-light dark:bg-surface-dark p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
+              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
                 <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
                   <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">lock</span>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Apa itu Wuku?</h4>
-                <p className="text-stone-500 dark:text-stone-400 leading-relaxed">
+                <p className="text-stone-500 leading-relaxed">
                   Berkomunikasi dengan tenang melalui platform terenkripsi kami yang menjaga privasi percakapan Anda.
                 </p>
               </div>
@@ -105,7 +105,7 @@ export default function Home() {
             <div className="flex items-end justify-between mb-12">
               <div>
                 <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kategori Kecocokan</h3>
-                <h2 className="font-display text-4xl font-bold text-stone-900 dark:text-stone-50">Temukan Bali Categoria</h2>
+                <h2 className="font-display text-4xl font-bold text-stone-900">Temukan Bali Categoria</h2>
               </div>
             </div>
 
@@ -117,7 +117,7 @@ export default function Home() {
                 { name: 'Sakti', sub: '(Kekuatan)', icon: 'fitness_center' },
                 { name: 'Tiwas', sub: '(Kematian)', icon: 'self_improvement' },
               ].map((item) => (
-                <div key={item.name} className="bg-surface-light dark:bg-surface-dark p-8 rounded-[2rem] border border-accent-gold/20 text-center hover:border-primary transition-colors cursor-pointer group">
+                <div key={item.name} className="bg-surface-light p-8 rounded-[2rem] border border-accent-gold/20 text-center hover:border-primary transition-colors cursor-pointer group">
                   <div className="mb-6 transform group-hover:scale-110 transition-transform">
                     <span className="material-icons-outlined text-primary text-5xl">{item.icon}</span>
                   </div>

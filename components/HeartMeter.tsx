@@ -110,7 +110,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
     const displayPercentage = Math.round(100 - currentFill);
 
     return (
-        <div className="bg-surface-light dark:bg-surface-dark p-10 md:p-14 text-center rounded-[3rem] border border-accent-gold/10 shadow-2xl shadow-stone-200/50 dark:shadow-none slide-up overflow-hidden relative">
+        <div className="bg-surface-light p-10 md:p-14 text-center rounded-[3rem] border border-accent-gold/10 shadow-2xl shadow-stone-200/50 slide-up overflow-hidden relative">
 
             {/* Background Glow */}
             <div
@@ -121,7 +121,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                 }}
             />
 
-            <h3 className="font-display text-3xl font-bold text-stone-900 dark:text-stone-50 mb-10 relative z-10">
+            <h3 className="font-display text-3xl font-bold text-stone-900 mb-10 relative z-10">
                 Hasil Kecocokan
             </h3>
 
@@ -200,7 +200,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                     <path
                         d="M50 88 C20 65, 5 45, 10 30 C15 15, 30 10, 50 25 C70 10, 85 15, 90 30 C95 45, 80 65, 50 88 Z"
                         fill="currentColor"
-                        className="text-stone-100 dark:text-stone-800"
+                        className="text-stone-100"
                     />
 
                     {/* Animated Fill */}
@@ -238,7 +238,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                 {/* Center Percentage Display */}
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                     <div
-                        className="bg-white/95 dark:bg-stone-800/95 backdrop-blur-sm rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-2xl border-2 transition-all duration-300"
+                        className="bg-white/95 backdrop-blur-sm rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-2xl border-2 transition-all duration-300"
                         style={{
                             borderColor: colors.start,
                             boxShadow: `0 0 30px ${colors.start}40`
@@ -268,7 +268,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
             </div>
 
             {/* Makna */}
-            <p className="font-display text-xl text-stone-700 dark:text-stone-300 max-w-md mx-auto leading-relaxed italic relative z-10">
+            <p className="font-display text-xl text-stone-700 max-w-md mx-auto leading-relaxed italic relative z-10">
                 "{kategori.makna}"
             </p>
 
@@ -279,7 +279,7 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
             />
 
             {/* Additional Info */}
-            <p className="text-xs uppercase tracking-[0.2em] font-bold text-stone-400 dark:text-stone-600 relative z-10">
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-stone-400 relative z-10">
                 Berdasarkan Nilai Urip Gabungan
             </p>
 

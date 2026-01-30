@@ -5,9 +5,7 @@
   --primary: #8B6B4E;
   --accent-gold: #C5A059;
   --background-light: #FDFBF4;
-  --background-dark: #1A1612;
   --surface-light: #FFFFFF;
-  --surface-dark: #25211D;
 
   --bali-gold: #C9A227;
   --bali-gold-light: #E8D59C;
@@ -24,9 +22,7 @@
   --color-primary: var(--primary);
   --color-accent-gold: var(--accent-gold);
   --color-background-light: var(--background-light);
-  --color-background-dark: var(--background-dark);
   --color-surface-light: var(--surface-light);
-  --color-surface-dark: var(--surface-dark);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -40,10 +36,7 @@
   --radius-default: 1rem;
 }
 
-.dark {
-  --background: #1A1612;
-  --foreground: #E7E5E4;
-}
+
 
 body {
   background-color: var(--background);

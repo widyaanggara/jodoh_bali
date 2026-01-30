@@ -5,7 +5,7 @@ import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang 
 // Using verified date: 27 Juli 2005 adalah Rabu (Buda), Kliwon, Wuku Sinta
 // This is a VERIFIED anchor point that we can trust
 const REFERENCE_DATE = new Date(2005, 6, 27, 12, 0, 0); // 27 July 2005, noon to avoid timezone issues
-const REFERENCE_WUKU_OFFSET = 0; // 27 July 2005 is Wuku Sinta (index 0)
+const REFERENCE_WUKU_OFFSET = 1; // 27 July 2005 is Wuku Sinta (index 1)
 const REFERENCE_PANCAWARA_OFFSET = 4; // 27 July 2005 is Kliwon (index 4: Umanis=0, Paing=1, Pon=2, Wage=3, Kliwon=4)
 
 /**

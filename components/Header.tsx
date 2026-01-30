@@ -8,9 +8,7 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
 
-    const toggleDarkMode = () => {
-        document.documentElement.classList.toggle('dark');
-    };
+
 
     const navLinks = [
         { name: 'Beranda', href: '/' },
@@ -20,13 +18,13 @@ export default function Header() {
     ];
 
     return (
-        <header className="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-accent-gold/10">
+        <header className="sticky top-0 z-50 bg-background-light/80 backdrop-blur-md border-b border-accent-gold/10">
             <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
                     <span className="material-icons-outlined text-accent-gold text-3xl">flare</span>
                     <span className="font-display text-2xl font-bold tracking-tight text-primary">
-                        Jodoh Bali
+                        Metemu
                     </span>
                 </Link>
 
@@ -38,7 +36,7 @@ export default function Header() {
                             href={link.href}
                             className={`transition-colors h-20 flex items-center border-b-2 ${pathname === link.href
                                 ? 'text-primary border-primary'
-                                : 'text-stone-600 dark:text-stone-400 hover:text-primary border-transparent'
+                                : 'text-stone-600 hover:text-primary border-transparent'
                                 }`}
                         >
                             {link.name}
@@ -72,7 +70,7 @@ export default function Header() {
                             onClick={() => setIsMenuOpen(false)}
                             className={`transition-colors font-medium py-2 w-full ${pathname === link.href
                                 ? 'text-primary'
-                                : 'text-stone-600 dark:text-stone-400 hover:text-primary'
+                                : 'text-stone-600 hover:text-primary'
                                 }`}
                         >
                             {link.name}

@@ -27,7 +27,7 @@ export const wukuData: Wuku[] = [
         sifat_umum: "Tenang, rendah hati, tertutup.",
         kelebihan: "Sangat baik hati, penolong, setia.",
         kelemahan: "Sering memendam perasaan, pendendam.",
-        rekomendasi_pasangan: ["Kulawu", "Dukut"]
+        rekomendasi_pasangan: ["Klawu", "Dukut"]
     },
     {
         id_wuku: 4,
@@ -243,11 +243,11 @@ export const wukuData: Wuku[] = [
         sifat_umum: "Lembut, artistik, peka.",
         kelebihan: "Bakat seni halus, perasa.",
         kelemahan: "Sangat sensitif, mudah tersinggung.",
-        rekomendasi_pasangan: ["Ugu", "Kulawu"]
+        rekomendasi_pasangan: ["Ugu", "Klawu"]
     },
     {
         id_wuku: 28,
-        nama_wuku: "Kulawu",
+        nama_wuku: "Klawu",
         deskripsi: "Naungan Bathara Sadana. Kemakmuran.",
         sifat_umum: "Beruntung, rajin, hemat.",
         kelebihan: "Rezeki lancar, tekun bekerja.",
