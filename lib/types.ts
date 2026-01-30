@@ -10,6 +10,14 @@ export interface Wuku {
   rekomendasi_pasangan: string[];
 }
 
+export interface Lintang {
+  nama: string;
+  saptawara: string;
+  pancawara: string;
+  sifat: string;
+  nasib: string;
+}
+
 export interface Pancawara {
   id: number;
   nama: string;
@@ -20,6 +28,7 @@ export interface Pancawara {
 export interface Saptawara {
   id: number;
   hari: string;
+  urip: number;
   sifat: string;
   karakter: string;
 }
@@ -37,6 +46,8 @@ export interface BalineseDate {
   pancawara: Pancawara;
   saptawara: Saptawara;
   totalUrip: number;
+  lintang?: Lintang;
+  nextOtonan?: string;
 }
 
 export interface CompatibilityResult {

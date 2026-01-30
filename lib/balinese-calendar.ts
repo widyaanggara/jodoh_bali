@@ -1,19 +1,21 @@
-import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh } from './types';
-import { wukuData, pancawaraData, saptawaraData, kategoriJodohData } from './data';
+import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh, Lintang } from './types';
+import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang } from './data';
 
 // Reference date for Balinese calendar calculation
-// 1 Januari 2000 adalah Saniscara (Sabtu), Umanis, Wuku Sinta
-const REFERENCE_DATE = new Date(2000, 0, 1);
-const REFERENCE_WUKU_INDEX = 0; // Sinta
-const REFERENCE_PANCAWARA_INDEX = 0; // Umanis
+// Using verified date: 27 Juli 2005 adalah Rabu (Buda), Kliwon, Wuku Sinta
+// This is a VERIFIED anchor point that we can trust
+const REFERENCE_DATE = new Date(2005, 6, 27, 12, 0, 0); // 27 July 2005, noon to avoid timezone issues
+const REFERENCE_WUKU_OFFSET = 0; // 27 July 2005 is Wuku Sinta (index 0)
+const REFERENCE_PANCAWARA_OFFSET = 4; // 27 July 2005 is Kliwon (index 4: Umanis=0, Paing=1, Pon=2, Wage=3, Kliwon=4)
 
 /**
  * Calculate the number of days between two dates
  */
 function daysBetween(date1: Date, date2: Date): number {
     const oneDay = 24 * 60 * 60 * 1000;
-    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    // Set to noon to avoid DST and timezone edge cases
+    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 12, 0, 0);
+    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate(), 12, 0, 0);
     return Math.round((d2.getTime() - d1.getTime()) / oneDay);
 }
 
@@ -35,28 +37,65 @@ export function getBalineseDate(date: Date): BalineseDate {
     const days = daysBetween(REFERENCE_DATE, date);
 
     // Wuku cycles every 210 days (30 wuku × 7 days each)
-    const wukuDays = ((days % 210) + 210) % 210;
-    const wukuIndex = Math.floor(wukuDays / 7);
+    const wukuTotalDays = ((days + REFERENCE_WUKU_OFFSET) % 210 + 210) % 210;
+    const wukuIndex = Math.floor(wukuTotalDays / 7);
 
     // Pancawara cycles every 5 days
-    const pancawaraIndex = ((days % 5) + 5) % 5;
+    const pancawaraIndex = ((days + REFERENCE_PANCAWARA_OFFSET) % 5 + 5) % 5;
 
     // Saptawara - use native JavaScript getDay() for accuracy
     const saptawaraIndex = getSaptawaraIndex(date);
 
-    const wuku = wukuData[(REFERENCE_WUKU_INDEX + wukuIndex) % 30];
-    const pancawara = pancawaraData[(REFERENCE_PANCAWARA_INDEX + pancawaraIndex) % 5];
+    const wuku = wukuData[wukuIndex % 30];
+    const pancawara = pancawaraData[pancawaraIndex % 5];
     const saptawara = saptawaraData[saptawaraIndex];
 
     // Total urip is sum of pancawara urip and wuku position value
     const totalUrip = pancawara.urip + (wuku.id_wuku % 10);
 
+    // Find Lintang (Star)
+    const lintang = findLintang(saptawara.hari, pancawara.nama);
+
+    // Calculate next Otonan
+    const nextOtonan = getNextOtonan(date);
+
     return {
         wuku,
         pancawara,
         saptawara,
-        totalUrip
+        totalUrip,
+        lintang,
+        nextOtonan
     };
+}
+
+/**
+ * Find Lintang based on Saptawara and Pancawara
+ */
+export function findLintang(saptawara: string, pancawara: string): Lintang | undefined {
+    const sDay = saptawara.split('/')[0];
+    return dataLintang.find(l => l.saptawara === sDay && l.pancawara === pancawara);
+}
+
+/**
+ * Calculate the next Otonan date (every 210 days from birth)
+ */
+export function getNextOtonan(birthDate: Date): string {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const birth = new Date(birthDate);
+    birth.setHours(0, 0, 0, 0);
+
+    const diffTime = today.getTime() - birth.getTime();
+    const diffDays = Math.floor(diffTime / (24 * 60 * 60 * 1000));
+
+    // Calculate how many periods of 210 days have passed
+    // If born today, the next one is in 210 days
+    const periods = Math.max(0, Math.floor(diffDays / 210)) + 1;
+    const nextOtonanDate = new Date(birth.getTime() + periods * 210 * 24 * 60 * 60 * 1000);
+
+    return formatDate(nextOtonanDate);
 }
 
 /**

@@ -284,14 +284,15 @@ export const pancawaraData: Pancawara[] = [
 ];
 
 // Saptawara data (7 hari minggu)
+// Saptawara data (7 hari minggu)
 export const saptawaraData: Saptawara[] = [
-    { id: 1, hari: "Redite/Minggu", sifat: "Kasih", karakter: "Berjiwa sosial tinggi, berwibawa, dan senang menolong." },
-    { id: 2, hari: "Soma/Senin", sifat: "Luwes", karakter: "Fleksibel, mudah beradaptasi, namun terkadang mudah berubah pikiran." },
-    { id: 3, hari: "Anggara/Selasa", sifat: "Berani", karakter: "Penuh semangat, pemberani, tapi terkadang emosional." },
-    { id: 4, hari: "Buda/Rabu", sifat: "Bijak", karakter: "Cerdas, teliti dalam bekerja, dan sangat menghargai aturan." },
-    { id: 5, hari: "Wraspati/Kamis", sifat: "Mulia", karakter: "Sabar, taat pada agama/prinsip, dan dihormati banyak orang." },
-    { id: 6, hari: "Sukra/Jumat", sifat: "Suci", karakter: "Cenderung religius, menyukai kebersihan, dan memiliki cita rasa seni." },
-    { id: 7, hari: "Saniscara/Sabtu", sifat: "Tangguh", karakter: "Pekerja keras, kuat menghadapi cobaan, namun agak tertutup." }
+    { id: 1, hari: "Redite/Minggu", urip: 5, sifat: "Kasih", karakter: "Berjiwa sosial tinggi, berwibawa, dan senang menolong." },
+    { id: 2, hari: "Soma/Senin", urip: 4, sifat: "Luwes", karakter: "Fleksibel, mudah beradaptasi, namun terkadang mudah berubah pikiran." },
+    { id: 3, hari: "Anggara/Selasa", urip: 3, sifat: "Berani", karakter: "Penuh semangat, pemberani, tapi terkadang emosional." },
+    { id: 4, hari: "Buda/Rabu", urip: 7, sifat: "Bijak", karakter: "Cerdas, teliti dalam bekerja, dan sangat menghargai aturan." },
+    { id: 5, hari: "Wraspati/Kamis", urip: 8, sifat: "Mulia", karakter: "Sabar, taat pada agama/prinsip, dan dihormati banyak orang." },
+    { id: 6, hari: "Sukra/Jumat", urip: 6, sifat: "Suci", karakter: "Cenderung religius, menyukai kebersihan, dan memiliki cita rasa seni." },
+    { id: 7, hari: "Saniscara/Sabtu", urip: 9, sifat: "Tangguh", karakter: "Pekerja keras, kuat menghadapi cobaan, namun agak tertutup." }
 ];
 
 // Kategori Jodoh data
@@ -301,4 +302,47 @@ export const kategoriJodohData: KategoriJodoh[] = [
     { sisa: 3, kategori: "Laba", makna: "Selalu beruntung dalam usaha dan pekerjaan." },
     { sisa: 4, kategori: "Tiwas", makna: "Banyak rintangan, kesulitan ekonomi, atau sering sakit." },
     { sisa: 0, kategori: "Sakti", makna: "Sering mendapat cobaan tapi memiliki kekuatan untuk bangkit." }
+];
+
+
+// data/masterLintang.ts
+import { Lintang } from './types';
+
+// data/masterLintang.ts
+export const dataLintang: Lintang[] = [
+    { nama: "Gajah", saptawara: "Redite", pancawara: "Umanis", sifat: "Pemaaf dan jujur.", nasib: "Rezeki lancar dan tenang." },
+    { nama: "Patrem", saptawara: "Redite", pancawara: "Paing", sifat: "Cerdas dan lincah.", nasib: "Sukses dalam karier." },
+    { nama: "Sungsang", saptawara: "Redite", pancawara: "Pon", sifat: "Waspada dan teliti.", nasib: "Banyak tantangan namun kuat." },
+    { nama: "Lembu", saptawara: "Redite", pancawara: "Wage", sifat: "Sabar dan penolong.", nasib: "Hidup sederhana namun bahagia." },
+    { nama: "Depat", saptawara: "Redite", pancawara: "Kliwon", sifat: "Berwibawa.", nasib: "Sering dihormati orang lain." },
+    { nama: "Waluku", saptawara: "Soma", pancawara: "Umanis", sifat: "Rajin bekerja.", nasib: "Ekonomi stabil di masa tua." },
+    { nama: "Dupa", saptawara: "Soma", pancawara: "Paing", sifat: "Ramah dan ceria.", nasib: "Mudah mencari teman." },
+    { nama: "Lumbung", saptawara: "Soma", pancawara: "Pon", sifat: "Hemat dan kalkulatif.", nasib: "Pintar mengelola harta." },
+    { nama: "Lembu", saptawara: "Soma", pancawara: "Wage", sifat: "Tenang.", nasib: "Hidup damai." },
+    { nama: "Pedati", saptawara: "Soma", pancawara: "Kliwon", sifat: "Fokus pada tujuan.", nasib: "Pemimpin yang baik." },
+    { nama: "Asu", saptawara: "Anggara", pancawara: "Umanis", sifat: "Setia dan pemberani.", nasib: "Pelindung keluarga." },
+    { nama: "Yuyu", saptawara: "Anggara", pancawara: "Paing", sifat: "Gigih.", nasib: "Mampu mengatasi kesulitan." },
+    { nama: "Asu", saptawara: "Anggara", pancawara: "Pon", sifat: "Waspada.", nasib: "Sering terhindar dari bahaya." },
+    { nama: "Kartika", saptawara: "Anggara", pancawara: "Wage", sifat: "Populer.", nasib: "Banyak dikenal masyarakat." },
+    { nama: "Sidamalung", saptawara: "Anggara", pancawara: "Kliwon", sifat: "Religius.", nasib: "Mendapat ketenangan batin." },
+    { nama: "Gajah Minantraya", saptawara: "Buda", pancawara: "Umanis", sifat: "Bijaksana.", nasib: "Guru atau penasihat." },
+    { nama: "Gajah", saptawara: "Buda", pancawara: "Paing", sifat: "Kuat fisik dan mental.", nasib: "Tahan banting." },
+    { nama: "Lumbung", saptawara: "Buda", pancawara: "Pon", sifat: "Suka berbagi.", nasib: "Rezeki yang berkah." },
+    { nama: "Kartika", saptawara: "Buda", pancawara: "Wage", sifat: "Kreatif.", nasib: "Cocok di bidang seni." },
+    { nama: "Tiwa-tiwa", saptawara: "Buda", pancawara: "Kliwon", sifat: "Spiritualis.", nasib: "Memiliki intuisi tajam." },
+    { nama: "Sangkat Tikel", saptawara: "Wraspati", pancawara: "Umanis", sifat: "Tegas.", nasib: "Pembuat keputusan yang baik." },
+    { nama: "Salah Ukur", saptawara: "Wraspati", pancawara: "Paing", sifat: "Ambisius.", nasib: "Pekerja keras." },
+    { nama: "Bade", saptawara: "Wraspati", pancawara: "Pon", sifat: "Sabar menanti.", nasib: "Kesuksesan yang bertahap." },
+    { nama: "Kuda", saptawara: "Wraspati", pancawara: "Wage", sifat: "Cepat bertindak.", nasib: "Sering mendapat peluang emas." },
+    { nama: "Naga", saptawara: "Wraspati", pancawara: "Kliwon", sifat: "Misterius.", nasib: "Disegani kawan maupun lawan." },
+    { nama: "Angsa Angrem", saptawara: "Sukra", pancawara: "Umanis", sifat: "Lembut hati.", nasib: "Hidup penuh cinta." },
+    { nama: "Taru", saptawara: "Sukra", pancawara: "Paing", sifat: "Mandiri.", nasib: "Berdiri di atas kaki sendiri." },
+    { nama: "Perahu Sarat", saptawara: "Sukra", pancawara: "Pon", sifat: "Ulet.", nasib: "Sanggup memikul tanggung jawab besar." },
+    { nama: "Banyak Angrem", saptawara: "Sukra", pancawara: "Wage", sifat: "Penyayang.", nasib: "Keluarga yang harmonis." },
+    { nama: "Gajah Minantraya", saptawara: "Sukra", pancawara: "Kliwon", sifat: "Sabar dan berwibawa.", nasib: "Rezeki stabil." },
+    { nama: "Puputon", saptawara: "Saniscara", pancawara: "Umanis", sifat: "Pantang menyerah.", nasib: "Akhir yang manis." },
+    { nama: "Ayam", saptawara: "Saniscara", pancawara: "Paing", sifat: "Berani bersuara.", nasib: "Pekerja yang vokal." },
+    { nama: "Perahu Sarat", saptawara: "Saniscara", pancawara: "Pon", sifat: "Pekerja keras.", nasib: "Sukses setelah berjuang." },
+    { nama: "Bubu Bolong", saptawara: "Saniscara", pancawara: "Wage", sifat: "Sederhana.", nasib: "Tulus dalam bergaul." },
+    { nama: "Pagelongan", saptawara: "Saniscara", pancawara: "Kliwon", sifat: "Introspektif.", nasib: "Belajar dari pengalaman." }
 ];
