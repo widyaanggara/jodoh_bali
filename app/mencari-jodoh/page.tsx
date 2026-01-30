@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import IdealMatchSearchForm from '@/components/IdealMatch/SearchForm';
 import IdealMatchResultsList from '@/components/IdealMatch/ResultsList';
+import Disclaimer from '@/components/Disclaimer';
 import { getBalineseDate } from '@/lib/balinese-calendar';
 import { findIdealMatches, IdealMatch } from '@/lib/jodoh-logic';
 import { BalineseDate } from '@/lib/types';
@@ -108,6 +109,9 @@ export default function MencariJodoh() {
 
                             {/* Results List */}
                             <IdealMatchResultsList matches={matches} />
+
+                            {/* Disclaimer */}
+                            <Disclaimer />
                         </div>
                     </section>
                 )}

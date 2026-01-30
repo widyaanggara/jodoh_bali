@@ -10,7 +10,8 @@ interface SearchFormProps {
 export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchFormProps) {
     const [birthDate, setBirthDate] = useState('');
     const currentYear = new Date().getFullYear();
-    const [yearRange, setYearRange] = useState(5);
+    const [startYear, setStartYear] = useState(currentYear);
+    const [endYear, setEndYear] = useState(currentYear + 5);
 
     const handleSubmit = () => {
         if (!birthDate) {
@@ -18,16 +19,23 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
             return;
         }
 
-        const userBirthYear = new Date(birthDate).getFullYear();
-        const startYear = userBirthYear - 5;
-        const endYear = userBirthYear + 5;
+        if (!startYear || !endYear) {
+            alert('Mohon masukkan rentang tahun pencarian');
+            return;
+        }
+
+        if (startYear > endYear) {
+            alert('Tahun mulai tidak boleh lebih besar dari tahun akhir');
+            return;
+        }
 
         onSearch(birthDate, startYear, endYear);
     };
 
     const handleReset = () => {
         setBirthDate('');
-        setYearRange(5);
+        setStartYear(currentYear);
+        setEndYear(currentYear + 5);
     };
 
     return (
@@ -56,11 +64,51 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
                         <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 ml-1">
                             Rentang Pencarian
                         </label>
-                        <div className="bg-stone-50 rounded-2xl p-4">
-                            <p className="text-sm text-stone-600 text-center">
-                                ± {yearRange} tahun dari tahun lahir Anda
-                            </p>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label htmlFor="startYear" className="text-xs text-stone-500 ml-1">
+                                    Tahun Mulai
+                                </label>
+                                <div className="relative">
+                                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-accent-gold text-base">
+                                        event
+                                    </span>
+                                    <input
+                                        id="startYear"
+                                        type="number"
+                                        min="1900"
+                                        max="2100"
+                                        value={startYear}
+                                        onChange={(e) => setStartYear(parseInt(e.target.value) || currentYear)}
+                                        className="w-full pl-10 pr-3 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
+                                        placeholder="2025"
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <label htmlFor="endYear" className="text-xs text-stone-500 ml-1">
+                                    Tahun Akhir
+                                </label>
+                                <div className="relative">
+                                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-accent-gold text-base">
+                                        event
+                                    </span>
+                                    <input
+                                        id="endYear"
+                                        type="number"
+                                        min="1900"
+                                        max="2100"
+                                        value={endYear}
+                                        onChange={(e) => setEndYear(parseInt(e.target.value) || currentYear + 5)}
+                                        className="w-full pl-10 pr-3 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
+                                        placeholder="2030"
+                                    />
+                                </div>
+                            </div>
                         </div>
+                        <p className="text-xs text-stone-500 text-center mt-2">
+                            Mencari dari tahun {startYear} sampai {endYear} ({endYear - startYear + 1} tahun)
+                        </p>
                     </div>
 
                     <button

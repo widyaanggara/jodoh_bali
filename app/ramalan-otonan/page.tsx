@@ -3,12 +3,15 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { getBalineseDate } from '@/lib/balinese-calendar';
-import { BalineseDate } from '@/lib/types';
+import { BalineseDate, Zodiak } from '@/lib/types';
+import { getZodiak } from '@/lib/jodoh-logic';
 import Header from '@/components/Header';
+import Disclaimer from '@/components/Disclaimer';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
     const [result, setResult] = useState<BalineseDate | null>(null);
+    const [zodiak, setZodiak] = useState<Zodiak | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleCalculate = () => {
@@ -19,8 +22,11 @@ export default function RamalanOtonan() {
 
         setIsLoading(true);
         setTimeout(() => {
-            const balineseDate = getBalineseDate(new Date(birthDate));
+            const date = new Date(birthDate);
+            const balineseDate = getBalineseDate(date);
+            const zodiakData = getZodiak(date);
             setResult(balineseDate);
+            setZodiak(zodiakData);
             setIsLoading(false);
         }, 500);
     };
@@ -28,6 +34,7 @@ export default function RamalanOtonan() {
     const handleReset = () => {
         setBirthDate('');
         setResult(null);
+        setZodiak(null);
     };
 
     return (
@@ -42,7 +49,7 @@ export default function RamalanOtonan() {
                             Ramalan <span className="text-primary italic">Otonan & Lintang</span>
                         </h1>
                         <p className="text-stone-600 max-w-lg mx-auto">
-                            Cek hari Otonan berikutnya dan peruntungan berdasarkan Bintang (Lintang) kelahiran Anda.
+                            Cek hari Otonan berikutnya dan peruntungan berdasarkan Lintang kelahiran Anda.
                         </p>
                     </div>
 
@@ -90,51 +97,93 @@ export default function RamalanOtonan() {
                     </div>
 
                     {result && (
-                        <div className="grid md:grid-cols-2 gap-8 slide-up">
-                            {/* Balinese Birth Info */}
-                            <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20">
-                                <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Kelahiran Bali</h3>
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                        <span className="text-stone-500">Saptawara</span>
-                                        <span className="font-bold text-stone-800">{result.saptawara.hari}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                        <span className="text-stone-500">Pancawara</span>
-                                        <span className="font-bold text-stone-800">{result.pancawara.nama}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                        <span className="text-stone-500">Wuku</span>
-                                        <span className="font-bold text-primary">{result.wuku.nama_wuku}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-stone-500">Next Otonan</span>
-                                        <span className="font-bold text-accent-gold">{result.nextOtonan}</span>
+                        <div className="space-y-8">
+                            <div className="grid md:grid-cols-2 gap-8 slide-up">
+                                {/* Balinese Birth Info */}
+                                <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20">
+                                    <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Kelahiran Bali</h3>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                            <span className="text-stone-500">Saptawara</span>
+                                            <span className="font-bold text-stone-800">{result.saptawara.hari}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                            <span className="text-stone-500">Pancawara</span>
+                                            <span className="font-bold text-stone-800">{result.pancawara.nama}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                            <span className="text-stone-500">Wuku</span>
+                                            <span className="font-bold text-primary">{result.wuku.nama_wuku}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-stone-500">Next Otonan</span>
+                                            <span className="font-bold text-accent-gold">{result.nextOtonan}</span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                {/* Lintang / Star Info */}
+                                {result.lintang && (
+                                    <div className="bg-stone-900 rounded-4xl shadow-xl p-8 text-white relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 p-8 opacity-10">
+                                            <span className="material-icons-outlined text-9xl">auto_awesome</span>
+                                        </div>
+                                        <h3 className="font-display text-2xl font-bold mb-2">Lintang</h3>
+                                        <p className="text-accent-gold font-bold text-3xl mb-6">Lintang {result.lintang.nama}</p>
+
+                                        <div className="space-y-6 relative z-10">
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Sifat Karakter</h4>
+                                                <p className="text-stone-200 leading-relaxed">{result.lintang.sifat}</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Nasib & Keberuntungan</h4>
+                                                <p className="text-stone-200 leading-relaxed">{result.lintang.nasib}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Lintang / Star Info */}
-                            {result.lintang && (
-                                <div className="bg-stone-900 rounded-4xl shadow-xl p-8 text-white relative overflow-hidden">
+                            {/* Zodiac Info */}
+                            {zodiak && (
+                                <div className="rounded-4xl shadow-xl p-8 text-white relative overflow-hidden slide-up" style={{ backgroundColor: '#A62C21' }}>
                                     <div className="absolute top-0 right-0 p-8 opacity-10">
-                                        <span className="material-icons-outlined text-9xl">auto_awesome</span>
+                                        <span className="material-symbols-outlined text-9xl">stars</span>
                                     </div>
-                                    <h3 className="font-display text-2xl font-bold mb-2">Bintang (Lintang)</h3>
-                                    <p className="text-accent-gold font-bold text-3xl mb-6">Lintang {result.lintang.nama}</p>
+                                    <div className="relative z-10">
+                                        <h3 className="font-display text-2xl font-bold mb-2">Zodiak</h3>
+                                        <p className="text-yellow-300 font-bold text-3xl mb-6">{zodiak.nama}</p>
 
-                                    <div className="space-y-6 relative z-10">
-                                        <div>
-                                            <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Sifat Karakter</h4>
-                                            <p className="text-stone-200 leading-relaxed">{result.lintang.sifat}</p>
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Elemen</h4>
+                                                <p className="text-white text-lg font-semibold">{zodiak.elemen}</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Hari Hoki</h4>
+                                                <p className="text-white text-lg font-semibold">{zodiak.hariHoki}</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Warna Hoki</h4>
+                                                <p className="text-white text-lg font-semibold">{zodiak.warnaHoki}</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Angka Hoki</h4>
+                                                <p className="text-white text-lg font-semibold">{zodiak.angkaHoki.join(', ')}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Nasib & Keberuntungan</h4>
-                                            <p className="text-stone-200 leading-relaxed">{result.lintang.nasib}</p>
+
+                                        <div className="mt-6 pt-6 border-t border-white/20">
+                                            <h4 className="text-xs uppercase tracking-widest font-bold text-purple-200 mb-2">Sifat Karakter</h4>
+                                            <p className="text-white/90 leading-relaxed">{zodiak.sifat}</p>
                                         </div>
                                     </div>
                                 </div>
                             )}
+
+                            {/* Disclaimer */}
+                            <Disclaimer />
                         </div>
                     )}
                 </div>
@@ -143,7 +192,7 @@ export default function RamalanOtonan() {
             <footer className="bg-stone-50 pt-20 pb-10 border-t border-accent-gold/10">
                 <div className="max-w-7xl mx-auto px-6 text-center">
                     <p className="text-xs text-stone-500">
-                        © 2024 Jodoh Bali. Berdasarkan Lontar Tri Pramana & Wariga.
+                        © 2024 Jodoh Bali. Berdasarkan Lontar Tri Pramana &amp; Wariga.
                     </p>
                 </div>
             </footer>

@@ -29,14 +29,6 @@ export default function IdealMatchCard({ match, index }: MatchCardProps) {
                         <p className="text-stone-400 text-xs mt-1">
                             Wuku {match.balineseDate.wuku.nama_wuku} • {match.balineseDate.pancawara.nama} • {match.balineseDate.saptawara.hari.split('/')[0]}
                         </p>
-                        {match.lintang && (
-                            <div className="mt-2 flex items-center gap-2">
-                                <span className="material-icons-outlined text-accent-gold text-sm">stars</span>
-                                <p className="text-accent-gold text-xs font-bold">
-                                    Lintang {match.lintang.nama}
-                                </p>
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -55,22 +47,6 @@ export default function IdealMatchCard({ match, index }: MatchCardProps) {
                     </div>
                 </div>
             </div>
-
-            {/* Lintang Details */}
-            {match.lintang && (
-                <div className="mt-4 pt-4 border-t border-stone-100">
-                    <div className="grid grid-cols-2 gap-4 text-xs">
-                        <div>
-                            <p className="text-stone-400 uppercase tracking-wider font-bold mb-1">Sifat</p>
-                            <p className="text-stone-700">{match.lintang.sifat}</p>
-                        </div>
-                        <div>
-                            <p className="text-stone-400 uppercase tracking-wider font-bold mb-1">Nasib</p>
-                            <p className="text-stone-700">{match.lintang.nasib}</p>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

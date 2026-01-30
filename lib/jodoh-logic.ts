@@ -1,5 +1,6 @@
 import { getBalineseDate, findLintang } from './balinese-calendar';
-import { BalineseDate, Lintang } from './types';
+import { BalineseDate, Lintang, Zodiak } from './types';
+import { dataZodiak } from './data';
 
 export interface IdealMatch {
     date: Date;
@@ -96,3 +97,43 @@ export function groupByMonth(matches: IdealMatch[]): Record<number, IdealMatch[]
 
     return grouped;
 }
+
+/**
+ * Get zodiac sign information based on birth date
+ * Handles year transitions correctly for Capricorn (Dec 22 - Jan 19)
+ * 
+ * @param date - Birth date
+ * @returns Zodiak object containing nama, sifat, elemen, angkaHoki, warnaHoki, hariHoki
+ */
+export function getZodiak(date: Date): Zodiak {
+    const month = date.getMonth() + 1; // 1-12
+    const day = date.getDate();
+
+    // Find the appropriate zodiac sign
+    for (let i = 0; i < dataZodiak.length; i++) {
+        const currentZodiak = dataZodiak[i];
+        const nextZodiak = dataZodiak[(i + 1) % dataZodiak.length];
+
+        // Check if the date falls within this zodiac's range
+        if (month === currentZodiak.startMonth && day >= currentZodiak.startDate) {
+            return currentZodiak;
+        }
+
+        // Special case: check if date is before the next zodiac starts
+        // This handles dates in the same month but before transition
+        if (month === currentZodiak.startMonth && day < currentZodiak.startDate) {
+            // Return previous zodiac
+            const prevIndex = i === 0 ? dataZodiak.length - 1 : i - 1;
+            return dataZodiak[prevIndex];
+        }
+
+        // Handle month transitions (e.g., Capricorn Dec-Jan)
+        if (month === nextZodiak.startMonth && day < nextZodiak.startDate) {
+            return currentZodiak;
+        }
+    }
+
+    // Fallback: return the first zodiac if no match found
+    return dataZodiak[0];
+}
+

@@ -25,6 +25,13 @@ export interface Pancawara {
   karakter: string;
 }
 
+export interface Sadwara {
+  nama: string;
+  arti: string;
+  sifat: string;
+  pesan: string;
+}
+
 export interface Saptawara {
   id: number;
   hari: string;
@@ -37,6 +44,17 @@ export interface KategoriJodoh {
   sisa: number;
   kategori: string;
   makna: string;
+}
+
+export interface Zodiak {
+  nama: string;
+  startMonth: number;
+  startDate: number;
+  sifat: string;
+  elemen: string;
+  angkaHoki: number[];
+  warnaHoki: string;
+  hariHoki: string;
 }
 
 // Calculated Types

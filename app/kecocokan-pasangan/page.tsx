@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeartMeter from '@/components/HeartMeter';
+import Disclaimer from '@/components/Disclaimer';
 import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
 
@@ -190,6 +191,9 @@ export default function KecocokanPasangan() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Disclaimer */}
+                            <Disclaimer />
                         </div>
                     </section>
                 )}

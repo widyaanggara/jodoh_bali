@@ -1,4 +1,4 @@
-import { Wuku, Pancawara, Saptawara, KategoriJodoh } from './types';
+import { Wuku, Pancawara, Saptawara, KategoriJodoh, Zodiak, Sadwara } from './types';
 
 // Wuku data (30 wuku dalam kalender Bali)
 export const wukuData: Wuku[] = [
@@ -274,6 +274,69 @@ export const wukuData: Wuku[] = [
     }
 ];
 
+export const dataZodiak: Zodiak[] = [
+    {
+        nama: "Capricorn", startMonth: 12, startDate: 22,
+        sifat: "Sangat hemat, disiplin, bertanggung jawab, namun agak kaku.",
+        elemen: "Tanah", angkaHoki: [4, 8, 13], warnaHoki: "Hitam & Coklat", hariHoki: "Sabtu"
+    },
+    {
+        nama: "Aquarius", startMonth: 1, startDate: 20,
+        sifat: "Tenang, objektif, cerdas, tapi terkadang sulit untuk dimengerti.",
+        elemen: "Udara", angkaHoki: [2, 3, 9], warnaHoki: "Biru Muda", hariHoki: "Sabtu"
+    },
+    {
+        nama: "Pisces", startMonth: 2, startDate: 19,
+        sifat: "Penuh perasaan (emosional), romantis, suka menolong, dan religius.",
+        elemen: "Air", angkaHoki: [3, 7, 11], warnaHoki: "Hijau Laut", hariHoki: "Kamis"
+    },
+    {
+        nama: "Aries", startMonth: 3, startDate: 21,
+        sifat: "Sangat rajin, jujur, berjiwa pemimpin, namun terkadang keras kepala.",
+        elemen: "Api", angkaHoki: [1, 9, 10], warnaHoki: "Merah", hariHoki: "Selasa"
+    },
+    {
+        nama: "Taurus", startMonth: 4, startDate: 20,
+        sifat: "Sabar, telaten, suka keindahan, namun agak pencemburu.",
+        elemen: "Tanah", angkaHoki: [2, 6, 15], warnaHoki: "Pink & Hijau", hariHoki: "Jumat"
+    },
+    {
+        nama: "Gemini", startMonth: 5, startDate: 21,
+        sifat: "Cerdas, pandai bergaul, lincah, tapi terkadang ragu-ragu dalam mengambil keputusan.",
+        elemen: "Udara", angkaHoki: [5, 7, 14], warnaHoki: "Kuning", hariHoki: "Rabu"
+    },
+    {
+        nama: "Cancer", startMonth: 6, startDate: 21,
+        sifat: "Sangat penyayang, lembut, daya ingat kuat, namun mudah tersinggung.",
+        elemen: "Air", angkaHoki: [2, 7, 16], warnaHoki: "Putih & Perak", hariHoki: "Senin"
+    },
+    {
+        nama: "Leo", startMonth: 7, startDate: 23,
+        sifat: "Berwibawa, percaya diri tinggi, setia, tapi agak suka memerintah.",
+        elemen: "Api", angkaHoki: [1, 4, 9], warnaHoki: "Emas & Oranye", hariHoki: "Minggu"
+    },
+    {
+        nama: "Virgo", startMonth: 8, startDate: 23,
+        sifat: "Teliti, rapi, kritis, dan sangat suka membantu orang lain.",
+        elemen: "Tanah", angkaHoki: [3, 5, 12], warnaHoki: "Abu-abu & Hijau Tua", hariHoki: "Rabu"
+    },
+    {
+        nama: "Libra", startMonth: 9, startDate: 23,
+        sifat: "Suka keadilan, cinta damai, tapi sering sulit menentukan pilihan.",
+        elemen: "Udara", angkaHoki: [6, 8, 15], warnaHoki: "Biru Langit", hariHoki: "Jumat"
+    },
+    {
+        nama: "Scorpio", startMonth: 10, startDate: 23,
+        sifat: "Pekerja keras, tekun, memiliki intuisi tajam, dan agak pendiam.",
+        elemen: "Air", angkaHoki: [1, 8, 13], warnaHoki: "Merah Marun", hariHoki: "Selasa"
+    },
+    {
+        nama: "Sagitarius", startMonth: 11, startDate: 22,
+        sifat: "Suka petualangan, optimis, jujur, namun terkadang kurang waspada.",
+        elemen: "Api", angkaHoki: [3, 12, 21], warnaHoki: "Ungu", hariHoki: "Kamis"
+    }
+];
+
 // Pancawara data (5 hari siklus)
 export const pancawaraData: Pancawara[] = [
     { id: 1, nama: "Umanis", urip: 5, karakter: "Penggerak, memiliki kemauan kuat, dan pemurah." },
@@ -283,7 +346,46 @@ export const pancawaraData: Pancawara[] = [
     { id: 5, nama: "Kliwon", urip: 8, karakter: "Pemaaf, pandai berbicara, dan memiliki spiritualitas tinggi." }
 ];
 
-// Saptawara data (7 hari minggu)
+// Sadwara data (6 hari siklus)
+export const sadwaraData: Sadwara[] = [
+  { 
+    nama: "Tungleh", 
+    arti: "Tidak kekal", 
+    sifat: "Hari penuh kebohongan dan ingkar janji.", 
+    pesan: "Waspadalah terhadap fitnah dan kebohongan. Jangan paksa orang jujur, tapi buatlah ia menyesali akibat kebohongannya." 
+  },
+  { 
+    nama: "Aryang", 
+    arti: "Kurus", 
+    sifat: "Harinya orang lupa (kepikunan).", 
+    pesan: "Buatlah catatan pribadi agar tidak mengandalkan ingatan. Tulisan akan abadi, sementara ucapan akan terlupakan." 
+  },
+  { 
+    nama: "Urukung", 
+    arti: "Punah", 
+    sifat: "Hari kecerobohan dan kealpaan.", 
+    pesan: "Waspadalah terhadap kesalahan tidak sengaja. Kurangi tindakan berbahaya dan berhati-hatilah di jalan." 
+  },
+  { 
+    nama: "Paniron", 
+    arti: "Gemuk", 
+    sifat: "Hari kepura-puraan atau fatamorgana.", 
+    pesan: "Waspadalah terhadap kepalsuan. Teliti segalanya sebelum bertindak, karena hal yang tampak baik mungkin tidak demikian." 
+  },
+  { 
+    nama: "Was", 
+    arti: "Kuat", 
+    sifat: "Hari gembira.", 
+    pesan: "Jangan mengumbar kegembiraan berlebih. Gunakan hari ini untuk membahagiakan orang lain dan berderma." 
+  },
+  { 
+    nama: "Maulu", 
+    arti: "Membiak", 
+    sifat: "Hari pitam (kemarahan).", 
+    pesan: "Kemurkaan ada di mana-mana. Tahan diri dari menyinggung perasaan orang lain. Diam adalah emas saat menghadapi amarah." 
+  }
+];
+
 // Saptawara data (7 hari minggu)
 export const saptawaraData: Saptawara[] = [
     { id: 1, hari: "Redite/Minggu", urip: 5, sifat: "Kasih", karakter: "Berjiwa sosial tinggi, berwibawa, dan senang menolong." },
