@@ -1,4 +1,4 @@
-import { Wuku, Pancawara, Saptawara, KategoriJodoh, Zodiak, Sadwara } from './types';
+import { Wuku, Pancawara, Saptawara, KategoriJodoh, Zodiak, Sadwara, SodasaRsi } from './types';
 
 // Wuku data (30 wuku dalam kalender Bali)
 export const wukuData: Wuku[] = [
@@ -347,43 +347,56 @@ export const pancawaraData: Pancawara[] = [
 ];
 
 // Sadwara data (6 hari siklus)
+// Sadwara data (6 hari siklus)
 export const sadwaraData: Sadwara[] = [
-  { 
-    nama: "Tungleh", 
-    arti: "Tidak kekal", 
-    sifat: "Hari penuh kebohongan dan ingkar janji.", 
-    pesan: "Waspadalah terhadap fitnah dan kebohongan. Jangan paksa orang jujur, tapi buatlah ia menyesali akibat kebohongannya." 
-  },
-  { 
-    nama: "Aryang", 
-    arti: "Kurus", 
-    sifat: "Harinya orang lupa (kepikunan).", 
-    pesan: "Buatlah catatan pribadi agar tidak mengandalkan ingatan. Tulisan akan abadi, sementara ucapan akan terlupakan." 
-  },
-  { 
-    nama: "Urukung", 
-    arti: "Punah", 
-    sifat: "Hari kecerobohan dan kealpaan.", 
-    pesan: "Waspadalah terhadap kesalahan tidak sengaja. Kurangi tindakan berbahaya dan berhati-hatilah di jalan." 
-  },
-  { 
-    nama: "Paniron", 
-    arti: "Gemuk", 
-    sifat: "Hari kepura-puraan atau fatamorgana.", 
-    pesan: "Waspadalah terhadap kepalsuan. Teliti segalanya sebelum bertindak, karena hal yang tampak baik mungkin tidak demikian." 
-  },
-  { 
-    nama: "Was", 
-    arti: "Kuat", 
-    sifat: "Hari gembira.", 
-    pesan: "Jangan mengumbar kegembiraan berlebih. Gunakan hari ini untuk membahagiakan orang lain dan berderma." 
-  },
-  { 
-    nama: "Maulu", 
-    arti: "Membiak", 
-    sifat: "Hari pitam (kemarahan).", 
-    pesan: "Kemurkaan ada di mana-mana. Tahan diri dari menyinggung perasaan orang lain. Diam adalah emas saat menghadapi amarah." 
-  }
+    {
+        id: 1,
+        nama: "Tungleh",
+        urip: 7,
+        arti: "Tidak kekal",
+        sifat: "Hari penuh kebohongan dan ingkar janji.",
+        pesan: "Waspadalah terhadap fitnah dan kebohongan. Jangan paksa orang jujur, tapi buatlah ia menyesali akibat kebohongannya."
+    },
+    {
+        id: 2,
+        nama: "Aryang",
+        urip: 6,
+        arti: "Kurus",
+        sifat: "Harinya orang lupa (kepikunan).",
+        pesan: "Buatlah catatan pribadi agar tidak mengandalkan ingatan. Tulisan akan abadi, sementara ucapan akan terlupakan."
+    },
+    {
+        id: 3,
+        nama: "Urukung",
+        urip: 5,
+        arti: "Punah",
+        sifat: "Hari kecerobohan dan kealpaan.",
+        pesan: "Waspadalah terhadap kesalahan tidak sengaja. Kurangi tindakan berbahaya dan berhati-hatilah di jalan."
+    },
+    {
+        id: 4,
+        nama: "Paniron",
+        urip: 8,
+        arti: "Gemuk",
+        sifat: "Hari kepura-puraan atau fatamorgana.",
+        pesan: "Waspadalah terhadap kepalsuan. Teliti segalanya sebelum bertindak, karena hal yang tampak baik mungkin tidak demikian."
+    },
+    {
+        id: 5,
+        nama: "Was",
+        urip: 9,
+        arti: "Kuat",
+        sifat: "Hari gembira.",
+        pesan: "Jangan mengumbar kegembiraan berlebih. Gunakan hari ini untuk membahagiakan orang lain dan berderma."
+    },
+    {
+        id: 6,
+        nama: "Maulu",
+        urip: 3,
+        arti: "Membiak",
+        sifat: "Hari pitam (kemarahan).",
+        pesan: "Kemurkaan ada di mana-mana. Tahan diri dari menyinggung perasaan orang lain. Diam adalah emas saat menghadapi amarah."
+    }
 ];
 
 // Saptawara data (7 hari minggu)
@@ -447,4 +460,106 @@ export const dataLintang: Lintang[] = [
     { nama: "Perahu Sarat", saptawara: "Saniscara", pancawara: "Pon", sifat: "Pekerja keras.", nasib: "Sukses setelah berjuang." },
     { nama: "Bubu Bolong", saptawara: "Saniscara", pancawara: "Wage", sifat: "Sederhana.", nasib: "Tulus dalam bergaul." },
     { nama: "Pagelongan", saptawara: "Saniscara", pancawara: "Kliwon", sifat: "Introspektif.", nasib: "Belajar dari pengalaman." }
+];
+
+
+
+// data/masterMod16.ts
+export const dataSodasaRsi: SodasaRsi[] = [
+    {
+        sisa: 1,
+        label: "Bergejolak",
+        makna: "Mesti tahan uji, Brahmana Yoni.",
+        penjelasan: "Gemar memuja Batara dan berdagang. Jika anak pertama meninggal, selanjutnya akan bahagia dan sentosa."
+    },
+    {
+        sisa: 2,
+        label: "Tiwas Padiwara",
+        makna: "Selalu menghadapi kesulitan dan banyak pengeluaran.",
+        penjelasan: "Sering sedih hati, menderita, atau sengsara yang bisa berujung perceraian. Indra Yoni."
+    },
+    {
+        sisa: 3,
+        label: "Tiga Mepasah",
+        makna: "Selalu kecewa dan bertentangan.",
+        penjelasan: "Tidak pernah sepakat, suasana rumah tangga keruh dan selalu ada masalah."
+    },
+    {
+        sisa: 4,
+        label: "Catur Gadabah",
+        makna: "Istri berkuasa dalam rumah tangga.",
+        penjelasan: "Suami berada di bawah perintah istri (suami kalah). Sulit mendapatkan keturunan."
+    },
+    {
+        sisa: 5,
+        label: "Werdi Wekasan",
+        makna: "Terus maju dan rezeki berlimpah.",
+        penjelasan: "Suami istri selalu berkasih-kasihan, rumah tangga tenang, nyaman, dan penuh pengertian. Indria Yoni."
+    },
+    {
+        sisa: 6,
+        label: "Halakarma",
+        makna: "Penderitaan atau perceraian.",
+        penjelasan: "Tidak tenang dalam rumah tangga, kurang rasa cinta. Solusinya harus rajin berbuat suci dan mendalami agama."
+    },
+    {
+        sisa: 7,
+        label: "Hayu Pasukarma",
+        makna: "Meningkat sangat lambat.",
+        penjelasan: "Akan bercucu agak lama. Selamat paripurna kemanapun pergi, emas dan perak banyak. Basaya Yoni."
+    },
+    {
+        sisa: 8,
+        label: "Tanameten",
+        makna: "Serba kekurangan dan sengsara.",
+        penjelasan: "Sering bersedih hati, suami tidak cinta istri, berisiko cerai. Anak cucu berisiko meninggal."
+    },
+    {
+        sisa: 9,
+        label: "Ala Kageringan",
+        makna: "Mewah tapi sering ricuh.",
+        penjelasan: "Memiliki harta tapi menjadi bencana, anak-anak seolah terkutuk. Kurang nafsu. Chandala Yoni."
+    },
+    {
+        sisa: 10,
+        label: "Nari Utama",
+        makna: "Keluarga terpandang namun suami takut istri.",
+        penjelasan: "Menjadi keluarga terhormat namun sang suami tunduk pada perintah sang istri."
+    },
+    {
+        sisa: 11,
+        label: "Sri Emas",
+        makna: "Terlalu baik dan kaya raya.",
+        penjelasan: "Anak banyak, harta benda tidak kurang, keluarga besar menaruh kasih sayang."
+    },
+    {
+        sisa: 12,
+        label: "Hala Hayu Gung Pahalniya",
+        makna: "Murah rezeki dan setia.",
+        penjelasan: "Istri sangat hormat dan bakti pada suami, tidak pernah curang, cinta kasih sangat kuat. Waisya Yoni."
+    },
+    {
+        sisa: 13,
+        label: "Singa Gatan",
+        makna: "Langgeng dan kaya raya.",
+        penjelasan: "Keluarga mungkin menjauh tapi rumah tangga makmur dan penuh suka cita."
+    },
+    {
+        sisa: 14,
+        label: "Hala Sukartan",
+        makna: "Bahagia akan berkurang.",
+        penjelasan: "Ditinggalkan keluarga suami, sering berselisih, suami kalah oleh istri. Berisiko miskin."
+    },
+    {
+        sisa: 15,
+        label: "Hala Tukaran",
+        makna: "Kurang rukun dan sering gagal.",
+        penjelasan: "Saling menyalahkan, tidak ada kesepakatan, pekerjaan sering gagal dan tidak tentram."
+    },
+    {
+        sisa: 0, // Sisa 16
+        label: "Siddha Karya Hayu",
+        makna: "Semakin berkembang dan gembira.",
+        penjelasan: "Segala usaha beruntung besar, anak-anak berhasil mengejar cita-cita, rumah tangga sangat berhasil."
+    }
 ];

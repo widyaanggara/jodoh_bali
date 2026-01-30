@@ -40,6 +40,16 @@ export interface Saptawara {
   karakter: string;
 }
 
+
+export interface Sadwara {
+  id: number;
+  nama: string;
+  urip: number;
+  arti: string;
+  sifat: string;
+  pesan: string;
+}
+
 export interface KategoriJodoh {
   sisa: number;
   kategori: string;
@@ -63,7 +73,9 @@ export interface BalineseDate {
   wuku: Wuku;
   pancawara: Pancawara;
   saptawara: Saptawara;
-  totalUrip: number;
+  sadwara?: Sadwara;
+  totalUrip: number; // Mod 5: Saptawara + Pancawara + Wuku
+  totalUripSodasaRsi: number; // Mod 16: Saptawara + Pancawara + Sadwara + Wuku
   lintang?: Lintang;
   nextOtonan?: string;
 }
@@ -74,6 +86,13 @@ export interface CompatibilityResult {
   totalUrip: number;
   kategori: KategoriJodoh;
   percentage: number;
+  mod16Result?: SodasaRsi;
+  combinedTotalUrip?: number;
+  matchConclusion?: {
+    title: string;
+    content: string;
+    sentiment: 'positive' | 'neutral' | 'challenge';
+  };
 }
 
 export interface MatchingDate {
@@ -81,4 +100,12 @@ export interface MatchingDate {
   balineseDate: BalineseDate;
   kategori: KategoriJodoh;
   percentage: number;
+}
+
+// types/wariga.ts
+export interface SodasaRsi {
+  sisa: number;
+  label: string;
+  makna: string;
+  penjelasan: string;
 }

@@ -1,5 +1,5 @@
-import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh, Lintang } from './types';
-import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang } from './data';
+import { BalineseDate, CompatibilityResult, MatchingDate, KategoriJodoh, Lintang, Sadwara, SodasaRsi } from './types';
+import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang, sadwaraData, dataSodasaRsi } from './data';
 
 // Reference date for Balinese calendar calculation
 // Using verified date: 27 Juli 2005 adalah Rabu (Buda), Kliwon, Wuku Sinta
@@ -31,6 +31,16 @@ function getSaptawaraIndex(date: Date): number {
 }
 
 /**
+ * Get Sadwara based on date calculation
+ * Sadwara cycles every 6 days
+ */
+function getSadwaraIndex(date: Date): number {
+    const days = daysBetween(REFERENCE_DATE, date);
+    // Sadwara cycles every 6 days (Tungleh, Aryang, Urukung, Paniron, Was, Maulu)
+    return ((days % 6) + 6) % 6;
+}
+
+/**
  * Convert Gregorian date to Balinese calendar date
  */
 export function getBalineseDate(date: Date): BalineseDate {
@@ -46,12 +56,19 @@ export function getBalineseDate(date: Date): BalineseDate {
     // Saptawara - use native JavaScript getDay() for accuracy
     const saptawaraIndex = getSaptawaraIndex(date);
 
+    // Sadwara - cycles every 6 days
+    const sadwaraIndex = getSadwaraIndex(date);
+
     const wuku = wukuData[wukuIndex % 30];
     const pancawara = pancawaraData[pancawaraIndex % 5];
     const saptawara = saptawaraData[saptawaraIndex];
+    const sadwara = sadwaraData[sadwaraIndex % 6];
 
-    // Total urip is sum of pancawara urip and wuku position value
-    const totalUrip = pancawara.urip + (wuku.id_wuku % 10);
+    // Total urip for Mod 5 (Rezeki) is Saptawara + Pancawara ONLY (without Wuku & Sadwara)
+    const totalUrip = saptawara.urip + pancawara.urip;
+
+    // Total urip for Mod 16 (Sodasa Rsi) includes Sadwara (without Wuku)
+    const totalUripSodasaRsi = totalUrip + sadwara.urip;
 
     // Find Lintang (Star)
     const lintang = findLintang(saptawara.hari, pancawara.nama);
@@ -63,7 +80,9 @@ export function getBalineseDate(date: Date): BalineseDate {
         wuku,
         pancawara,
         saptawara,
+        sadwara,
         totalUrip,
+        totalUripSodasaRsi,
         lintang,
         nextOtonan
     };
@@ -99,11 +118,19 @@ export function getNextOtonan(birthDate: Date): string {
 }
 
 /**
- * Get kategori jodoh based on total urip sum
+ * Get kategori jodoh based on total urip sum (Mod 5)
  */
 function getKategoriJodoh(totalUrip: number): KategoriJodoh {
     const sisa = totalUrip % 5;
     return kategoriJodohData.find(k => k.sisa === sisa) || kategoriJodohData[0];
+}
+
+/**
+ * Get Sodasa Rsi (Mod 16) result
+ */
+function getSodasaRsi(combinedTotalUrip: number): SodasaRsi {
+    const sisa = combinedTotalUrip % 16;
+    return dataSodasaRsi.find(s => s.sisa === sisa) || dataSodasaRsi[0];
 }
 
 /**
@@ -120,16 +147,76 @@ function calculatePercentage(kategori: KategoriJodoh): number {
     }
 }
 
+const POSITIVE_MOD5 = ['Sri', 'Dana', 'Laba', 'Lungguh'];
+// Pati is considered negative/challenging
+
+const POSITIVE_MOD16_LABELS = [
+    'Sri Emas', 'Siddha Karya Hayu', 'Hala Hayu Gung Pahalniya',
+    'Werdi Wekasan', 'Hayu Pasukarma', 'Nari Utama', 'Singa Gatan'
+];
+// Others like Tiwas, Tukaran, Pati, etc. are considered challenging
+
+/**
+ * Generate match conclusion narrative based on user request
+ */
+function generateMatchConclusion(mod5: KategoriJodoh, mod16: SodasaRsi): { title: string, content: string, sentiment: 'positive' | 'neutral' | 'challenge' } {
+    const isMod5Good = POSITIVE_MOD5.includes(mod5.kategori);
+    const isMod16Good = POSITIVE_MOD16_LABELS.includes(mod16.label);
+
+    // Case 1: Both Good
+    if (isMod5Good && isMod16Good) {
+        return {
+            title: "Harmoni Sejahtera Lahir Batin",
+            content: `Selamat! Pasangan ini diprediksi memiliki kombinasi yang sangat ideal. Secara ekonomi memiliki potensi rezeki yang lancar (${mod5.kategori}), dan secara batin memiliki kecocokan karakter yang kuat (${mod16.label}). Pertahankan komunikasi yang baik dan saling mengisi, rumah tangga kalian berpotensi menjadi teladan kebahagiaan.`,
+            sentiment: 'positive'
+        };
+    }
+
+    // Case 2: Mod 5 Good (Wealth) & Mod 16 Challenging (Character)
+    if (isMod5Good && !isMod16Good) {
+        return {
+            title: "Rezeki Kuat, Perlu Kelembutan Hati",
+            content: `Pasangan ini diprediksi memiliki fondasi ekonomi yang kuat dan rezeki yang baik (${mod5.kategori}). Namun, secara batin perlu waspada karena ada potensi gesekan karakter atau ujian perasaan (${mod16.label}). Kuncinya adalah menjaga keharmonisan komunikasi dan saling mengalah agar harta yang melimpah tidak menjadi beban pikiran, melainkan sarana kebahagiaan.`,
+            sentiment: 'neutral'
+        };
+    }
+
+    // Case 3: Mod 5 Challenging (Wealth) & Mod 16 Good (Character)
+    if (!isMod5Good && isMod16Good) {
+        return {
+            title: "Kekayaan Hati & Kebahagiaan Batin",
+            content: `Secara finansial mungkin pasangan ini akan menghadapi dinamika naik turun atau hidup dalam kesederhanaan. Namun, kekuatan sesungguhnya ada pada kerukunan batin dan kasih sayang yang luar biasa (${mod16.label}). Segala rintangan ekonomi akan terasa ringan karena kalian menghadapinya dengan gembira bersama. Kebahagiaan kalian bersumber dari ketenangan hati.`,
+            sentiment: 'neutral'
+        };
+    }
+
+    // Case 4: Both Challenging
+    return {
+        title: "Perlu Kesabaran & Doa Bersama",
+        content: `Perjalanan hubungan ini mungkin membutuhkan usaha ekstra. Baik dari sisi ekonomi maupun penyatuan karakter memerlukan kesabaran yang luas. Jadikan setiap ujian sebagai penguat cinta kalian. Disarankan untuk lebih sering mendekatkan diri pada Tuhan, melakukan sedekah, atau melukat untuk menetralisir energi kurang baik. Cinta sejati teruji dalam masa sulit.`,
+        sentiment: 'challenge'
+    };
+}
+
 /**
  * Calculate compatibility between two people based on their birth dates
+ * Includes both Mod 5 (Rezeki) and Mod 16 (Karakter & Wibawa)
  */
 export function calculateCompatibility(date1: Date, date2: Date): CompatibilityResult {
     const person1 = getBalineseDate(date1);
     const person2 = getBalineseDate(date2);
 
+    // Mod 5 calculation (original - for Rezeki/Fortune)
     const totalUrip = person1.totalUrip + person2.totalUrip;
     const kategori = getKategoriJodoh(totalUrip);
     const percentage = calculatePercentage(kategori);
+
+    // Mod 16 calculation (new - for Karakter & Wibawa) using comprehensive Urip
+    const combinedTotalUrip = person1.totalUripSodasaRsi + person2.totalUripSodasaRsi;
+    const mod16Result = getSodasaRsi(combinedTotalUrip);
+
+    // Generate conclusion narrative
+    const matchConclusion = generateMatchConclusion(kategori, mod16Result);
 
     // Bonus if wuku is recommended partner
     const isRecommended = person1.wuku.rekomendasi_pasangan.includes(person2.wuku.nama_wuku) ||
@@ -140,7 +227,10 @@ export function calculateCompatibility(date1: Date, date2: Date): CompatibilityR
         person2,
         totalUrip,
         kategori,
-        percentage: isRecommended ? Math.min(percentage + 10, 100) : percentage
+        percentage: isRecommended ? Math.min(percentage + 10, 100) : percentage,
+        mod16Result,
+        combinedTotalUrip,
+        matchConclusion
     };
 }
 

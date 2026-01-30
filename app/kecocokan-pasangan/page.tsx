@@ -133,10 +133,11 @@ export default function KecocokanPasangan() {
                                 isVisible={showResults}
                             />
 
-                            {/* Detailed Result Card */}
+
+                            {/* Detailed Result Card - Mod 5 (Aspek Rezeki) */}
                             <div className="bg-surface-light p-8 md:p-10 rounded-[2.5rem] border border-accent-gold/10 shadow-xl shadow-stone-200/50 slide-up delay-200">
                                 <div className="text-center mb-8">
-                                    <h3 className="font-display text-2xl font-bold mb-2">Detail Perhitungan</h3>
+                                    <h3 className="font-display text-2xl font-bold mb-2">📊 Aspek Rezeki (Mod 5)</h3>
                                     <p className="text-stone-500 text-sm">Berdasarkan perhitungan Tenung Urip Panca</p>
                                 </div>
 
@@ -151,15 +152,16 @@ export default function KecocokanPasangan() {
                                         </thead>
                                         <tbody className="text-stone-600">
                                             <tr className="border-b border-stone-100">
+                                                <td className="py-2 text-left">Sapta Wara</td>
+                                                <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.saptawara.hari.split('/')[0]} = {result.person1.saptawara.urip}</td>
+                                                <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.saptawara.hari.split('/')[0]} = {result.person2.saptawara.urip}</td>
+                                            </tr>
+                                            <tr className="border-b border-stone-100">
                                                 <td className="py-2 text-left">Panca Wara</td>
                                                 <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.pancawara.nama} = {result.person1.pancawara.urip}</td>
                                                 <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.pancawara.nama} = {result.person2.pancawara.urip}</td>
                                             </tr>
-                                            <tr className="border-b border-stone-100">
-                                                <td className="py-2 text-left">Wuku</td>
-                                                <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.wuku.nama_wuku} = {result.person1.wuku.id_wuku % 10}</td>
-                                                <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.wuku.nama_wuku} = {result.person2.wuku.id_wuku % 10}</td>
-                                            </tr>
+                                            {/* Wuku EXCLUDED for Mod 5 */}
                                             <tr className="bg-stone-100 font-bold text-stone-800">
                                                 <td className="py-3 text-left pl-2 rounded-l-lg">Jumlah</td>
                                                 <td className="py-3 text-left">{result.person1.totalUrip}</td>
@@ -169,7 +171,7 @@ export default function KecocokanPasangan() {
                                     </table>
 
                                     <div className="mt-4 pt-4 border-t border-dashed border-stone-200 text-left">
-                                        <p className="text-xs font-medium text-stone-500 uppercase tracking-widest mb-1">Perhitungan</p>
+                                        <p className="text-xs font-medium text-stone-500 uppercase tracking-widest mb-1">Perhitungan Mod 5 (Sapta + Panca)</p>
                                         <p className="text-sm font-medium text-stone-800">
                                             {result.person1.totalUrip} + {result.person2.totalUrip} = {result.totalUrip} <span className="text-stone-400">dibagi 5</span> <span className="text-primary font-bold">sisa {result.kategori.sisa}</span>
                                         </p>
@@ -191,6 +193,107 @@ export default function KecocokanPasangan() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Mod 16 Result Card - Aspek Karakter & Wibawa */}
+                            {result.mod16Result && (
+                                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 md:p-10 rounded-[2.5rem] border border-purple-200/50 shadow-xl shadow-purple-100 slide-up delay-300">
+                                    <div className="text-center mb-8">
+                                        <h3 className="font-display text-2xl font-bold mb-2 text-purple-900">✨ Aspek Karakter & Wibawa (Mod 16)</h3>
+                                        <p className="text-purple-600 text-sm">Berdasarkan Lontar Tripramana & Sodasa Rsi</p>
+                                    </div>
+
+                                    {/* Detail Calculation Table */}
+                                    <div className="bg-white/80 backdrop-blur rounded-2xl p-6 mb-6">
+                                        <table className="w-full text-sm">
+                                            <thead>
+                                                <tr className="border-b border-purple-200">
+                                                    <th className="text-left py-2 font-bold text-purple-700">Wewaran</th>
+                                                    <th className="text-left py-2 font-bold text-purple-700">Urip Anda</th>
+                                                    <th className="text-left py-2 font-bold text-purple-700">Pasangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="text-purple-900">
+                                                <tr className="border-b border-purple-100">
+                                                    <td className="py-2 text-left">Sapta Wara</td>
+                                                    <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.saptawara.hari.split('/')[0]} = {result.person1.saptawara.urip}</td>
+                                                    <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.saptawara.hari.split('/')[0]} = {result.person2.saptawara.urip}</td>
+                                                </tr>
+                                                <tr className="border-b border-purple-100">
+                                                    <td className="py-2 text-left">Panca Wara</td>
+                                                    <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.pancawara.nama} = {result.person1.pancawara.urip}</td>
+                                                    <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.pancawara.nama} = {result.person2.pancawara.urip}</td>
+                                                </tr>
+                                                {result.person1.sadwara && result.person2.sadwara && (
+                                                    <tr className="border-b border-purple-100">
+                                                        <td className="py-2 text-left">Sad Wara</td>
+                                                        <td className="py-2 text-left text-xs whitespace-nowrap">{result.person1.sadwara.nama} = {result.person1.sadwara.urip}</td>
+                                                        <td className="py-2 text-left text-xs whitespace-nowrap">{result.person2.sadwara.nama} = {result.person2.sadwara.urip}</td>
+                                                    </tr>
+                                                )}
+                                                {/* Wuku EXCLUDED for Mod 16 as well */}
+                                                <tr className="bg-purple-100 font-bold text-purple-900">
+                                                    <td className="py-3 text-left pl-2 rounded-l-lg">Jumlah</td>
+                                                    <td className="py-3 text-left">{result.person1.totalUripSodasaRsi}</td>
+                                                    <td className="py-3 text-left rounded-r-lg">{result.person2.totalUripSodasaRsi}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div className="mt-4 pt-4 border-t border-dashed border-purple-200 text-left">
+                                            <p className="text-xs font-medium text-purple-600 uppercase tracking-widest mb-1">Perhitungan Mod 16</p>
+                                            <p className="text-sm font-medium text-purple-900">
+                                                {result.person1.totalUripSodasaRsi} + {result.person2.totalUripSodasaRsi} = {result.combinedTotalUrip} <span className="text-purple-500">dibagi 16</span> <span className="text-purple-700 font-bold">sisa {result.mod16Result.sisa === 0 ? 16 : result.mod16Result.sisa}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Result Section */}
+                                    <div className="bg-white/80 backdrop-blur rounded-2xl p-6">
+                                        <div className="text-center mb-4">
+                                            <div className="inline-block px-6 py-3 bg-purple-500 text-white rounded-xl mb-3">
+                                                <p className="text-xs uppercase tracking-widest mb-1">Hasil Sodasa Rsi</p>
+                                                <p className="text-3xl font-bold">{result.mod16Result.label}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <div className="bg-purple-50/50 rounded-xl p-4">
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-purple-700 mb-2">📖 Makna</h4>
+                                                <p className="text-purple-900 font-medium">{result.mod16Result.makna}</p>
+                                            </div>
+
+                                            <div className="bg-indigo-50/50 rounded-xl p-4">
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-indigo-700 mb-2">💫 Penjelasan Lengkap</h4>
+                                                <p className="text-indigo-900 leading-relaxed text-sm">{result.mod16Result.penjelasan}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Match Conclusion Card - REQUESTED FEATURE */}
+                            {result.matchConclusion && (
+                                <div className={`relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] slide-up delay-500 mb-20 shadow-xl
+                                    ${result.matchConclusion.sentiment === 'positive' ? 'bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/50 text-emerald-900' :
+                                        result.matchConclusion.sentiment === 'neutral' ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200/50 text-indigo-900' :
+                                            'bg-gradient-to-br from-rose-50 to-orange-50 border border-rose-200/50 text-rose-900'}
+                                `}>
+                                    <div className="text-center relative z-10">
+                                        <div className="inline-flex items-center justify-center p-3 rounded-full bg-white/60 mb-6 shadow-sm">
+                                            <span className="text-3xl">🕊️</span>
+                                        </div>
+                                        <h3 className="font-display text-2xl font-bold mb-2">Kesimpulan Harmoni Pasangan</h3>
+                                        <div className="h-1 w-20 bg-current opacity-20 mx-auto mb-6 rounded-full"></div>
+
+                                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm ring-1 ring-black/5">
+                                            <h4 className="font-bold text-xl mb-4">{result.matchConclusion.title}</h4>
+                                            <p className="text-lg leading-relaxed opacity-90 font-serif italic">
+                                                "{result.matchConclusion.content}"
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Disclaimer */}
                             <Disclaimer />
