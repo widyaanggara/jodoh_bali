@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { getBalineseDate } from '@/lib/balinese-calendar';
 import { BalineseDate } from '@/lib/types';
+import Header from '@/components/Header';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
@@ -31,23 +32,7 @@ export default function RamalanOtonan() {
 
     return (
         <div className="min-h-screen">
-            <nav className="sticky top-0 z-50 bg-background-light/80 backdrop-blur-md border-b border-accent-gold/10">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="material-icons-outlined text-accent-gold text-3xl">flare</span>
-                        <span className="font-display text-2xl font-bold tracking-tight text-primary">Jodoh Bali</span>
-                    </div>
-                    <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-800">
-                        <Link href="/" className="hover:text-primary transition-colors">Beranda</Link>
-                        <Link href="/kecocokan-pasangan" className="hover:text-primary transition-colors">Kecocokan Pasangan</Link>
-                        <Link href="/mencari-jodoh" className="hover:text-primary transition-colors">Mencari Jodoh</Link>
-                        <Link href="/ramalan-otonan" className="text-primary font-bold border-b-2 border-primary pb-1">Ramalan Otonan</Link>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        {/* Dark mode & Auth buttons removed per user request */}
-                    </div>
-                </div>
-            </nav>
+            <Header />
 
             <section className="py-20 px-6">
                 <div className="max-w-4xl mx-auto">

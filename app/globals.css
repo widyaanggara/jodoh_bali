@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-<<<<<<< HEAD
-@plugin "tailwindcss-animate";
-
-@theme {
-  --color-primary: #8B6B4E;
-  --color-accent-gold: #C5A059;
-  --color-background-light: #FDFBF4;
-  --color-background-dark: #1A1612;
-  --color-surface-light: #FFFFFF;
-  --color-surface-dark: #25211D;
-
-=======
 /* Clean White Theme with Brown/Gold Accents */
 :root {
   --primary: #8B6B4E;
@@ -20,7 +8,7 @@
   --background-dark: #1A1612;
   --surface-light: #FFFFFF;
   --surface-dark: #25211D;
-  
+
   --bali-gold: #C9A227;
   --bali-gold-light: #E8D59C;
   --bali-gold-dark: #8B6914;
@@ -47,17 +35,9 @@
   --color-bali-brown: var(--bali-brown);
   --color-bali-cream: var(--bali-cream);
   --font-sans: var(--font-plus-jakarta);
->>>>>>> 95d3e8af56596a7f14981803ee9dfbf14fd5222a
   --font-display: var(--font-playfair);
-  --font-sans: var(--font-jakarta);
 
   --radius-default: 1rem;
-}
-
-/* Base Styles */
-:root {
-  --background: #FDFBF4;
-  --foreground: #292524;
 }
 
 .dark {
@@ -72,28 +52,9 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-<<<<<<< HEAD
-/* Custom Utilities from HTML */
-.hero-pattern {
-  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxcPuYdAp3rRn8VhOx_SNihxc7qMudJ0s_ECtJxy2Bk9rBo_N_FBVNlJQZjD7z2GSgswlJjPr9WkzneZ80Tx9ySy-SoJgad-J1S4MAfFFlN7Eejwd6z8M0HhXBwcB4DAt702PAxO1fiSp-7q32TGj90kZVDu7OWTW1Ez9zqmySTyWD2F1xhBucWCSfDgJBXEunhcWXrBg6RjNBzQfGzUQZz8Z8K5QIBIPiebcZa27aakjgkcp_IA_PHvRccJWNNOcpkSw8gCWuzA');
-=======
 /* Subtle Pattern Background */
 .hero-pattern {
   background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBxcPuYdAp3rRn8VhOx_SNihxc7qMudJ0s_ECtJxy2Bk9rBo_N_FBVNlJQZjD7z2GSgswlJjPr9WkzneZ80Tx9ySy-SoJgad-J1S4MAfFFlN7Eejwd6z8M0HhXBwcB4DAt702PAxO1fiSp-7q32TGj90kZVDu7OWTW1Ez9zqmySTyWD2F1xhBucWCSfDgJBXEunhcWXrBg6RjNBzQfGzUQZz8Z8K5QIBIPiebcZa27aakjgkcp_IA_PHvRccJWNNOcpkSw8gCWuzA);
-}
-
-.lotus-bg {
-  opacity: 0.15;
-  pointer-events: none;
-}
-
-.gradient-button {
-  background: linear-gradient(135deg, #8B6B4E 0%, #4D342E 100%);
-}
-
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
->>>>>>> 95d3e8af56596a7f14981803ee9dfbf14fd5222a
 }
 
 .lotus-bg {
@@ -136,4 +97,209 @@ body {
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Animations */
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+/* Heart Animation */
+.heart-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto;
+}
+
+.heart-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 15px 35px rgba(201, 162, 39, 0.25));
+}
+
+.heart-pulse {
+  animation: heartPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.08);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.04);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+}
+
+/* Love Particles - Enhanced */
+.love-particle {
+  position: absolute;
+  animation: floatUpRotate 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+  text-shadow: 0 0 20px currentColor;
+}
+
+@keyframes floatUpRotate {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) scale(0.3) rotate(180deg);
+  }
+}
+
+/* Sparkle Animation */
+.animate-sparkle {
+  animation: sparkle 2s ease-out forwards;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* Pulse Glow */
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* Floating Hearts Background */
+.animate-float-heart {
+  animation: floatHeart 4s ease-in-out infinite;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: translateY(-100px) scale(1.2);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translateY(-200px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Category Badge Colors */
+.badge-soft-sri {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+
+.badge-soft-dana {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16A34A;
+}
+
+.badge-soft-laba {
+  background: rgba(59, 130, 246, 0.15);
+  color: #2563EB;
+}
+
+.badge-soft-sakti {
+  background: rgba(245, 158, 11, 0.15);
+  color: #D97706;
+}
+
+.badge-soft-tiwas {
+  background: rgba(239, 68, 68, 0.15);
+  color: #DC2626;
 }

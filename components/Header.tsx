@@ -16,6 +16,7 @@ export default function Header() {
         { name: 'Beranda', href: '/' },
         { name: 'Kecocokan Pasangan', href: '/kecocokan-pasangan' },
         { name: 'Mencari Jodoh', href: '/mencari-jodoh' },
+        { name: 'Ramalan Otonan', href: '/ramalan-otonan' },
     ];
 
     return (
@@ -35,11 +36,10 @@ export default function Header() {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`transition-colors h-20 flex items-center border-b-2 ${
-                                pathname === link.href
-                                    ? 'text-primary border-primary'
-                                    : 'text-stone-600 dark:text-stone-400 hover:text-primary border-transparent'
-                            }`}
+                            className={`transition-colors h-20 flex items-center border-b-2 ${pathname === link.href
+                                ? 'text-primary border-primary'
+                                : 'text-stone-600 dark:text-stone-400 hover:text-primary border-transparent'
+                                }`}
                         >
                             {link.name}
                         </Link>
@@ -48,7 +48,7 @@ export default function Header() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-4">
-                    
+
                     {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -70,11 +70,10 @@ export default function Header() {
                             key={link.href}
                             href={link.href}
                             onClick={() => setIsMenuOpen(false)}
-                            className={`transition-colors font-medium py-2 w-full ${
-                                pathname === link.href
-                                    ? 'text-primary'
-                                    : 'text-stone-600 dark:text-stone-400 hover:text-primary'
-                            }`}
+                            className={`transition-colors font-medium py-2 w-full ${pathname === link.href
+                                ? 'text-primary'
+                                : 'text-stone-600 dark:text-stone-400 hover:text-primary'
+                                }`}
                         >
                             {link.name}
                         </Link>
