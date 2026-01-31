@@ -9,12 +9,12 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                primary: "#8B6B4E",
-                "accent-gold": "#C5A059",
-                "background-light": "#FDFBF4",
-                "background-dark": "#1A1612",
+                primary: "#A62C21",
+                "accent-gold": "#A62C21",
+                "background-light": "#FFFFFF",
+                "background-dark": "#000000",
                 "surface-light": "#FFFFFF",
-                "surface-dark": "#25211D",
+                "surface-dark": "#1A1A1A",
             },
             fontFamily: {
                 display: ["var(--font-playfair)", "serif"],

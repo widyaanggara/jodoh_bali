@@ -99,35 +99,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories Section */}
-        <section className="py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kategori Kecocokan</h3>
-                <h2 className="font-display text-4xl font-bold text-stone-900">Temukan Bali Categoria</h2>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {[
-                { name: 'Sri', sub: '(Kesejahteraan)', icon: 'spa' },
-                { name: 'Dana', sub: '(Kekayaan)', icon: 'savings' },
-                { name: 'Laba', sub: '(Keuntungan)', icon: 'trending_up' },
-                { name: 'Sakti', sub: '(Kekuatan)', icon: 'fitness_center' },
-                { name: 'Tiwas', sub: '(Kematian)', icon: 'self_improvement' },
-              ].map((item) => (
-                <div key={item.name} className="bg-surface-light p-8 rounded-[2rem] border border-accent-gold/20 text-center hover:border-primary transition-colors cursor-pointer group">
-                  <div className="mb-6 transform group-hover:scale-110 transition-transform">
-                    <span className="material-icons-outlined text-primary text-5xl">{item.icon}</span>
-                  </div>
-                  <h5 className="font-display text-xl font-bold mb-1">{item.name}</h5>
-                  <p className="text-stone-400 text-sm">{item.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Footer */}
         <Footer />

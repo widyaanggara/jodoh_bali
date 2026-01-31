@@ -2,20 +2,20 @@
 
 /* Clean White Theme with Brown/Gold Accents */
 :root {
-  --primary: #8B6B4E;
-  --accent-gold: #C5A059;
-  --background-light: #FDFBF4;
+  --primary: #A62C21;
+  --accent-gold: #A62C21;
+  --background-light: #FFFFFF;
   --surface-light: #FFFFFF;
 
-  --bali-gold: #C9A227;
-  --bali-gold-light: #E8D59C;
-  --bali-gold-dark: #8B6914;
-  --bali-brown: #6B4423;
-  --bali-brown-light: #8B6B4F;
-  --bali-cream: #FAF7F2;
+  --bali-gold: #A62C21;
+  --bali-gold-light: #FCA5A5;
+  --bali-gold-dark: #7F1D1D;
+  --bali-brown: #000000;
+  --bali-brown-light: #1A1A1A;
+  --bali-cream: #FFFFFF;
   --bali-white: #FFFFFF;
   --background: var(--background-light);
-  --foreground: #3D2914;
+  --foreground: #000000;
 }
 
 @theme inline {
@@ -56,7 +56,7 @@ body {
 }
 
 .gradient-button {
-  background: linear-gradient(135deg, #8B6B4E 0%, #4D342E 100%);
+  background: linear-gradient(135deg, #A62C21 0%, #801f15 100%);
 }
 
 .material-icons-outlined {
