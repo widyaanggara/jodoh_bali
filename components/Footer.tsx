@@ -36,10 +36,7 @@ export default function Footer() {
           <div>
             <h6 className="font-bold text-white mb-6">Informasi</h6>
             <ul className="space-y-4 text-sm text-stone-400">
-              <li><Link href="/about" className="hover:text-primary">Tentang Kami</Link></li>
-              <li><Link href="#" className="hover:text-primary">Kontak</Link></li>
-              <li><Link href="#" className="hover:text-primary">Kebijakan Privasi</Link></li>
-              <li><Link href="#" className="hover:text-primary">Syarat & Ketentuan</Link></li>
+              <li><Link href="/about" className="hover:text-primary">Tentang</Link></li>
             </ul>
           </div>
 

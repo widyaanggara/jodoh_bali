@@ -6,6 +6,7 @@ import { getBalineseDate } from '@/lib/balinese-calendar';
 import { BalineseDate, Zodiak } from '@/lib/types';
 import { getZodiak } from '@/lib/jodoh-logic';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
 
 export default function RamalanOtonan() {
@@ -188,14 +189,8 @@ export default function RamalanOtonan() {
                     )}
                 </div>
             </section>
-
-            <footer className="bg-stone-50 pt-20 pb-10 border-t border-accent-gold/10">
-                <div className="max-w-7xl mx-auto px-6 text-center">
-                    <p className="text-xs text-stone-500">
-                        © 2024 Jodoh Bali. Berdasarkan Lontar Tri Pramana &amp; Wariga.
-                    </p>
-                </div>
-            </footer>
+               {/* Footer */}
+                <Footer />
         </div>
     );
 }
