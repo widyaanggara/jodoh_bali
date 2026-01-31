@@ -11,3 +11,6 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      # Tambahkan ini agar Next.js tidak mencari-cari hostname container ID
+      HOSTNAME: "0.0.0.0"
+      PORT: 3000
