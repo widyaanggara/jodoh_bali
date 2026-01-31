@@ -39,7 +39,7 @@ export default function RamalanOtonan() {
     };
 
     return (
-        <div className="min-h-screen">
+        <div className="bg-background-light font-sans text-stone-800 min-h-screen">
             <Header />
 
             <section className="py-20 px-6">
@@ -189,8 +189,8 @@ export default function RamalanOtonan() {
                     )}
                 </div>
             </section>
-               {/* Footer */}
-                <Footer />
+            {/* Footer */}
+            <Footer />
         </div>
     );
 }

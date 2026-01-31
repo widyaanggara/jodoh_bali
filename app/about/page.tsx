@@ -8,7 +8,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-[#FDFCF8] selection:bg-accent-gold/30">
+        <div className="bg-background-light font-sans text-stone-800 min-h-screen selection:bg-accent-gold/30">
             <Header />
 
             <main className="max-w-4xl mx-auto px-6 py-16 md:py-24 font-serif">
