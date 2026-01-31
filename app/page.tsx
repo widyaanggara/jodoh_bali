@@ -61,7 +61,7 @@ export default function Home() {
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kenapa Bali Love?</h3>
+              <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3">Kenapa Metemu?</h3>
               <h2 className="font-display text-4xl font-bold text-stone-900">Pengalaman Kencan Tradisional & Modern</h2>
             </div>
 

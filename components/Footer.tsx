@@ -47,9 +47,7 @@ export default function Footer() {
           <p className="text-xs text-stone-500">
             © 2026 Jodoh Bali. Dibuat dengan cinta di Pulau Dewata. Seluruh hak cipta dilindungi.
           </p>
-          <div className="flex items-center gap-6 text-xs text-stone-500">
-            <span className="material-icons-outlined text-sm">verified</span> Verified Secure
-          </div>
+        
         </div>
       </div>
     </footer>
