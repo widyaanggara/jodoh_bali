@@ -3,7 +3,9 @@ import {
     KategoriJodoh,
     SodasaRsi,
     CompatibilityResult,
-    MarriageCycle
+    MarriageCycle,
+    Lintang,
+    MatchingDate
 } from "./types";
 import { wukuData, pancawaraData, saptawaraData, kategoriJodohData, dataLintang, sadwaraData, dataSodasaRsi } from './data';
 
