@@ -26,7 +26,7 @@ export default function Header() {
     const navLinks = [
         { name: 'Beranda', href: '/' },
         {
-            name: 'Fitur Perjodohan',
+            name: 'Peramalan Jodoh',
             href: '#',
             children: [
                 { name: 'Kecocokan Pasangan', href: '/kecocokan-pasangan' },

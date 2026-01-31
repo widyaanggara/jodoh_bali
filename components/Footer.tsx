@@ -48,7 +48,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-stone-500">
-            © 2024 Jodoh Bali. Dibuat dengan cinta di Pulau Dewata. Seluruh hak cipta dilindungi.
+            © 2026 Jodoh Bali. Dibuat dengan cinta di Pulau Dewata. Seluruh hak cipta dilindungi.
           </p>
           <div className="flex items-center gap-6 text-xs text-stone-500">
             <span className="material-icons-outlined text-sm">verified</span> Verified Secure
