@@ -121,10 +121,10 @@ export default function KecocokanPasangan() {
 
                 {/* Results Section */}
                 {result && !isLoading && (
-                    <section className="pb-24 pt-24 px-6 relative z-10 fade-in">
+                    <section className="pb-24 pt-8 px-6 relative z-10 fade-in">
                         <div className="max-w-4xl mx-auto space-y-12">
                             {/* Reset Button */}
-                            <div className="flex justify-center mt-12 mb-8">
+                            <div className="flex justify-center mb-6">
                                 <button
                                     onClick={handleReset}
                                     className="px-6 py-3 rounded-full bg-white border border-stone-200 text-stone-600 font-bold hover:bg-stone-50 hover:text-primary transition-colors shadow-sm flex items-center gap-2 text-sm"

@@ -40,7 +40,7 @@ export default function RamalanOtonan() {
     };
 
     return (
-        <div className="min-h-screen">
+        <div className="bg-background-light font-sans text-stone-800 transition-colors duration-300 min-h-screen">
             <Header />
 
             <section className="py-20 px-6">
