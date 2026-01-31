@@ -15,7 +15,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Jodoh Bali - Cinta Sejati Berdasarkan Tradisi",
+  title: "Metemu - Cinta Sejati Berdasarkan Tradisi",
   description: "Temukan kecocokan pasangan dan jodoh ideal berdasarkan kalender tradisional Bali.",
   keywords: ["jodoh bali", "wuku", "kalender bali", "kecocokan pasangan", "ramalan jodoh"],
 };

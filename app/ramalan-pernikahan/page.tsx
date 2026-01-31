@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
+import SplashScreen from '@/components/SplashScreen';
 import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
 
@@ -27,7 +28,7 @@ export default function RamalanPernikahan() {
             setResult(compatibility);
             setIsLoading(false);
             setTimeout(() => setShowResults(true), 100);
-        }, 800);
+        }, 3000);
     };
 
     const handleReset = () => {
@@ -72,61 +73,73 @@ export default function RamalanPernikahan() {
                 {/* Input Section */}
                 <section className="pb-12 px-6">
                     <div className="max-w-4xl mx-auto">
-                        <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-stone-200/50 border border-white/50 backdrop-blur-sm relative overflow-hidden mb-12">
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary/80 to-accent-gold/80"></div>
-                            <div className="grid md:grid-cols-2 gap-8 md:gap-12 relative z-10">
-                                <div className="space-y-4">
-                                    <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Anda</label>
-                                    <div className="relative group">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <span className="material-icons-outlined text-stone-400 group-focus-within:text-primary transition-colors">calendar_today</span>
+                        {!result && !isLoading && (
+                            <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-stone-200/50 border border-white/50 backdrop-blur-sm relative overflow-hidden mb-12">
+                                <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/80 to-accent-gold/80"></div>
+                                <div className="grid md:grid-cols-2 gap-8 md:gap-12 relative z-10">
+                                    <div className="space-y-4">
+                                        <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Anda</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <span className="material-icons-outlined text-stone-400 group-focus-within:text-primary transition-colors">calendar_today</span>
+                                            </div>
+                                            <input
+                                                type="date"
+                                                value={person1Date}
+                                                onChange={(e) => setPerson1Date(e.target.value)}
+                                                className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-primary/30 focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
+                                            />
                                         </div>
-                                        <input
-                                            type="date"
-                                            value={person1Date}
-                                            onChange={(e) => setPerson1Date(e.target.value)}
-                                            className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-primary/30 focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
-                                        />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Pasangan</label>
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <span className="material-icons-outlined text-stone-400 group-focus-within:text-accent-gold transition-colors">event</span>
+                                            </div>
+                                            <input
+                                                type="date"
+                                                value={person2Date}
+                                                onChange={(e) => setPerson2Date(e.target.value)}
+                                                className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-accent-gold/30 focus:bg-white focus:ring-4 focus:ring-accent-gold/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="space-y-4">
-                                    <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Pasangan</label>
-                                    <div className="relative group">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <span className="material-icons-outlined text-stone-400 group-focus-within:text-accent-gold transition-colors">event</span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            value={person2Date}
-                                            onChange={(e) => setPerson2Date(e.target.value)}
-                                            className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-accent-gold/30 focus:bg-white focus:ring-4 focus:ring-accent-gold/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
-                                        />
-                                    </div>
+                                <div className="mt-10 text-center">
+                                    <button
+                                        onClick={handleCalculate}
+                                        disabled={isLoading}
+                                        className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-stone-900 text-white rounded-full font-bold text-lg hover:bg-stone-800 hover:scale-105 active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 shadow-xl shadow-stone-900/20"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <span className="material-icons-outlined animate-spin">refresh</span>
+                                                Menghitung...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="material-icons-outlined">insights</span>
+                                                Lihat Prediksi
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
                             </div>
-                            <div className="mt-10 text-center">
-                                <button
-                                    onClick={handleCalculate}
-                                    disabled={isLoading}
-                                    className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-stone-900 text-white rounded-full font-bold text-lg hover:bg-stone-800 hover:scale-105 active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 shadow-xl shadow-stone-900/20"
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <span className="material-icons-outlined animate-spin">refresh</span>
-                                            Menghitung...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="material-icons-outlined">insights</span>
-                                            Lihat Prediksi
-                                        </>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
+                        )}
 
                         {result && (
                             <div id="result-section" className="space-y-8 animate-fade-in-up scroll-mt-24">
+                                {/* Reset Button */}
+                                <div className="flex justify-center mb-12">
+                                    <button
+                                        onClick={handleReset}
+                                        className="px-6 py-3 rounded-full bg-white border border-stone-200 text-stone-600 font-bold hover:bg-stone-50 hover:text-primary transition-colors shadow-sm flex items-center gap-2 text-sm"
+                                    >
+                                        <span className="material-symbols-outlined text-lg">restart_alt</span>
+                                        Cek Tanggal Lain
+                                    </button>
+                                </div>
                                 {result.marriageCycles && (
                                     <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-stone-100">
                                         <div className="text-center mb-8">
@@ -186,8 +199,13 @@ export default function RamalanPernikahan() {
                                 )}
 
                                 <Disclaimer />
+
+
                             </div>
                         )}
+
+                        {/* Splash Screen */}
+                        {isLoading && <SplashScreen message="Menghitung prediksi 5 tahun kedepan..." />}
                     </div>
                 </section>
                 <Footer />

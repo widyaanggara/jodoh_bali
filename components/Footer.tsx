@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-2 mb-6">
               <span className="material-icons-outlined text-primary text-2xl">flare</span>
-              <span className="font-display text-xl font-bold text-white">Jodoh Bali</span>
+              <span className="font-display text-xl font-bold text-white">Metemu</span>
             </div>
             <p className="text-stone-400 text-sm leading-relaxed mb-6">
               Menghubungkan hati di Pulau Dewata dengan sentuhan modern dan nilai tradisional.
@@ -45,9 +45,9 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-stone-500">
-            © 2026 Jodoh Bali. Dibuat dengan cinta di Pulau Dewata. Seluruh hak cipta dilindungi.
+            © 2026 Metemu. Dibuat dengan cinta di Pulau Dewata. Seluruh hak cipta dilindungi.
           </p>
-        
+
         </div>
       </div>
     </footer>

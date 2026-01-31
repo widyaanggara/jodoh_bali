@@ -8,6 +8,7 @@ import { getZodiak } from '@/lib/jodoh-logic';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
+import SplashScreen from '@/components/SplashScreen';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
@@ -29,7 +30,7 @@ export default function RamalanOtonan() {
             setResult(balineseDate);
             setZodiak(zodiakData);
             setIsLoading(false);
-        }, 500);
+        }, 3000);
     };
 
     const handleReset = () => {
@@ -39,7 +40,7 @@ export default function RamalanOtonan() {
     };
 
     return (
-        <div className="bg-background-light font-sans text-stone-800 min-h-screen">
+        <div className="min-h-screen">
             <Header />
 
             <section className="py-20 px-6">
@@ -54,51 +55,55 @@ export default function RamalanOtonan() {
                         </p>
                     </div>
 
-                    <div className="bg-white border border-accent-gold/10 p-8 md:p-10 mb-10 rounded-4xl shadow-xl shadow-stone-200/50">
-                        <div className="max-w-md mx-auto space-y-4">
-                            <label className="text-xs uppercase tracking-widest font-bold text-stone-500 ml-1">Pilih Tanggal Lahir</label>
-                            <div className="relative">
-                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">calendar_month</span>
-                                <input
-                                    type="date"
-                                    value={birthDate}
-                                    onChange={(e) => setBirthDate(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
-                                />
-                            </div>
+                    {!result && !isLoading && (
+                        <div className="bg-white border border-accent-gold/10 p-8 md:p-10 mb-10 rounded-4xl shadow-xl shadow-stone-200/50">
+                            <div className="max-w-md mx-auto space-y-4">
+                                <label className="text-xs uppercase tracking-widest font-bold text-stone-500 ml-1">Pilih Tanggal Lahir</label>
+                                <div className="relative">
+                                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">calendar_month</span>
+                                    <input
+                                        type="date"
+                                        value={birthDate}
+                                        onChange={(e) => setBirthDate(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
+                                    />
+                                </div>
 
-                            <div className="flex gap-4 pt-4">
-                                <button
-                                    onClick={handleCalculate}
-                                    disabled={isLoading}
-                                    className="flex-1 px-8 py-4 bg-primary text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <span className="animate-spin material-symbols-outlined text-lg">refresh</span>
-                                            Menghitung...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span className="material-symbols-outlined text-lg">auto_awesome</span>
-                                            Lihat Ramalan
-                                        </>
-                                    )}
-                                </button>
-                                {result && (
+                                <div className="flex gap-4 pt-4">
                                     <button
-                                        onClick={handleReset}
-                                        className="px-6 py-4 bg-stone-100 text-stone-600 rounded-2xl font-bold hover:bg-stone-200 transition-colors"
+                                        onClick={handleCalculate}
+                                        disabled={isLoading}
+                                        className="flex-1 px-8 py-4 bg-primary text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
                                     >
-                                        <span className="material-symbols-outlined text-lg">refresh</span>
+                                        {isLoading ? (
+                                            <>
+                                                <span className="animate-spin material-symbols-outlined text-lg">refresh</span>
+                                                Menghitung...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="material-symbols-outlined text-lg">auto_awesome</span>
+                                                Lihat Ramalan
+                                            </>
+                                        )}
                                     </button>
-                                )}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {result && (
                         <div className="space-y-8">
+                            {/* Reset Button */}
+                            <div className="flex justify-center mt-12 mb-8">
+                                <button
+                                    onClick={handleReset}
+                                    className="px-6 py-3 rounded-full bg-white border border-stone-200 text-stone-600 font-bold hover:bg-stone-50 hover:text-primary transition-colors shadow-sm flex items-center gap-2 text-sm"
+                                >
+                                    <span className="material-symbols-outlined text-lg">restart_alt</span>
+                                    Cek Tanggal Lain
+                                </button>
+                            </div>
                             <div className="grid md:grid-cols-2 gap-8 slide-up">
                                 {/* Balinese Birth Info */}
                                 <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20">
@@ -185,8 +190,13 @@ export default function RamalanOtonan() {
 
                             {/* Disclaimer */}
                             <Disclaimer />
+
+
                         </div>
                     )}
+
+                    {/* Splash Screen */}
+                    {isLoading && <SplashScreen message="Membaca peta kelahiran Anda..." />}
                 </div>
             </section>
             {/* Footer */}

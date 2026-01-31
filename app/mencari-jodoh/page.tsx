@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import IdealMatchSearchForm from '@/components/IdealMatch/SearchForm';
 import IdealMatchResultsList from '@/components/IdealMatch/ResultsList';
 import Disclaimer from '@/components/Disclaimer';
+import SplashScreen from '@/components/SplashScreen';
 import { getBalineseDate } from '@/lib/balinese-calendar';
 import { findIdealMatches, IdealMatch } from '@/lib/jodoh-logic';
 import { BalineseDate } from '@/lib/types';
@@ -29,7 +30,12 @@ export default function MencariJodoh() {
             setUserProfile(profile);
             setMatches(idealMatches);
             setIsLoading(false);
-        }, 800);
+        }, 3000);
+    };
+
+    const handleReset = () => {
+        setUserProfile(null);
+        setMatches([]);
     };
 
     return (
@@ -38,34 +44,49 @@ export default function MencariJodoh() {
 
             <main>
                 {/* Hero Section */}
-                <section className="relative overflow-hidden pt-20 pb-16">
-                    <img
-                        alt="Hibiscus illustration"
-                        className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw"
-                    />
-                    <img
-                        alt="Lotus illustration"
-                        className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q"
-                    />
+                {!userProfile && !isLoading && (
+                    <section className="relative overflow-hidden pt-20 pb-16">
+                        <img
+                            alt="Hibiscus illustration"
+                            className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw"
+                        />
+                        <img
+                            alt="Lotus illustration"
+                            className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q"
+                        />
 
-                    <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-                        <h1 className="font-display text-5xl md:text-6xl font-bold text-accent-gold leading-tight mb-6 slide-up">
-                            Temukan Tanggal Jodoh Ideal
-                        </h1>
-                        <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
-                            Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan perhitungan Tenung Urip Panca.
-                        </p>
+                        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                            <h1 className="font-display text-5xl md:text-6xl font-bold text-accent-gold leading-tight mb-6 slide-up">
+                                Temukan Tanggal Jodoh Ideal
+                            </h1>
+                            <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
+                                Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan perhitungan Tenung Urip Panca.
+                            </p>
 
-                        <IdealMatchSearchForm onSearch={handleSearch} isLoading={isLoading} />
-                    </div>
-                </section>
+                            <IdealMatchSearchForm onSearch={handleSearch} isLoading={isLoading} />
+                        </div>
+                    </section>
+                )}
+
+                {/* Splash Screen */}
+                {isLoading && <SplashScreen message="Menghitung hari baik untuk jodoh..." />}
 
                 {/* Results Section */}
                 {userProfile && (
                     <section className="pb-24 px-6 relative z-10 fade-in">
                         <div className="max-w-5xl mx-auto space-y-12">
+                            {/* Reset Button */}
+                            <div className="flex justify-center mt-12 mb-8">
+                                <button
+                                    onClick={handleReset}
+                                    className="px-6 py-3 rounded-full bg-white border border-stone-200 text-stone-600 font-bold hover:bg-stone-50 hover:text-primary transition-colors shadow-sm flex items-center gap-2 text-sm"
+                                >
+                                    <span className="material-symbols-outlined text-lg">restart_alt</span>
+                                    Cari Lagi
+                                </button>
+                            </div>
                             {/* User Profile Card */}
                             <div className="max-w-xl mx-auto bg-surface-light p-8 rounded-4xl border border-accent-gold/10 shadow-xl">
                                 <h3 className="font-display text-2xl font-bold text-center mb-6">Profil Anda</h3>
@@ -112,6 +133,8 @@ export default function MencariJodoh() {
 
                             {/* Disclaimer */}
                             <Disclaimer />
+
+
                         </div>
                     </section>
                 )}
