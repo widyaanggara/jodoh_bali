@@ -13,7 +13,7 @@ const SplashScreen = ({ message = "Sedang Melakukan Perhitungan..." }: { message
                 {/* Logo or Icon Animation */}
                 <div className="relative mb-8">
                     <img
-                        src="/splash-logo.png"
+                        src="/splash-logo.svg"
                         alt="Metemu Logo"
                         className="w-32 h-32 rounded-full shadow-2xl animate-bounce-slow relative z-10 object-cover p-1 bg-white"
                     />
