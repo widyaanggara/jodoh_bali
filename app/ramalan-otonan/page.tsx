@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
 import SplashScreen from '@/components/SplashScreen';
+import { simpanLog } from '@/firebase/app';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
@@ -29,6 +30,10 @@ export default function RamalanOtonan() {
             const zodiakData = getZodiak(date);
             setResult(balineseDate);
             setZodiak(zodiakData);
+
+            // Simpan log ke Firebase
+            simpanLog('ramalan_otonan', birthDate);
+
             setIsLoading(false);
         }, 3000);
     };

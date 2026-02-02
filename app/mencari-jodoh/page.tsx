@@ -10,6 +10,7 @@ import SplashScreen from '@/components/SplashScreen';
 import { getBalineseDate } from '@/lib/balinese-calendar';
 import { findIdealMatches, IdealMatch } from '@/lib/jodoh-logic';
 import { BalineseDate } from '@/lib/types';
+import { simpanLog } from '@/firebase/app';
 
 export default function MencariJodoh() {
     const [userProfile, setUserProfile] = useState<BalineseDate | null>(null);
@@ -26,9 +27,13 @@ export default function MencariJodoh() {
                 startYear,
                 endYear
             );
-
+            
             setUserProfile(profile);
             setMatches(idealMatches);
+
+            // Simpan log ke Firebase
+            simpanLog('mencari_jodoh', birthDate);
+
             setIsLoading(false);
         }, 3000);
     };

@@ -8,6 +8,7 @@ import Disclaimer from '@/components/Disclaimer';
 import SplashScreen from '@/components/SplashScreen';
 import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
+import { simpanLog } from '@/firebase/app';
 
 export default function KecocokanPasangan() {
     const [person1Date, setPerson1Date] = useState('');
@@ -28,6 +29,10 @@ export default function KecocokanPasangan() {
         setTimeout(() => {
             const compatibility = calculateCompatibility(new Date(person1Date), new Date(person2Date));
             setResult(compatibility);
+            
+            // Simpan log ke Firebase
+            simpanLog('kecocokan_pasangan', person1Date, person2Date);
+            
             setIsLoading(false);
             // Delay showing results for smooth animation
             setTimeout(() => setShowResults(true), 100);
