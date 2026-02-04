@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   keywords: ["jodoh bali", "wuku", "kalender bali", "kecocokan pasangan", "ramalan jodoh"],
 };
 
+import { SessionProvider } from "@/components/SessionProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${plusJakarta.variable} antialiased font-sans`}
       >
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

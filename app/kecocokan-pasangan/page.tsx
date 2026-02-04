@@ -10,12 +10,15 @@ import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
 import { simpanLog } from '@/firebase/app';
 
+import { useSession } from '@/components/SessionProvider';
+
 export default function KecocokanPasangan() {
     const [person1Date, setPerson1Date] = useState('');
     const [person2Date, setPerson2Date] = useState('');
     const [result, setResult] = useState<CompatibilityResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showResults, setShowResults] = useState(false);
+    const { sessionID, recentDates, logActivity } = useSession();
 
     const handleCalculate = () => {
         if (!person1Date || !person2Date) {
@@ -29,10 +32,10 @@ export default function KecocokanPasangan() {
         setTimeout(() => {
             const compatibility = calculateCompatibility(new Date(person1Date), new Date(person2Date));
             setResult(compatibility);
-            
-            // Simpan log ke Firebase
-            simpanLog('kecocokan_pasangan', person1Date, person2Date);
-            
+
+            // Log activity using the new session system (Append-Only)
+            logActivity('kecocokan_pasangan', person1Date, person2Date);
+
             setIsLoading(false);
             // Delay showing results for smooth animation
             setTimeout(() => setShowResults(true), 100);
@@ -72,6 +75,12 @@ export default function KecocokanPasangan() {
                             <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
                                 Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan berdasarkan kalender tradisional Bali.
                             </p>
+                            {sessionID && (
+                                <div className="mb-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter slide-up delay-150">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    Session: {sessionID}
+                                </div>
+                            )}
 
                             <div className="max-w-xl mx-auto slide-up delay-200">
                                 <div className="bg-surface-light p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200 border border-accent-gold/10">
@@ -88,6 +97,21 @@ export default function KecocokanPasangan() {
                                                     onChange={(e) => setPerson1Date(e.target.value)}
                                                 />
                                             </div>
+                                            {/* Quick Pick for Person 1 */}
+                                            {recentDates.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 mt-2 px-1">
+                                                    {recentDates.map(date => (
+                                                        <button
+                                                            key={`p1-${date}`}
+                                                            onClick={() => setPerson1Date(date)}
+                                                            className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[12px]">history</span>
+                                                            {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="space-y-3 text-left group">
                                             <label htmlFor="date2" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 ml-1">Tanggal Lahir Pasangan</label>
@@ -101,6 +125,21 @@ export default function KecocokanPasangan() {
                                                     onChange={(e) => setPerson2Date(e.target.value)}
                                                 />
                                             </div>
+                                            {/* Quick Pick for Person 2 */}
+                                            {recentDates.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 mt-2 px-1">
+                                                    {recentDates.map(date => (
+                                                        <button
+                                                            key={`p2-${date}`}
+                                                            onClick={() => setPerson2Date(date)}
+                                                            className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[12px]">history</span>
+                                                            {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                         <button
                                             onClick={handleCalculate}

@@ -12,10 +12,13 @@ import { findIdealMatches, IdealMatch } from '@/lib/jodoh-logic';
 import { BalineseDate } from '@/lib/types';
 import { simpanLog } from '@/firebase/app';
 
+import { useSession } from '@/components/SessionProvider';
+
 export default function MencariJodoh() {
     const [userProfile, setUserProfile] = useState<BalineseDate | null>(null);
     const [matches, setMatches] = useState<IdealMatch[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { sessionID, logActivity } = useSession();
 
     const handleSearch = (birthDate: string, startYear: number, endYear: number) => {
         setIsLoading(true);
@@ -27,12 +30,12 @@ export default function MencariJodoh() {
                 startYear,
                 endYear
             );
-            
+
             setUserProfile(profile);
             setMatches(idealMatches);
 
-            // Simpan log ke Firebase
-            simpanLog('mencari_jodoh', birthDate);
+            // Log activity using the new session system (Append-Only)
+            logActivity('mencari_jodoh', birthDate);
 
             setIsLoading(false);
         }, 3000);
@@ -69,6 +72,12 @@ export default function MencariJodoh() {
                             <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
                                 Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan perhitungan Tenung Urip Panca.
                             </p>
+                            {sessionID && (
+                                <div className="mb-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    Session: {sessionID}
+                                </div>
+                            )}
 
                             <IdealMatchSearchForm onSearch={handleSearch} isLoading={isLoading} />
                         </div>
@@ -119,7 +128,7 @@ export default function MencariJodoh() {
                             <div className="bg-surface-light p-10 md:p-14 rounded-[3rem] border border-accent-gold/10 shadow-xl shadow-stone-200/50 text-center slide-up">
                                 <h3 className="font-display text-2xl font-bold mb-8">💕 Wuku Pasangan Ideal</h3>
                                 <div className="flex flex-wrap justify-center gap-4 mb-6">
-                                    {userProfile.wuku.rekomendasi_pasangan.map((wuku, index) => (
+                                    {Array.from(new Set(matches.map(m => m.balineseDate.wuku.nama_wuku))).map((wuku, index) => (
                                         <span
                                             key={index}
                                             className="px-6 py-3 bg-accent-gold/5 border border-accent-gold/10 rounded-full text-primary font-bold shadow-sm"
@@ -129,7 +138,7 @@ export default function MencariJodoh() {
                                     ))}
                                 </div>
                                 <p className="text-stone-500 text-sm italic">
-                                    "Carilah pasangan yang lahir di wuku-wuku tersebut untuk mendapatkan harmoni hidup yang maksimal."
+                                    "Wuku-wuku di atas adalah tanggal kelahiran yang menghasilkan harmoni 'SRI' dengan profil Anda."
                                 </p>
                             </div>
 

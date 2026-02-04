@@ -9,12 +9,15 @@ import { calculateCompatibility } from '@/lib/balinese-calendar';
 import { CompatibilityResult } from '@/lib/types';
 import { simpanLog } from '@/firebase/app';
 
+import { useSession } from '@/components/SessionProvider';
+
 export default function RamalanPernikahan() {
     const [person1Date, setPerson1Date] = useState('');
     const [person2Date, setPerson2Date] = useState('');
     const [result, setResult] = useState<CompatibilityResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showResults, setShowResults] = useState(false);
+    const { sessionID, recentDates, logActivity } = useSession();
 
     const handleCalculate = () => {
         if (!person1Date || !person2Date) {
@@ -28,8 +31,8 @@ export default function RamalanPernikahan() {
             const compatibility = calculateCompatibility(new Date(person1Date), new Date(person2Date));
             setResult(compatibility);
 
-            // Simpan log ke Firebase
-            simpanLog('ramalan_pernikahan', person1Date, person2Date);
+            // Log activity using the new session system (Append-Only)
+            logActivity('ramalan_pernikahan', person1Date, person2Date);
 
             setIsLoading(false);
             setTimeout(() => setShowResults(true), 100);
@@ -95,6 +98,21 @@ export default function RamalanPernikahan() {
                                                 className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-primary/30 focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
                                             />
                                         </div>
+                                        {/* Quick Pick for Person 1 */}
+                                        {recentDates.length > 0 && !result && (
+                                            <div className="flex flex-wrap gap-2 mt-2 px-1">
+                                                {recentDates.map(date => (
+                                                    <button
+                                                        key={`p1-${date}`}
+                                                        onClick={() => setPerson1Date(date)}
+                                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[12px]">history</span>
+                                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Pasangan</label>
@@ -109,6 +127,21 @@ export default function RamalanPernikahan() {
                                                 className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-accent-gold/30 focus:bg-white focus:ring-4 focus:ring-accent-gold/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
                                             />
                                         </div>
+                                        {/* Quick Pick for Person 2 */}
+                                        {recentDates.length > 0 && !result && (
+                                            <div className="flex flex-wrap gap-2 mt-2 px-1">
+                                                {recentDates.map(date => (
+                                                    <button
+                                                        key={`p2-${date}`}
+                                                        onClick={() => setPerson2Date(date)}
+                                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[12px]">history</span>
+                                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="mt-10 text-center">

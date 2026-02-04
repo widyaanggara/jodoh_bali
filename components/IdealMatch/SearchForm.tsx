@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession } from '@/components/SessionProvider';
 
 interface SearchFormProps {
     onSearch: (birthDate: string, startYear: number, endYear: number) => void;
@@ -12,6 +13,7 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
     const currentYear = new Date().getFullYear();
     const [startYear, setStartYear] = useState(currentYear);
     const [endYear, setEndYear] = useState(currentYear + 5);
+    const { recentDates } = useSession();
 
     const handleSubmit = () => {
         if (!birthDate) {
@@ -58,6 +60,23 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
                                 onChange={(e) => setBirthDate(e.target.value)}
                             />
                         </div>
+
+                        {/* Quick Pick Section */}
+                        {recentDates.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-2 px-1">
+                                {recentDates.map(date => (
+                                    <button
+                                        key={date}
+                                        type="button"
+                                        onClick={() => setBirthDate(date)}
+                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
+                                    >
+                                        <span className="material-symbols-outlined text-[12px]">history</span>
+                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="space-y-3 text-left">

@@ -9,13 +9,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
 import SplashScreen from '@/components/SplashScreen';
-import { simpanLog } from '@/firebase/app';
+import { useSession } from '@/components/SessionProvider';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
     const [result, setResult] = useState<BalineseDate | null>(null);
     const [zodiak, setZodiak] = useState<Zodiak | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { sessionID, recentDates, logActivity } = useSession();
 
     const handleCalculate = () => {
         if (!birthDate) {
@@ -31,8 +32,8 @@ export default function RamalanOtonan() {
             setResult(balineseDate);
             setZodiak(zodiakData);
 
-            // Simpan log ke Firebase
-            simpanLog('ramalan_otonan', birthDate);
+            // Log activity using the new session system (Append-Only)
+            logActivity('ramalan_otonan', birthDate);
 
             setIsLoading(false);
         }, 3000);
@@ -58,6 +59,12 @@ export default function RamalanOtonan() {
                         <p className="text-stone-600 max-w-lg mx-auto">
                             Cek hari Otonan berikutnya dan peruntungan berdasarkan Lintang kelahiran Anda.
                         </p>
+                        {sessionID && (
+                            <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Session: {sessionID}
+                            </div>
+                        )}
                     </div>
 
                     {!result && !isLoading && (
@@ -73,6 +80,25 @@ export default function RamalanOtonan() {
                                         className="w-full pl-12 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
                                     />
                                 </div>
+
+                                {/* Quick Pick Section */}
+                                {recentDates.length > 0 && !result && (
+                                    <div className="pt-2 animate-fade-in">
+                                        <p className="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-2 ml-1">Pilih Cepat (Input Terakhir):</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {recentDates.map((date) => (
+                                                <button
+                                                    key={date}
+                                                    onClick={() => setBirthDate(date)}
+                                                    className="px-3 py-1.5 rounded-lg bg-stone-100 border border-stone-200 text-stone-600 text-[11px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1.5"
+                                                >
+                                                    <span className="material-symbols-outlined text-[14px]">history</span>
+                                                    {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="flex gap-4 pt-4">
                                     <button
