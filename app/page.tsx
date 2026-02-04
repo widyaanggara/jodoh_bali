@@ -72,7 +72,7 @@ export default function Home() {
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Kecocokan Pasangan</h4>
                 <p className="text-stone-500 leading-relaxed">
-                  Keamanan adalah prioritas kami. Semua profil melalui proses verifikasi ketat untuk memastikan keaslian.
+                  Menghitung titik temu energi antara dua individu melalui penggabungan nilai Neptu Pancawara dan Saptawara untuk mengungkap tingkat keharmonisan serta prediksi dinamika hubungan di masa depan.
                 </p>
               </div>
 
@@ -82,7 +82,7 @@ export default function Home() {
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Mencari Jodoh</h4>
                 <p className="text-stone-500 leading-relaxed">
-                  Algoritma kami mempertimbangkan nilai-nilai tradisional Bali dan aspirasi spiritual dalam memberikan rekomendasi.
+                  Menemukan kriteria profil pasangan yang memiliki keselarasan energi paling seimbang dengan siklus kelahiran Anda berdasarkan perhitungan matematis Wewaran yang presisi.
                 </p>
               </div>
 
@@ -92,7 +92,7 @@ export default function Home() {
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Apa itu Wuku?</h4>
                 <p className="text-stone-500 leading-relaxed">
-                  Berkomunikasi dengan tenang melalui platform terenkripsi kami yang menjaga privasi percakapan Anda.
+                  Dalam tradisi Bali, Wuku adalah siklus waktu dalam kalender Pawukon yang terdiri dari 30 pekan, di mana setiap pekan (satu Wuku) berdurasi 7 hari (Minggu hingga Sabtu).
                 </p>
               </div>
             </div>

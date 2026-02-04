@@ -73,7 +73,7 @@ export default function MencariJodoh() {
                                 Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan perhitungan Tenung Urip Panca.
                             </p>
                             {sessionID && (
-                                <div className="mb-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter">
+                                <div className="mb-10 hidden items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                     Session: {sessionID}
                                 </div>
