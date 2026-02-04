@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+import { wukuData } from '@/lib/data';
 
 export default function AboutPage() {
     return (
@@ -326,10 +327,47 @@ export default function AboutPage() {
                         </div>
                     </section>
 
-                    {/* Section 7: Heart Meter - Logika Skoring Akhir */}
+                    {/* Section 7: Pawukon - 30 Siklus Wuku */}
                     <section className="mt-20">
                         <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-3">
                             <span className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold">VII</span>
+                            Pawukon: 30 Siklus Wuku & Karakter
+                        </h2>
+                        <p className="mb-8">
+                            Wuku merupakan siklus 30 mingguan dalam kalender Pawukon Bali. Setiap Wuku berada di bawah naungan Dewa tertentu yang memberikan pengaruh energi dan karakter unik pada individu yang lahir di bawahnya. Berikut adalah tabel referensi 30 Wuku beserta naungan dan sifat utamanya:
+                        </p>
+
+                        <div className="overflow-hidden rounded-2xl border border-stone-200 shadow-sm bg-white">
+                            <div className="bg-stone-50 p-3 text-xs font-bold uppercase tracking-widest text-stone-500 border-b text-center">Tabel Referensi Pawukon (Siklus 30)</div>
+                            <div className="overflow-x-auto max-h-[600px] scrollbar-thin scrollbar-thumb-stone-200 scrollbar-track-transparent">
+                                <table className="w-full text-left border-collapse min-w-[600px]">
+                                    <thead className="bg-stone-50/50 sticky top-0 z-10 backdrop-blur-sm">
+                                        <tr className="border-b border-stone-100">
+                                            <th className="p-3 pl-6 text-xs font-bold text-stone-500 uppercase">No</th>
+                                            <th className="p-3 text-xs font-bold text-stone-500 uppercase">Wuku</th>
+                                            <th className="p-3 text-xs font-bold text-stone-500 uppercase">Naungan Dewa</th>
+                                            <th className="p-3 text-xs font-bold text-stone-500 uppercase">Sifat Utama</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="text-sm">
+                                        {wukuData.map((wuku, idx) => (
+                                            <tr key={wuku.nama_wuku} className={`border-b border-stone-100 ${idx % 2 === 0 ? '' : 'bg-stone-50/30'} hover:bg-accent-gold/5 transition-colors`}>
+                                                <td className="p-3 pl-6 font-mono text-stone-400">{wuku.id_wuku}</td>
+                                                <td className="p-3 font-bold text-primary">{wuku.nama_wuku}</td>
+                                                <td className="p-3 text-stone-600">{wuku.deskripsi.replace("Naungan ", "")}</td>
+                                                <td className="p-3 text-stone-500 italic">{wuku.sifat_umum}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Section 8: Heart Meter - Logika Skoring Akhir */}
+                    <section className="mt-20">
+                        <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-3">
+                            <span className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold">VIII</span>
                             Heart Meter: Logika Skoring Akhir
                         </h2>
                         <p>
