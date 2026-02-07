@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
     const pathname = usePathname();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +39,10 @@ export default function Header() {
         { name: 'Tentang', href: '/about' },
     ];
 
+    const toggleMobileDropdown = (name: string) => {
+        setActiveMobileDropdown(prev => prev === name ? null : name);
+    };
+
     return (
         <header className="sticky top-0 z-50 bg-background-light/80 backdrop-blur-md border-b border-accent-gold/10">
             <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -57,11 +62,13 @@ export default function Header() {
                                 <button
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     onMouseEnter={() => setIsDropdownOpen(true)}
-                                    className={`transition-colors h-20 flex items-center gap-1 border-b-2 border-transparent text-stone-600 hover:text-primary ${link.children.some(child => pathname === child.href) ? 'text-primary' : ''
+                                    className={`cursor-pointer transition-colors h-20 flex items-center gap-1 border-b-2 border-transparent text-stone-600 hover:text-primary ${link.children.some(child => pathname === child.href) ? 'text-primary' : ''
                                         }`}
                                 >
                                     {link.name}
-                                    <span className="material-icons-outlined text-sm">expand_more</span>
+                                    <span className={`material-icons-outlined text-sm transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                                        expand_more
+                                    </span>
                                 </button>
 
                                 {/* Dropdown Menu */}
@@ -75,7 +82,7 @@ export default function Header() {
                                                 key={child.href}
                                                 href={child.href}
                                                 onClick={() => setIsDropdownOpen(false)}
-                                                className={`block px-4 py-3 rounded-xl transition-colors text-sm ${pathname === child.href
+                                                className={`cursor-pointer block px-4 py-3 rounded-xl transition-colors text-sm ${pathname === child.href
                                                         ? 'bg-primary/5 text-primary font-bold'
                                                         : 'text-stone-600 hover:bg-stone-50 hover:text-primary'
                                                     }`}
@@ -90,7 +97,7 @@ export default function Header() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`transition-colors h-20 flex items-center border-b-2 ${pathname === link.href
+                                className={`cursor-pointer transition-colors h-20 flex items-center border-b-2 ${pathname === link.href
                                         ? 'text-primary border-primary'
                                         : 'text-stone-600 hover:text-primary border-transparent'
                                     }`}
@@ -106,7 +113,7 @@ export default function Header() {
                     {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+                        className="cursor-pointer md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
                         aria-label="Toggle menu"
                     >
                         <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
@@ -117,22 +124,31 @@ export default function Header() {
             </nav>
 
             {/* Mobile Navigation */}
-            <div className={`md:hidden overflow-hidden transition-all duration-300 ${isMenuOpen ? 'max-h-96 pb-6 px-6 shadow-lg bg-white/95 backdrop-blur-sm' : 'max-h-0'}`}>
-                <div className="flex flex-col gap-2 pt-4 border-t border-accent-gold/10">
+            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+                <div className="px-6 flex flex-col gap-2 pt-4 border-t border-accent-gold/10 bg-white/95 backdrop-blur-sm">
                     {navLinks.map((link) => (
                         link.children ? (
-                            <div key={link.name} className="flex flex-col bg-stone-50 rounded-xl overflow-hidden">
-                                <span className="px-4 py-3 font-bold text-primary text-sm flex items-center justify-between">
+                            <div key={link.name} className="flex flex-col bg-stone-50 rounded-xl overflow-hidden transition-all duration-300">
+                                <button 
+                                    onClick={() => toggleMobileDropdown(link.name)}
+                                    className="cursor-pointer px-4 py-3 font-bold text-primary text-sm flex items-center justify-between w-full hover:bg-stone-100 transition-colors"
+                                >
                                     {link.name}
-                                    <span className="material-icons-outlined text-xs">grid_view</span>
-                                </span>
-                                <div className="flex flex-col border-t border-stone-200">
+                                    <span className={`material-icons-outlined text-xs transition-transform duration-300 ${activeMobileDropdown === link.name ? 'rotate-180' : ''}`}>
+                                        expand_more
+                                    </span>
+                                </button>
+                                <div 
+                                    className={`flex flex-col border-stone-200 transition-all duration-300 w-full overflow-hidden ${
+                                        activeMobileDropdown === link.name ? 'max-h-48 border-t opacity-100' : 'max-h-0 border-t-0 opacity-0'
+                                    }`}
+                                >
                                     {link.children.map(child => (
                                         <Link
                                             key={child.href}
                                             href={child.href}
                                             onClick={() => setIsMenuOpen(false)}
-                                            className={`px-6 py-3 text-sm transition-colors border-l-2 ${pathname === child.href
+                                            className={`cursor-pointer px-6 py-3 text-sm transition-colors border-l-2 ${pathname === child.href
                                                     ? 'text-primary border-primary bg-white font-medium'
                                                     : 'text-stone-600 hover:text-primary border-transparent'
                                                 }`}

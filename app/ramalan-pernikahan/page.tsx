@@ -14,6 +14,9 @@ import { useSession } from '@/components/SessionProvider';
 export default function RamalanPernikahan() {
     const [person1Date, setPerson1Date] = useState('');
     const [person2Date, setPerson2Date] = useState('');
+    // [NEW] State untuk menyimpan jam lahir kedua pihak
+    const [person1Time, setPerson1Time] = useState('12:00');
+    const [person2Time, setPerson2Time] = useState('12:00');
     const [result, setResult] = useState<CompatibilityResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showResults, setShowResults] = useState(false);
@@ -28,11 +31,17 @@ export default function RamalanPernikahan() {
         setIsLoading(true);
         setShowResults(false);
         setTimeout(() => {
-            const compatibility = calculateCompatibility(new Date(person1Date), new Date(person2Date));
+            // [NEW] Memasukkan data jam lahir ke fungsi hitung kecocokan
+            const compatibility = calculateCompatibility(
+                new Date(person1Date), 
+                new Date(person2Date),
+                person1Time,
+                person2Time
+            );
             setResult(compatibility);
 
-            // Log activity using the new session system (Append-Only)
-            logActivity('ramalan_pernikahan', person1Date, person2Date);
+            // [NEW] Menambahkan jam lahir ke log aktivitas (lokal)
+            logActivity('ramalan_pernikahan', person1Date, person2Date, person1Time, person2Time);
 
             setIsLoading(false);
             setTimeout(() => setShowResults(true), 100);
@@ -42,6 +51,9 @@ export default function RamalanPernikahan() {
     const handleReset = () => {
         setPerson1Date('');
         setPerson2Date('');
+        // [NEW] Reset jam lahir ke default
+        setPerson1Time('12:00');
+        setPerson2Time('12:00');
         setResult(null);
         setShowResults(false);
     };
@@ -98,21 +110,18 @@ export default function RamalanPernikahan() {
                                                 className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-primary/30 focus:bg-white focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
                                             />
                                         </div>
-                                        {/* Quick Pick for Person 1 */}
-                                        {recentDates.length > 0 && !result && (
-                                            <div className="flex flex-wrap gap-2 mt-2 px-1">
-                                                {recentDates.map(date => (
-                                                    <button
-                                                        key={`p1-${date}`}
-                                                        onClick={() => setPerson1Date(date)}
-                                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
-                                                    >
-                                                        <span className="material-symbols-outlined text-[12px]">history</span>
-                                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                                                    </button>
-                                                ))}
+                                        {/* [NEW] Input Jam Lahir Anda */}
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <span className="material-icons-outlined text-stone-400 group-focus-within:text-primary transition-colors text-sm">schedule</span>
                                             </div>
-                                        )}
+                                            <input
+                                                type="time"
+                                                value={person1Time}
+                                                onChange={(e) => setPerson1Time(e.target.value)}
+                                                className="block w-full pl-10 pr-3 py-2 text-xs rounded-lg bg-stone-50 border border-stone-200 focus:border-primary/30 outline-none transition-all"
+                                            />
+                                        </div>
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-sm font-bold text-stone-700 uppercase tracking-wide">Tanggal Lahir Pasangan</label>
@@ -127,28 +136,27 @@ export default function RamalanPernikahan() {
                                                 className="block w-full pl-12 pr-4 py-4 rounded-xl bg-stone-50 border-2 border-transparent focus:border-accent-gold/30 focus:bg-white focus:ring-4 focus:ring-accent-gold/10 transition-all outline-none font-medium text-stone-800 placeholder-stone-400"
                                             />
                                         </div>
-                                        {/* Quick Pick for Person 2 */}
-                                        {recentDates.length > 0 && !result && (
-                                            <div className="flex flex-wrap gap-2 mt-2 px-1">
-                                                {recentDates.map(date => (
-                                                    <button
-                                                        key={`p2-${date}`}
-                                                        onClick={() => setPerson2Date(date)}
-                                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
-                                                    >
-                                                        <span className="material-symbols-outlined text-[12px]">history</span>
-                                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                                                    </button>
-                                                ))}
+                                        {/* [NEW] Input Jam Lahir Pasangan */}
+                                        <div className="relative group">
+                                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <span className="material-icons-outlined text-stone-400 group-focus-within:text-accent-gold transition-colors text-sm">schedule</span>
                                             </div>
-                                        )}
+                                            <input
+                                                type="time"
+                                                value={person2Time}
+                                                onChange={(e) => setPerson2Time(e.target.value)}
+                                                className="block w-full pl-10 pr-3 py-2 text-xs rounded-lg bg-stone-50 border border-accent-gold/30 outline-none transition-all"
+                                            />
+                                        </div>
                                     </div>
+                                    
                                 </div>
+                                <p className="text-xs text-stone-600 mt-6 italic text-center font-medium max-w-2xl mx-auto leading-relaxed">*Khusus kelahiran subuh (00:00 - 06:00), sistem otomatis menyesuaikan Dina Bali ke hari sebelumnya (sebelum matahari terbit).</p>
                                 <div className="mt-10 text-center">
                                     <button
                                         onClick={handleCalculate}
                                         disabled={isLoading}
-                                        className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-stone-900 text-white rounded-full font-bold text-lg hover:bg-stone-800 hover:scale-105 active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 shadow-xl shadow-stone-900/20"
+                                        className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary text-white rounded-2xl font-bold text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-70 disabled:hover:scale-100 shadow-xl shadow-primary/20"
                                     >
                                         {isLoading ? (
                                             <>

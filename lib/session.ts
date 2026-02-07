@@ -14,6 +14,8 @@ export interface VisitorActivity {
     feature_type: string;
     tanggal_lahir: string;
     tanggal_lahir_2: string | null;
+    jam_lahir?: string | null;
+    jam_lahir_2?: string | null;
 }
 
 /**

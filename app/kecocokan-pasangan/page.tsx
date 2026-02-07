@@ -15,6 +15,9 @@ import { useSession } from '@/components/SessionProvider';
 export default function KecocokanPasangan() {
     const [person1Date, setPerson1Date] = useState('');
     const [person2Date, setPerson2Date] = useState('');
+    // [NEW] State untuk menyimpan jam lahir kedua pihak
+    const [person1Time, setPerson1Time] = useState('12:00');
+    const [person2Time, setPerson2Time] = useState('12:00');
     const [result, setResult] = useState<CompatibilityResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showResults, setShowResults] = useState(false);
@@ -30,11 +33,17 @@ export default function KecocokanPasangan() {
         setShowResults(false);
         // Simulate calculation delay for splash screen effect
         setTimeout(() => {
-            const compatibility = calculateCompatibility(new Date(person1Date), new Date(person2Date));
+            // [NEW] Memasukkan data jam lahir ke fungsi hitung kecocokan
+            const compatibility = calculateCompatibility(
+                new Date(person1Date), 
+                new Date(person2Date),
+                person1Time,
+                person2Time
+            );
             setResult(compatibility);
 
-            // Log activity using the new session system (Append-Only)
-            logActivity('kecocokan_pasangan', person1Date, person2Date);
+            // [NEW] Menambahkan jam lahir ke log aktivitas (lokal)
+            logActivity('kecocokan_pasangan', person1Date, person2Date, person1Time, person2Time);
 
             setIsLoading(false);
             // Delay showing results for smooth animation
@@ -45,6 +54,9 @@ export default function KecocokanPasangan() {
     const handleReset = () => {
         setPerson1Date('');
         setPerson2Date('');
+        // [NEW] Reset jam lahir ke default
+        setPerson1Time('12:00');
+        setPerson2Time('12:00');
         setResult(null);
         setShowResults(false);
     };
@@ -54,37 +66,40 @@ export default function KecocokanPasangan() {
             <Header />
 
             <main>
-                {/* Hero Section - Input Form (Hidden when showing results) */}
-                {!result && (
-                    <section className="relative overflow-hidden pt-20 pb-16">
-                        <img
-                            alt="Hibiscus illustration"
-                            className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw"
-                        />
-                        <img
-                            alt="Lotus illustration"
-                            className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q"
-                        />
+                {/* Hero Section - Always Visible to maintain layout stability */}
+                <section className="relative overflow-hidden pt-20 pb-12">
+                    <img
+                        alt="Hibiscus illustration"
+                        className="lotus-bg absolute -top-10 -left-20 w-80 rotate-12 filter grayscale brightness-150 opacity-20"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI_aEU4azrZzqWAUFu0f7UDVVS1WRTjfY-E5JMoMD3yb3SgZ9bEd9ZQVDopTLqvUpo474bGsB9xuVCBukFh85LApcqIvPRkCah0R85illdaRHE1yJqLOIHZFn1DSkVYDh5E3TvVIqwqQE1yEsgje2bmeTEw22bTBoWD6WMA5335yOjghZV0thcyzXcXuljBURdiF56qe-PoATRgtvUPb-5W23BuxFZBK3I1qLUd7L_RocoiNdZWhwxnoCWq6eIh9EtripPBWzgSw"
+                    />
+                    <img
+                        alt="Lotus illustration"
+                        className="lotus-bg absolute -bottom-10 -right-20 w-96 -rotate-12 filter grayscale brightness-150 opacity-20"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5n4xrL-Qx7RTyVysEsBHIJJvfU6SJetYBnQPfypldKnLbunkehldV7RNxo6TW2F2TUEUwL2RtqiqKNgavqvcWcXWSCTdFhx86dfFKRuSZquugLyuk3mbFssZ-3hsGPvoIIiFesRmHrbSNA9xW_97WENH0siqj6wJxdfADG_qKxQGgsbemj-DcAih82CZ7wBrYY4x0ZZYLe1YGfH6qu6ckuehwg6uq5vHucRx9kP97TJxo1KttFsILfpYM-9U_YIH_NcUNVk2K7Q"
+                    />
 
-                        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-                            <h1 className="font-display text-5xl md:text-6xl font-bold text-accent-gold leading-tight mb-6 slide-up">
-                                Cek Kecocokan Pasangan
-                            </h1>
-                            <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
-                                Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan berdasarkan kalender tradisional Bali.
-                            </p>
-                            {sessionID && (
-                                <div className="mb-10 hidden  items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter slide-up delay-150">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    Session: {sessionID}
-                                </div>
-                            )}
+                    <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                        <h1 className="font-display text-5xl md:text-6xl font-bold text-accent-gold leading-tight mb-6 slide-up">
+                            Cek Kecocokan Pasangan
+                        </h1>
+                        <p className="text-lg text-stone-600 mb-8 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
+                            Masukkan tanggal lahir Anda dan pasangan untuk mengetahui tingkat kecocokan berdasarkan kalender tradisional Bali.
+                        </p>
+                        {sessionID && (
+                            <div className="mb-10 hidden items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter slide-up delay-150">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Session: {sessionID}
+                            </div>
+                        )}
+                    </div>
+                </section>
 
-                            <div className="max-w-xl mx-auto slide-up delay-200">
-                                <div className="bg-surface-light p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200 border border-accent-gold/10">
-                                    <div className="space-y-8">
+                {/* Input Form Section */}
+                {!result && !isLoading && (
+                    <div className="max-w-xl mx-auto px-6 pb-12 slide-up delay-200">
+                        <div className="bg-surface-light p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-stone-200 border border-accent-gold/10">
+                            <div className="space-y-8">
                                         <div className="space-y-3 text-left group">
                                             <label htmlFor="date1" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 ml-1">Tanggal Lahir Anda</label>
                                             <div className="relative">
@@ -97,21 +112,16 @@ export default function KecocokanPasangan() {
                                                     onChange={(e) => setPerson1Date(e.target.value)}
                                                 />
                                             </div>
-                                            {/* Quick Pick for Person 1 */}
-                                            {recentDates.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 mt-2 px-1">
-                                                    {recentDates.map(date => (
-                                                        <button
-                                                            key={`p1-${date}`}
-                                                            onClick={() => setPerson1Date(date)}
-                                                            className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
-                                                        >
-                                                            <span className="material-symbols-outlined text-[12px]">history</span>
-                                                            {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            {/* [NEW] Input Jam Lahir Anda */}
+                                            <div className="relative group">
+                                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold transition-colors text-sm">schedule</span>
+                                                <input
+                                                    type="time"
+                                                    value={person1Time}
+                                                    onChange={(e) => setPerson1Time(e.target.value)}
+                                                    className="w-full pl-12 pr-4 py-2 bg-stone-50 border-stone-200 rounded-xl focus:ring-primary focus:border-primary text-xs transition-all outline-none"
+                                                />
+                                            </div>
                                         </div>
                                         <div className="space-y-3 text-left group">
                                             <label htmlFor="date2" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 ml-1">Tanggal Lahir Pasangan</label>
@@ -125,22 +135,18 @@ export default function KecocokanPasangan() {
                                                     onChange={(e) => setPerson2Date(e.target.value)}
                                                 />
                                             </div>
-                                            {/* Quick Pick for Person 2 */}
-                                            {recentDates.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 mt-2 px-1">
-                                                    {recentDates.map(date => (
-                                                        <button
-                                                            key={`p2-${date}`}
-                                                            onClick={() => setPerson2Date(date)}
-                                                            className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
-                                                        >
-                                                            <span className="material-symbols-outlined text-[12px]">history</span>
-                                                            {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            {/* [NEW] Input Jam Lahir Pasangan */}
+                                            <div className="relative group">
+                                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold transition-colors text-sm">schedule</span>
+                                                <input
+                                                    type="time"
+                                                    value={person2Time}
+                                                    onChange={(e) => setPerson2Time(e.target.value)}
+                                                    className="w-full pl-12 pr-4 py-2 bg-stone-50 border-stone-200 rounded-xl focus:ring-primary focus:border-primary text-xs transition-all outline-none"
+                                                />
+                                            </div>
                                         </div>
+                                        <p className="text-xs text-stone-600 mt-6 italic text-center font-medium max-w-2xl mx-auto leading-relaxed">*Khusus kelahiran subuh (00:00 - 06:00), sistem otomatis menyesuaikan Dina Bali ke hari sebelumnya (sebelum matahari terbit). Berdasarkan tradisi, hari berganti saat matahari terbit (Matuuh).</p>
                                         <button
                                             onClick={handleCalculate}
                                             disabled={isLoading}
@@ -156,9 +162,7 @@ export default function KecocokanPasangan() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                )}
+                        )}
 
                 {/* Splash Screen */}
                 {isLoading && <SplashScreen message="Sedang membaca kecocokan energi..." />}

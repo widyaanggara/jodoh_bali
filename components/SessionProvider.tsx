@@ -7,7 +7,7 @@ import { generateSessionID, saveToDatabase } from '@/lib/session';
 interface SessionContextType {
     sessionID: string;
     recentDates: string[];
-    logActivity: (featureName: string, inputDate: string, inputDate2?: string) => Promise<void>;
+    logActivity: (featureName: string, inputDate: string, inputDate2?: string, birthTime?: string, birthTime2?: string) => Promise<void>;
     resetSession: () => void;
 }
 
@@ -59,7 +59,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
         };
     }, [startNewSession, resetInactivityTimer]);
 
-    const logActivity = async (featureName: string, inputDate: string, inputDate2?: string) => {
+    const logActivity = async (featureName: string, inputDate: string, inputDate2?: string, birthTime?: string, birthTime2?: string) => {
         // Append to local Quick Pick list (keep last 3 unique)
         if (inputDate || inputDate2) {
             setRecentDates(prev => {
@@ -70,12 +70,14 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
             });
         }
 
-        // Save to Database (Append-Only)
+        // Save to database
         await saveToDatabase({
             session_id: sessionID,
             feature_type: featureName,
             tanggal_lahir: inputDate,
-            tanggal_lahir_2: inputDate2 || null
+            tanggal_lahir_2: inputDate2 || null,
+            jam_lahir: birthTime || null,
+            jam_lahir_2: birthTime2 || null
         });
 
         // Reset timer on explicit calculation action too

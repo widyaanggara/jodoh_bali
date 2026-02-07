@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SplashScreen from '@/components/SplashScreen';
@@ -15,6 +15,8 @@ interface InputLog {
     feature_type: FeatureType;
     tanggal_lahir: string;
     tanggal_lahir_2?: string | null;
+    jam_lahir?: string | null;
+    jam_lahir_2?: string | null;
     created_at: any; // Firebase Timestamp or ServerTimestamp
 }
 
@@ -40,8 +42,10 @@ export default function AdminLogPage() {
         ramalan_pernikahan: 0,
         ramalan_otonan: 0
     });
-    const [logs, setLogs] = useState<InputLog[]>([]);
+    const [allLogs, setAllLogs] = useState<InputLog[]>([]); // Store all raw logs
     const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+    const [startDate, setStartDate] = useState<string>(''); // YYYY-MM-DD
+    const [endDate, setEndDate] = useState<string>(''); // YYYY-MM-DD
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -52,25 +56,14 @@ export default function AdminLogPage() {
             setIsLoading(true);
             try {
                 // Ambil data dari Firebase
-                const allLogs = await ambilDataLog() as InputLog[];
-                
-                // Hitung Statistik secara manual dari array Firebase
-                const stats = allLogs.reduce((acc, log) => {
-                    const type = log.feature_type;
-                    if (acc[type] !== undefined) {
-                        acc[type]++;
-                    }
-                    return acc;
-                }, {
-                    kecocokan_pasangan: 0,
-                    mencari_jodoh: 0,
-                    ramalan_pernikahan: 0,
-                    ramalan_otonan: 0
-                } as Record<FeatureType, number>);
-
-                setLogs(allLogs);
-                setTotalInputs(allLogs.length);
-                setByFeature(stats);
+                const fetchedLogs = await ambilDataLog() as InputLog[];
+                // Sort by newst first just in case
+                fetchedLogs.sort((a, b) => {
+                   const dateA = a.created_at?.toDate ? a.created_at.toDate() : new Date(a.created_at || 0);
+                   const dateB = b.created_at?.toDate ? b.created_at.toDate() : new Date(b.created_at || 0);
+                   return dateB.getTime() - dateA.getTime();
+                });
+                setAllLogs(fetchedLogs);
             } catch (error) {
                 console.error("Gagal memuat data admin:", error);
             } finally {
@@ -81,14 +74,65 @@ export default function AdminLogPage() {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        // Reset ke halaman 1 saat filter berubah
-        setCurrentPage(1);
-    }, [activeFilter]);
+    // 1. Memoize Logs Filtered by Date Range (Global Filter)
+    const logsFilteredByDate = useMemo(() => {
+        if (!startDate && !endDate) return allLogs;
 
-    const filteredLogs = activeFilter === 'all' 
-        ? logs 
-        : logs.filter(log => log.feature_type === activeFilter);
+        return allLogs.filter(log => {
+            if (!log.created_at) return false;
+            
+            const logDate = log.created_at.toDate ? log.created_at.toDate() : new Date(log.created_at);
+            if (isNaN(logDate.getTime())) return false;
+
+            const logDateString = logDate.toLocaleDateString('sv-SE'); 
+            
+            if (startDate && endDate) {
+                return logDateString >= startDate && logDateString <= endDate;
+            } else if (startDate) {
+                return logDateString >= startDate;
+            } else if (endDate) {
+                return logDateString <= endDate;
+            }
+            return true;
+        });
+    }, [allLogs, startDate, endDate]);
+
+    // 2. Derive Statistics from Date-Filtered Logs
+    useEffect(() => {
+        const newStats = logsFilteredByDate.reduce((acc, log) => {
+            const type = log.feature_type;
+            if (acc[type] !== undefined) {
+                acc[type]++;
+            }
+            return acc;
+        }, {
+            kecocokan_pasangan: 0,
+            mencari_jodoh: 0,
+            ramalan_pernikahan: 0,
+            ramalan_otonan: 0
+        } as Record<FeatureType, number>);
+
+        setTotalInputs(logsFilteredByDate.length);
+        setByFeature(newStats);
+        setCurrentPage(1); // Reset pagination when date filter changes changes the dataset size significantly
+    }, [logsFilteredByDate]); // Updates when the filtered list changes
+
+    // 3. Filter by Feature Tab (Table View Filter)
+    // Derived from logsFilteredByDate
+    const filteredLogs = useMemo(() => {
+        // Reset page when tab changes handled by separate effect below, 
+        // but result derivation is here.
+        if (activeFilter === 'all') {
+            return logsFilteredByDate;
+        }
+        return logsFilteredByDate.filter(log => log.feature_type === activeFilter);
+    }, [logsFilteredByDate, activeFilter]);
+
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [activeFilter, startDate, endDate]);
+
 
     // Hitung data untuk pagination
     const totalPages = Math.ceil(filteredLogs.length / ITEMS_PER_PAGE);
@@ -97,12 +141,60 @@ export default function AdminLogPage() {
         currentPage * ITEMS_PER_PAGE
     );
 
+    // Fungsi untuk ekspor data CSV berdasarkan filter aktif
+    const handleExportCSV = () => {
+        // Gunakan filteredLogs (data yang sedang tampil berdasarkan range & tab)
+        // Jika Tuaji ingin SEMUA data mentah tanpa range, gunakan allLogs.
+        // Di sini kita gunakan data yang sudah di-filter agar lebih spesifik.
+        const dataToExport = filteredLogs;
+        
+        if (dataToExport.length === 0) {
+            alert('Tidak ada data untuk diekspor');
+            return;
+        }
+
+        // 1. Definisikan Header
+        const headers = ['ID', 'Fitur', 'Tanggal Lahir 1', 'Jam Lahir 1', 'Tanggal Lahir 2', 'Jam Lahir 2', 'Waktu Input'];
+        
+        // 2. Format Data
+        const csvRows = dataToExport.map(log => {
+            const timeInput = log.created_at?.toDate ? log.created_at.toDate() : new Date(log.created_at || 0);
+            const timeString = timeInput.toLocaleString('id-ID').replace(/,/g, ''); 
+            
+            return [
+                log.id,
+                featureLabels[log.feature_type],
+                log.tanggal_lahir,
+                log.jam_lahir || '-',
+                log.tanggal_lahir_2 || '-',
+                log.jam_lahir_2 || '-',
+                timeString
+            ].map(value => `"${value}"`).join(','); 
+        });
+
+        // 3. Gabungkan Header dan Data
+        const csvContent = [headers.join(','), ...csvRows].join('\n');
+        
+        // 4. Trigger Download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        const fileName = startDate && endDate ? `log_${startDate}_to_${endDate}.csv` : `log_statistik_${new Date().toLocaleDateString('sv-SE')}.csv`;
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     // Fungsi untuk menghasilkan daftar nomor halaman dengan titik-titik (ellipsis)
     const getPageNumbers = () => {
         const pages = [];
         const maxVisible = 5;
 
         if (totalPages <= maxVisible) {
+            // ... (rest of pagination logic is fine)
             for (let i = 1; i <= totalPages; i++) pages.push(i);
         } else {
             // Selalu tampilkan halaman pertama
@@ -260,12 +352,70 @@ export default function AdminLogPage() {
                                 </div>
                             </div>
 
+
+
+                            {/* Date Range Filter Bar - Dedicated Section */}
+                            <div className="mb-8">
+                                <div className="bg-white px-6 py-4 rounded-3xl shadow-lg border border-stone-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                                    <div className="flex items-center gap-2 text-stone-500">
+                                        <span className="material-symbols-outlined">filter_list</span>
+                                        <span className="text-sm font-bold uppercase tracking-wider">Filter Data</span>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center justify-center gap-4">
+                                        {/* Start Date */}
+                                        <div className="flex items-center gap-2 bg-stone-50 px-3 py-2 rounded-xl border border-stone-100 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Dari</span>
+                                            <input 
+                                                type="date" 
+                                                value={startDate}
+                                                onChange={(e) => setStartDate(e.target.value)}
+                                                className="bg-transparent text-xs font-bold text-stone-700 outline-none cursor-pointer w-28"
+                                            />
+                                        </div>
+
+                                        <span className="text-stone-300 material-symbols-outlined text-sm">arrow_forward</span>
+
+                                        {/* End Date */}
+                                        <div className="flex items-center gap-2 bg-stone-50 px-3 py-2 rounded-xl border border-stone-100 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                                            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Sampai</span>
+                                            <input 
+                                                type="date" 
+                                                value={endDate}
+                                                onChange={(e) => setEndDate(e.target.value)}
+                                                className="bg-transparent text-xs font-bold text-stone-700 outline-none cursor-pointer w-28"
+                                            />
+                                        </div>
+
+                                        {/* Reset Button */}
+                                        {(startDate || endDate) && (
+                                            <button 
+                                                onClick={() => { setStartDate(''); setEndDate(''); }}
+                                                className="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                                                title="Reset Filter"
+                                            >
+                                                <span className="material-symbols-outlined text-sm">restart_alt</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Log Table */}
                             <div className="bg-white rounded-3xl shadow-xl border border-stone-100 overflow-hidden">
                                 <div className="p-6 border-b border-stone-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <h2 className="font-display text-xl font-bold text-stone-800">
-                                        📋 Daftar Log Input
-                                    </h2>
+                                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                                        <h2 className="font-display text-xl font-bold text-stone-800">
+                                            📋 Daftar Log Input
+                                        </h2>
+                                        <button
+                                            onClick={handleExportCSV}
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20 active:scale-95 whitespace-nowrap"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">download</span>
+                                            Export CSV
+                                        </button>
+                                    </div>
                                     
                                     {/* Filter Controls */}
                                     <div className="flex flex-wrap gap-2">
@@ -289,38 +439,56 @@ export default function AdminLogPage() {
                                     <table className="w-full">
                                         <thead className="bg-stone-50">
                                             <tr>
-                                                <th className="text-left py-4 px-6 text-xs uppercase tracking-widest font-bold text-stone-500">No</th>
-                                                <th className="text-left py-4 px-6 text-xs uppercase tracking-widest font-bold text-stone-500">Fitur</th>
-                                                <th className="text-left py-4 px-6 text-xs uppercase tracking-widest font-bold text-stone-500">Tanggal Lahir 1</th>
-                                                <th className="text-left py-4 px-6 text-xs uppercase tracking-widest font-bold text-stone-500">Tanggal Lahir 2</th>
-                                                <th className="text-left py-4 px-6 text-xs uppercase tracking-widest font-bold text-stone-500">Waktu Input</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">No</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Fitur</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Tgl Lahir 1</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Jam 1</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Tgl Lahir 2</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Jam 2</th>
+                                                <th className="text-left py-4 px-4 text-xs uppercase tracking-widest font-bold text-stone-500">Waktu Input</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-stone-100">
                                             {paginatedLogs.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan={5} className="py-12 text-center text-stone-400">
+                                                    <td colSpan={7} className="py-12 text-center text-stone-400">
                                                         Belum ada data log untuk filter ini
                                                     </td>
                                                 </tr>
                                             ) : (
                                                 paginatedLogs.map((log, index) => (
                                                     <tr key={log.id} className="hover:bg-stone-50 transition-colors">
-                                                        <td className="py-4 px-6 text-stone-600">
+                                                        <td className="py-4 px-4 text-stone-600">
                                                             {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
                                                         </td>
-                                                        <td className="py-4 px-6">
-                                                            <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold border ${featureColors[log.feature_type]}`}>
+                                                        <td className="py-4 px-4">
+                                                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${featureColors[log.feature_type]}`}>
                                                                 {featureLabels[log.feature_type]}
                                                             </span>
                                                         </td>
-                                                        <td className="py-4 px-6 font-medium text-stone-800">
+                                                        <td className="py-4 px-4 font-medium text-stone-800">
                                                             {formatDate(log.tanggal_lahir)}
                                                         </td>
-                                                        <td className="py-4 px-6 font-medium text-stone-800">
+                                                        <td className="py-4 px-4">
+                                                            {log.jam_lahir ? (
+                                                                <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-100 text-stone-600 text-xs font-bold border border-stone-200">
+                                                                    <span className="material-symbols-outlined text-[14px]">schedule</span>
+                                                                    {log.jam_lahir}
+                                                                </div>
+                                                            ) : '-'}
+                                                        </td>
+                                                        <td className="py-4 px-4 font-medium text-stone-800">
                                                             {log.tanggal_lahir_2 ? formatDate(log.tanggal_lahir_2) : '-'}
                                                         </td>
-                                                        <td className="py-4 px-6 text-stone-500 text-sm">
+                                                        <td className="py-4 px-4">
+                                                            {log.jam_lahir_2 ? (
+                                                                <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-100 text-stone-600 text-xs font-bold border border-stone-200">
+                                                                    <span className="material-symbols-outlined text-[14px]">schedule</span>
+                                                                    {log.jam_lahir_2}
+                                                                </div>
+                                                            ) : '-'}
+                                                        </td>
+                                                        <td className="py-4 px-4 text-stone-500 text-xs">
                                                             {formatDateTime(log.created_at)}
                                                         </td>
                                                     </tr>

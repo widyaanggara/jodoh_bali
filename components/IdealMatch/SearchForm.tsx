@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { useSession } from '@/components/SessionProvider';
 
 interface SearchFormProps {
-    onSearch: (birthDate: string, startYear: number, endYear: number) => void;
+    onSearch: (birthDate: string, birthTime: string, startYear: number, endYear: number) => void;
     isLoading: boolean;
 }
 
 export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchFormProps) {
     const [birthDate, setBirthDate] = useState('');
+    // [NEW] State untuk menyimpan jam lahir
+    const [birthTime, setBirthTime] = useState('12:00');
     const currentYear = new Date().getFullYear();
     const [startYear, setStartYear] = useState(currentYear);
     const [endYear, setEndYear] = useState(currentYear + 5);
@@ -31,11 +33,13 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
             return;
         }
 
-        onSearch(birthDate, startYear, endYear);
+        onSearch(birthDate, birthTime, startYear, endYear);
     };
 
     const handleReset = () => {
         setBirthDate('');
+        // [NEW] Reset jam lahir ke default
+        setBirthTime('12:00');
         setStartYear(currentYear);
         setEndYear(currentYear + 5);
     };
@@ -61,22 +65,25 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
                             />
                         </div>
 
-                        {/* Quick Pick Section */}
-                        {recentDates.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2 px-1">
-                                {recentDates.map(date => (
-                                    <button
-                                        key={date}
-                                        type="button"
-                                        onClick={() => setBirthDate(date)}
-                                        className="px-2 py-1 rounded-md bg-stone-100 border border-stone-200 text-stone-500 text-[10px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1"
-                                    >
-                                        <span className="material-symbols-outlined text-[12px]">history</span>
-                                        {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                                    </button>
-                                ))}
+                        {/* [NEW] Input Jam Lahir */}
+                        <div className="space-y-3 mt-4">
+                            <label htmlFor="birthTime" className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 ml-1">
+                                Jam Lahir Anda
+                            </label>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-accent-gold transition-colors">
+                                    schedule
+                                </span>
+                                <input
+                                    id="birthTime"
+                                    className="w-full pl-12 pr-4 py-4 bg-stone-50 border-stone-200 rounded-2xl focus:ring-primary focus:border-primary text-sm transition-all outline-none"
+                                    type="time"
+                                    value={birthTime}
+                                    onChange={(e) => setBirthTime(e.target.value)}
+                                />
                             </div>
-                        )}
+                        </div>
+
                     </div>
 
                     <div className="space-y-3 text-left">

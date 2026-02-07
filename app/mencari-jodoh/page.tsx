@@ -20,22 +20,24 @@ export default function MencariJodoh() {
     const [isLoading, setIsLoading] = useState(false);
     const { sessionID, logActivity } = useSession();
 
-    const handleSearch = (birthDate: string, startYear: number, endYear: number) => {
+    const handleSearch = (birthDate: string, birthTime: string, startYear: number, endYear: number) => {
         setIsLoading(true);
-
+    
         setTimeout(() => {
-            const profile = getBalineseDate(new Date(birthDate));
+            // [NEW] Memasukkan data jam lahir ke fungsi profil Bali
+            const profile = getBalineseDate(new Date(birthDate), birthTime);
             const idealMatches = findIdealMatches(
                 new Date(birthDate),
+                birthTime,
                 startYear,
                 endYear
             );
-
+    
             setUserProfile(profile);
             setMatches(idealMatches);
 
             // Log activity using the new session system (Append-Only)
-            logActivity('mencari_jodoh', birthDate);
+            logActivity('mencari_jodoh', birthDate, undefined, birthTime);
 
             setIsLoading(false);
         }, 3000);

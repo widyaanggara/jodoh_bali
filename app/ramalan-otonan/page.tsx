@@ -13,6 +13,8 @@ import { useSession } from '@/components/SessionProvider';
 
 export default function RamalanOtonan() {
     const [birthDate, setBirthDate] = useState('');
+    // [NEW] State untuk menyimpan jam lahir
+    const [birthTime, setBirthTime] = useState('12:00'); 
     const [result, setResult] = useState<BalineseDate | null>(null);
     const [zodiak, setZodiak] = useState<Zodiak | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -27,13 +29,14 @@ export default function RamalanOtonan() {
         setIsLoading(true);
         setTimeout(() => {
             const date = new Date(birthDate);
-            const balineseDate = getBalineseDate(date);
+            // [NEW] Memasukkan birthTime ke dalam fungsi kalkulasi
+            const balineseDate = getBalineseDate(date, birthTime);
             const zodiakData = getZodiak(date);
             setResult(balineseDate);
             setZodiak(zodiakData);
 
-            // Log activity using the new session system (Append-Only)
-            logActivity('ramalan_otonan', birthDate);
+            // [NEW] Menambahkan jam lahir ke log aktivitas (lokal)
+            logActivity('ramalan_otonan', birthDate, undefined, birthTime);
 
             setIsLoading(false);
         }, 3000);
@@ -41,6 +44,8 @@ export default function RamalanOtonan() {
 
     const handleReset = () => {
         setBirthDate('');
+        // [NEW] Reset jam lahir ke default
+        setBirthTime('12:00');
         setResult(null);
         setZodiak(null);
     };
@@ -81,24 +86,21 @@ export default function RamalanOtonan() {
                                     />
                                 </div>
 
-                                {/* Quick Pick Section */}
-                                {recentDates.length > 0 && !result && (
-                                    <div className="pt-2 animate-fade-in">
-                                        <p className="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-2 ml-1">Pilih Cepat (Input Terakhir):</p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {recentDates.map((date) => (
-                                                <button
-                                                    key={date}
-                                                    onClick={() => setBirthDate(date)}
-                                                    className="px-3 py-1.5 rounded-lg bg-stone-100 border border-stone-200 text-stone-600 text-[11px] font-bold hover:bg-stone-200 hover:text-primary transition-all flex items-center gap-1.5"
-                                                >
-                                                    <span className="material-symbols-outlined text-[14px]">history</span>
-                                                    {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                                </button>
-                                            ))}
-                                        </div>
+                                {/* [NEW] Input Jam Lahir */}
+                                <div className="space-y-4">
+                                    <label className="text-xs uppercase tracking-widest font-bold text-stone-500 ml-1">Pilih Jam Lahir</label>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">schedule</span>
+                                        <input
+                                            type="time"
+                                            value={birthTime}
+                                            onChange={(e) => setBirthTime(e.target.value)}
+                                            className="w-full pl-12 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
+                                        />
                                     </div>
-                                )}
+                                    <p className="text-xs text-stone-600 ml-1 italic text-center font-medium max-w-2xl mx-auto leading-relaxed mt-4">*Khusus kelahiran subuh (00:00 - 06:00), sistem otomatis menyesuaikan Dina Bali ke hari sebelumnya (sebelum matahari terbit).</p>
+                                </div>
+
 
                                 <div className="flex gap-4 pt-4">
                                     <button

@@ -50,9 +50,25 @@ function getSadwaraIndex(date: Date): number {
 
 /**
  * Convert Gregorian date to Balinese calendar date
+ * @param date The date to convert
+ * @param birthTime Optional birth time in "HH:mm" format. 
+ *                  If provided and before 06:00, the Balinese day is considered the previous Gregorian day.
  */
-export function getBalineseDate(date: Date): BalineseDate {
-    const days = daysBetween(REFERENCE_DATE, date);
+export function getBalineseDate(date: Date, birthTime?: string): BalineseDate {
+    // Clone the date to avoid modifying the original
+    let adjustedDate = new Date(date.getTime());
+
+    // [NEW] Logic Penyesuaian Waktu Kelahiran (Dina Bali)
+    // Berdasarkan Dina Bali, hari berganti saat matahari terbit (pk 06.00).
+    // Jika lahir sebelum jam 06.00, maka secara tradisi dianggap masih hari sebelumnya.
+    if (birthTime) {
+        const [hours, minutes] = birthTime.split(':').map(Number);
+        if (hours < 6) {
+            adjustedDate.setDate(adjustedDate.getDate() - 1);
+        }
+    }
+
+    const days = daysBetween(REFERENCE_DATE, adjustedDate);
 
     // Wuku cycles every 210 days (30 wuku × 7 days each)
     const wukuTotalDays = ((days + REFERENCE_WUKU_OFFSET) % 210 + 210) % 210;
@@ -62,10 +78,10 @@ export function getBalineseDate(date: Date): BalineseDate {
     const pancawaraIndex = ((days + REFERENCE_PANCAWARA_OFFSET) % 5 + 5) % 5;
 
     // Saptawara - use native JavaScript getDay() for accuracy
-    const saptawaraIndex = getSaptawaraIndex(date);
+    const saptawaraIndex = getSaptawaraIndex(adjustedDate);
 
     // Sadwara - cycles every 6 days
-    const sadwaraIndex = getSadwaraIndex(date);
+    const sadwaraIndex = getSadwaraIndex(adjustedDate);
 
     const wuku = wukuData[wukuIndex % 30];
     const pancawara = pancawaraData[pancawaraIndex % 5];
@@ -82,7 +98,7 @@ export function getBalineseDate(date: Date): BalineseDate {
     const lintang = findLintang(saptawara.hari, pancawara.nama);
 
     // Calculate next Otonan
-    const nextOtonan = getNextOtonan(date);
+    const nextOtonan = getNextOtonan(adjustedDate);
 
     return {
         wuku,
@@ -269,10 +285,14 @@ function generateMatchConclusion(mod5: KategoriJodoh, mod16: SodasaRsi): { title
 /**
  * Calculate compatibility between two people based on their birth dates
  * Includes both Mod 5 (Rezeki) and Mod 16 (Karakter & Wibawa)
+ * @param date1 Date for person 1
+ * @param date2 Date for person 2
+ * @param time1 Optional birth time for person 1
+ * @param time2 Optional birth time for person 2
  */
-export function calculateCompatibility(date1: Date, date2: Date): CompatibilityResult {
-    const person1 = getBalineseDate(date1);
-    const person2 = getBalineseDate(date2);
+export function calculateCompatibility(date1: Date, date2: Date, time1?: string, time2?: string): CompatibilityResult {
+    const person1 = getBalineseDate(date1, time1);
+    const person2 = getBalineseDate(date2, time2);
 
     // Mod 5 calculation (original - for Rezeki/Fortune)
     const totalUrip = person1.totalUrip + person2.totalUrip;

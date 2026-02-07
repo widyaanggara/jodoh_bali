@@ -21,10 +21,11 @@ export interface IdealMatch {
  */
 export function findIdealMatches(
     userBirthDate: Date,
+    birthTime: string,
     startYear: number,
     endYear: number
 ): IdealMatch[] {
-    const userBalinese = getBalineseDate(userBirthDate);
+    const userBalinese = getBalineseDate(userBirthDate, birthTime);
     const userUrip = userBalinese.totalUrip;
     const matches: IdealMatch[] = [];
 
