@@ -465,101 +465,102 @@ export const dataLintang: Lintang[] = [
 
 
 // data/masterMod16.ts
-export const dataSodasaRsi: SodasaRsi[] = [
-    {
-        sisa: 1,
-        label: "Bergejolak",
-        makna: "Mesti tahan uji, Brahmana Yoni.",
-        penjelasan: "Gemar memuja Batara dan berdagang. Jika anak pertama meninggal, selanjutnya akan bahagia dan sentosa."
-    },
-    {
-        sisa: 2,
-        label: "Tiwas Padiwara",
-        makna: "Selalu menghadapi kesulitan dan banyak pengeluaran.",
-        penjelasan: "Sering sedih hati, menderita, atau sengsara yang bisa berujung perceraian. Indra Yoni."
-    },
-    {
-        sisa: 3,
-        label: "Tiga Mepasah",
-        makna: "Selalu kecewa dan bertentangan.",
-        penjelasan: "Tidak pernah sepakat, suasana rumah tangga keruh dan selalu ada masalah."
-    },
-    {
-        sisa: 4,
-        label: "Catur Gadabah",
-        makna: "Istri berkuasa dalam rumah tangga.",
-        penjelasan: "Suami berada di bawah perintah istri (suami kalah). Sulit mendapatkan keturunan."
-    },
-    {
-        sisa: 5,
-        label: "Werdi Wekasan",
-        makna: "Terus maju dan rezeki berlimpah.",
-        penjelasan: "Suami istri selalu berkasih-kasihan, rumah tangga tenang, nyaman, dan penuh pengertian. Indria Yoni."
-    },
-    {
-        sisa: 6,
-        label: "Halakarma",
-        makna: "Penderitaan atau perceraian.",
-        penjelasan: "Tidak tenang dalam rumah tangga, kurang rasa cinta. Solusinya harus rajin berbuat suci dan mendalami agama."
-    },
-    {
-        sisa: 7,
-        label: "Hayu Pasukarma",
-        makna: "Meningkat sangat lambat.",
-        penjelasan: "Akan bercucu agak lama. Selamat paripurna kemanapun pergi, emas dan perak banyak. Basaya Yoni."
-    },
-    {
-        sisa: 8,
-        label: "Tanameten",
-        makna: "Serba kekurangan dan sengsara.",
-        penjelasan: "Sering bersedih hati, suami tidak cinta istri, berisiko cerai. Anak cucu berisiko meninggal."
-    },
-    {
-        sisa: 9,
-        label: "Ala Kageringan",
-        makna: "Mewah tapi sering ricuh.",
-        penjelasan: "Memiliki harta tapi menjadi bencana, anak-anak seolah terkutuk. Kurang nafsu. Chandala Yoni."
-    },
-    {
-        sisa: 10,
-        label: "Nari Utama",
-        makna: "Keluarga terpandang namun suami takut istri.",
-        penjelasan: "Menjadi keluarga terhormat namun sang suami tunduk pada perintah sang istri."
-    },
-    {
-        sisa: 11,
-        label: "Sri Emas",
-        makna: "Terlalu baik dan kaya raya.",
-        penjelasan: "Anak banyak, harta benda tidak kurang, keluarga besar menaruh kasih sayang."
-    },
-    {
-        sisa: 12,
-        label: "Hala Hayu Gung Pahalniya",
-        makna: "Murah rezeki dan setia.",
-        penjelasan: "Istri sangat hormat dan bakti pada suami, tidak pernah curang, cinta kasih sangat kuat. Waisya Yoni."
-    },
-    {
-        sisa: 13,
-        label: "Singa Gatan",
-        makna: "Langgeng dan kaya raya.",
-        penjelasan: "Keluarga mungkin menjauh tapi rumah tangga makmur dan penuh suka cita."
-    },
-    {
-        sisa: 14,
-        label: "Hala Sukartan",
-        makna: "Bahagia akan berkurang.",
-        penjelasan: "Ditinggalkan keluarga suami, sering berselisih, suami kalah oleh istri. Berisiko miskin."
-    },
-    {
-        sisa: 15,
-        label: "Hala Tukaran",
-        makna: "Kurang rukun dan sering gagal.",
-        penjelasan: "Saling menyalahkan, tidak ada kesepakatan, pekerjaan sering gagal dan tidak tentram."
-    },
-    {
-        sisa: 0, // Sisa 16
-        label: "Siddha Karya Hayu",
-        makna: "Semakin berkembang dan gembira.",
-        penjelasan: "Segala usaha beruntung besar, anak-anak berhasil mengejar cita-cita, rumah tangga sangat berhasil."
-    }
+export const dataSodasaRsi: SodasaRsi[] = 
+[
+  {
+    "sisa": 1,
+    "label": "Ujian Kesabaran",
+    "makna": "Ketabahan",
+    "penjelasan": "Diliputi kebimbangan, dalam keadaan suka dan duka, baik buruk, sering dituntut ketabahan."
+  },
+  {
+    "sisa": 2,
+    "label": "Petualang Minim Rezeki",
+    "makna": "Durlaba",
+    "penjelasan": "Durlaba, rezeki seret tapi suka melancong."
+  },
+  {
+    "sisa": 3,
+    "label": "Sering Tertekan",
+    "makna": "Kekecewaan",
+    "penjelasan": "Sering mendapat malu dan kecewa."
+  },
+  {
+    "sisa": 4,
+    "label": "Sulit Keturunan",
+    "makna": "Keturunan",
+    "penjelasan": "Susah mendapatkan sentana (keturunan)."
+  },
+  {
+    "sisa": 5,
+    "label": "Rezeki Lancar",
+    "makna": "Dirgahayu",
+    "penjelasan": "Dirgahayu, rezekinya lancar dan menanjak."
+  },
+  {
+    "sisa": 6,
+    "label": "Rentan Sakit",
+    "makna": "Merana",
+    "penjelasan": "Merana, sering sakit."
+  },
+  {
+    "sisa": 7,
+    "label": "Proses Menuju Bahagia",
+    "makna": "Suka Duka",
+    "penjelasan": "Mengalami suka duka, baik buruk dalam perjalanan hidupnya, menuju bahagia."
+  },
+  {
+    "sisa": 8,
+    "label": "Kesulitan Ekonomi",
+    "makna": "Terak",
+    "penjelasan": "Sukar untuk memenuhi hajat hidup sehari-hari, bahkan sampai kekurangan (terak)."
+  },
+  {
+    "sisa": 9,
+    "label": "Penuh Penyesalan",
+    "makna": "Penyesalan",
+    "penjelasan": "Kurang hati-hati, kesakitan tak henti-hentinya mewarnai kehidupannya, sampai menimbulkan kekecewaan dan penyesalan hidup."
+  },
+  {
+    "sisa": 10,
+    "label": "Wibawa Pemimpin",
+    "makna": "Wibawa",
+    "penjelasan": "Mendapatkan wibawa serta disegani bagai raja/ratu yang berkuasa, sehingga dapat mengayomi keluarga."
+  },
+  {
+    "sisa": 11,
+    "label": "Sukses Sempurna",
+    "makna": "Sidha serta Sabita",
+    "penjelasan": "Mendapat sukses dalam perjalanan hidup, tercapainya cita-citanya dengan penuh kepuasan (sidha serta sabita)."
+  },
+  {
+    "sisa": 12,
+    "label": "Magnet Rezeki",
+    "makna": "Sedana Nulus",
+    "penjelasan": "Sedana nulus, rezeki lancar/gampang."
+  },
+  {
+    "sisa": 13,
+    "label": "Panjang Umur & Berkah",
+    "makna": "Dirgayusa",
+    "penjelasan": "Dirgayusa, panjang umur, rezekinya berkepanjangan."
+  },
+  {
+    "sisa": 14,
+    "label": "Selalu Bahagia",
+    "makna": "Kebahagiaan",
+    "penjelasan": "Mendapatkan kebahagiaan/kesenangan selalu."
+  },
+  {
+    "sisa": 15,
+    "label": "Banyak Masalah",
+    "makna": "Bermasalah",
+    "penjelasan": "Sering mengalami kesusahan, keadaan buruk serta banyak problem."
+  },
+  {
+    "sisa": 16,
+    "label": "Penuh Kesenangan",
+    "makna": "Kesenangan",
+    "penjelasan": "Memperoleh kebahagiaan/kesenangan."
+  }
 ];

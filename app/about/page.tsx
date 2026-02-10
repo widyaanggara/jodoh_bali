@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
-import { wukuData } from '@/lib/data';
+import { wukuData, dataSodasaRsi } from '@/lib/data';
 
 export default function AboutPage() {
     return (
@@ -160,30 +160,13 @@ export default function AboutPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                            {[
-                                { sisa: 1, nama: "Bergejolak", makna: "Penuh dengan dinamika ujian yang mengasah kedewasaan." },
-                                { sisa: 2, nama: "Banyak Pengeluaran", makna: "Tantangan pada manajemen materi dan kestabilan emosi." },
-                                { sisa: 3, nama: "Selalu Bertentangan", makna: "Ujian kesabaran melalui perbedaan pandangan yang tajam." },
-                                { sisa: 4, nama: "Dominasi Istri", makna: "Pola kepemimpinan rumah tangga yang berpusat pada istri." },
-                                { sisa: 5, nama: "Harmonis", makna: "Tingkat kesepahaman tinggi dan rejeki yang mengalir sehat." },
-                                { sisa: 6, nama: "Menderita", makna: "Memerlukan keteguhan spiritual ekstra untuk menghadapi cobaan." },
-                                { sisa: 7, nama: "Lambat Berkembang", makna: "Kesuksesan datang bertahap melalui ketekunan luar biasa." },
-                                { sisa: 8, nama: "Kekurangan", makna: "Banyak momen ujian duka, memerlukan saling menguatkan." },
-                                { sisa: 9, nama: "Kaya tapi Ricuh", makna: "Anugerah rezeki besar namun dibarengi dinamika konflik." },
-                                { sisa: 10, nama: "Berwibawa", makna: "Pasangan yang disegani lingkungan sosialnya." },
-                                { sisa: 11, nama: "Selalu Puas", makna: "Kehidupan penuh rasa syukur dan keharmonisan keluarga." },
-                                { sisa: 12, nama: "Rezeki Lancar", makna: "Kesetiaan dan cinta yang dibarengi kemudahan mencari nafkah." },
-                                { sisa: 13, nama: "Langgeng", makna: "Kekayaan dan sukacita yang bertahan lama." },
-                                { sisa: 14, nama: "Sering Berselisih", makna: "Kerawanan pada energi ekonomi dan perdebatan energi." },
-                                { sisa: 15, nama: "Tidak Rukun", makna: "Kesulitan dalam menyatukan visi besar keputusan hidup." },
-                                { sisa: 0, nama: "Semakin Sukses", makna: "Puncak kebahagiaan melalui keberhasilan anak-anak." },
-                            ].map((item) => (
+                            {dataSodasaRsi.map((item) => (
                                 <div key={item.sisa} className="p-5 rounded-2xl border border-stone-200 bg-white hover:border-accent-gold/40 transition-colors shadow-sm">
                                     <div className="flex items-center gap-3 mb-2">
-                                        <span className="text-xs font-bold w-6 h-6 rounded bg-stone-100 flex items-center justify-center text-stone-500">{item.sisa === 0 ? 16 : item.sisa}</span>
-                                        <h4 className="font-bold text-primary">{item.nama}</h4>
+                                        <span className="text-xs font-bold w-6 h-6 rounded bg-stone-100 flex items-center justify-center text-stone-500">{item.sisa}</span>
+                                        <h4 className="font-bold text-primary">{item.label}</h4>
                                     </div>
-                                    <p className="text-xs text-stone-600 italic leading-relaxed">{item.makna}</p>
+                                    <p className="text-xs text-stone-600 italic leading-relaxed">{item.penjelasan}</p>
                                 </div>
                             ))}
                         </div>
@@ -403,6 +386,19 @@ export default function AboutPage() {
                             Sumber Literasi & Otoritas Dasar
                         </h3>
                         <p className="text-sm text-stone-500 mb-6">Seluruh algoritma dan narasi dalam sistem ini bersumber dari kajian literatur Lontar Wariga yang telah didigitalkan untuk keberlanjutan tradisi.</p>
+                        
+                        <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200 mb-8">
+                            <h4 className="font-bold text-stone-700 text-sm uppercase tracking-wide mb-4">Daftar Pustaka</h4>
+                            <ul className="space-y-3 text-sm text-stone-600 font-mono">
+                                <li className="pl-4 -indent-4">[1] Kusuma, Sri Rsi Ananda. <i>Wariga Dewasa.</i> Morodadi: Denpasar. 1979.</li>
+                                <li className="pl-4 -indent-4">[2] Ardhana, I.B.Suparta. <i>Pokok-pokok Wariga.</i> Surabaya: Paramitha. 2009.</li>
+                                <li className="pl-4 -indent-4">[3] Rini, Ayu. <i>Astrologi Hindu.</i> Denpasar: Burat Wangi. 2012.</li>
+                                <li className="pl-4 -indent-4">[4] Aryana, I.B.Putra Manik. <i>Tenung Wariga-Kunci Ramalan Astrologi Bali.</i> Surabaya: Paramitha. 2010.</li>
+                                <li className="pl-4 -indent-4">[5] Arwati, Ni Made Sri. <i>Ramalan Terhadap Hari Kelahiran Manusia.</i> Denpasar. 2010.</li>
+                                <li className="pl-4 -indent-4">[6] Saelan, Athia. <i>Logika Fuzzy.</i> Bandung: Institut Teknologi Bandung. 2009.</li>
+                            </ul>
+                        </div>
+
                         <div className="flex flex-wrap gap-4">
                             <a
                                 href="https://ortibali.com/ramalan-petemon-suami-istri-dalam-tradisi-hindu-bali-menilik-kecocokan-dari-neptu-kelahiran/"
