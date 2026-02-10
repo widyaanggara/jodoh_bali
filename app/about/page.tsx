@@ -409,6 +409,15 @@ export default function AboutPage() {
                                 <span className="material-icons-outlined text-xs">link</span>
                                 Ortibali.com: Ramalan Petemon Suami Istri
                             </a>
+                            <a
+                                href="https://ojs.unud.ac.id/index.php/merpati/article/view/17909"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-stone-200 rounded-full text-sm font-medium text-primary hover:border-accent-gold transition-colors shadow-sm"
+                            >
+                                <span className="material-icons-outlined text-xs">menu_book</span>
+                                Jurnal Merpati: Aplikasi Peramalan Wariga & Fuzzy Logic
+                            </a>
                         </div>
                     </section>
                 </article>
