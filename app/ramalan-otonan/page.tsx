@@ -1,7 +1,8 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { getBalineseDate } from '@/lib/balinese-calendar';
 import { BalineseDate, Zodiak } from '@/lib/types';
 import { getZodiak } from '@/lib/jodoh-logic';
@@ -10,11 +11,15 @@ import Footer from '@/components/Footer';
 import Disclaimer from '@/components/Disclaimer';
 import SplashScreen from '@/components/SplashScreen';
 import { useSession } from '@/components/SessionProvider';
+import PalSriSedanaChart from '@/components/PalSriSedanaChart';
 
-export default function RamalanOtonan() {
-    const [birthDate, setBirthDate] = useState('');
+function RamalanOtonanContent() {
+    const searchParams = useSearchParams();
+    const initialDate = searchParams.get('date') || '';
+
+    const [birthDate, setBirthDate] = useState(initialDate);
     // [NEW] State untuk menyimpan jam lahir
-    const [birthTime, setBirthTime] = useState('12:00'); 
+    const [birthTime, setBirthTime] = useState('12:00');
     const [result, setResult] = useState<BalineseDate | null>(null);
     const [zodiak, setZodiak] = useState<Zodiak | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -137,87 +142,105 @@ export default function RamalanOtonan() {
                                     Cek Tanggal Lain
                                 </button>
                             </div>
-                            <div className="grid md:grid-cols-2 gap-8 slide-up">
-                                {/* Balinese Birth Info */}
-                                <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20">
-                                    <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Kelahiran Bali</h3>
-                                    <div className="space-y-4">
-                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                            <span className="text-stone-500">Saptawara</span>
-                                            <span className="font-bold text-stone-800">{result.saptawara.hari}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                            <span className="text-stone-500">Pancawara</span>
-                                            <span className="font-bold text-stone-800">{result.pancawara.nama}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center pb-3 border-b border-stone-100">
-                                            <span className="text-stone-500">Wuku</span>
-                                            <span className="font-bold text-primary">{result.wuku.nama_wuku}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-stone-500">Next Otonan</span>
-                                            <span className="font-bold text-accent-gold">{result.nextOtonan}</span>
+                            <div className="space-y-8 slide-up">
+                                <div className="grid md:grid-cols-2 gap-8 items-start">
+                                    {/* Balinese Birth Info (Shortest) */}
+                                    <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20 h-full">
+                                        <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Kelahiran Bali</h3>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                                <span className="text-stone-500">Saptawara</span>
+                                                <span className="font-bold text-stone-800">{result.saptawara.hari}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                                <span className="text-stone-500">Pancawara</span>
+                                                <span className="font-bold text-stone-800">{result.pancawara.nama}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pb-3 border-b border-stone-100">
+                                                <span className="text-stone-500">Wuku</span>
+                                                <span className="font-bold text-primary">{result.wuku.nama_wuku}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-stone-500">Next Otonan</span>
+                                                <span className="font-bold text-accent-gold">{result.nextOtonan}</span>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    {/* Lintang / Star Info (Medium) */}
+                                    {result.lintang && (
+                                        <div className="bg-stone-900 rounded-4xl shadow-xl p-8 text-white relative overflow-hidden h-full">
+                                            <div className="absolute top-0 right-0 p-8 opacity-10">
+                                                <span className="material-icons-outlined text-9xl">auto_awesome</span>
+                                            </div>
+                                            <div className="relative z-10">
+                                                <div className="flex items-center gap-2 text-accent-gold mb-2">
+                                                    <span className="material-icons-outlined text-sm">stars</span>
+                                                    <span className="text-xs uppercase tracking-widest font-bold">Lintang Kelahiran</span>
+                                                </div>
+                                                <h3 className="font-display text-3xl font-bold mb-1">Lintang {result.lintang.lintang}</h3>
+                                                <p className="text-accent-gold/80 italic text-sm mb-6">"{result.lintang.label}"</p>
+
+                                                <div className="space-y-6">
+                                                    <div>
+                                                        <h4 className="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-1">Penyimbolan</h4>
+                                                        <p className="text-stone-100 font-semibold">{result.lintang.makna}</p>
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-1">Karakter & Keberuntungan</h4>
+                                                        <p className="text-stone-300 text-sm leading-relaxed">{result.lintang.penjelasan}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
-                                {/* Lintang / Star Info */}
-                                {result.lintang && (
-                                    <div className="bg-stone-900 rounded-4xl shadow-xl p-8 text-white relative overflow-hidden">
+                                {/* Zodiac Info */}
+                                {zodiak && (
+                                    <div className="rounded-4xl shadow-xl p-8 text-white relative overflow-hidden slide-up" style={{ backgroundColor: '#A62C21' }}>
                                         <div className="absolute top-0 right-0 p-8 opacity-10">
-                                            <span className="material-icons-outlined text-9xl">auto_awesome</span>
+                                            <span className="material-symbols-outlined text-9xl">stars</span>
                                         </div>
-                                        <h3 className="font-display text-2xl font-bold mb-2">Lintang</h3>
-                                        <p className="text-accent-gold font-bold text-3xl mb-6">Lintang {result.lintang.nama}</p>
+                                        <div className="relative z-10">
+                                            <h3 className="font-display text-2xl font-bold mb-2">Zodiak</h3>
+                                            <p className="text-yellow-300 font-bold text-3xl mb-6">{zodiak.nama}</p>
 
-                                        <div className="space-y-6 relative z-10">
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Sifat Karakter</h4>
-                                                <p className="text-stone-200 leading-relaxed">{result.lintang.sifat}</p>
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Elemen</h4>
+                                                    <p className="text-white text-lg font-semibold">{zodiak.elemen}</p>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Hari Hoki</h4>
+                                                    <p className="text-white text-lg font-semibold">{zodiak.hariHoki}</p>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Warna Hoki</h4>
+                                                    <p className="text-white text-lg font-semibold">{zodiak.warnaHoki}</p>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Angka Hoki</h4>
+                                                    <p className="text-white text-lg font-semibold">{zodiak.angkaHoki.join(', ')}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-stone-400 mb-2">Nasib & Keberuntungan</h4>
-                                                <p className="text-stone-200 leading-relaxed">{result.lintang.nasib}</p>
+
+                                            <div className="mt-6 pt-6 border-t border-white/20">
+                                                <h4 className="text-xs uppercase tracking-widest font-bold text-purple-200 mb-2">Sifat Karakter</h4>
+                                                <p className="text-white/90 leading-relaxed">{zodiak.sifat}</p>
                                             </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Zodiac Info */}
-                            {zodiak && (
-                                <div className="rounded-4xl shadow-xl p-8 text-white relative overflow-hidden slide-up" style={{ backgroundColor: '#A62C21' }}>
-                                    <div className="absolute top-0 right-0 p-8 opacity-10">
-                                        <span className="material-symbols-outlined text-9xl">stars</span>
-                                    </div>
-                                    <div className="relative z-10">
-                                        <h3 className="font-display text-2xl font-bold mb-2">Zodiak</h3>
-                                        <p className="text-yellow-300 font-bold text-3xl mb-6">{zodiak.nama}</p>
-
-                                        <div className="grid md:grid-cols-2 gap-6">
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Elemen</h4>
-                                                <p className="text-white text-lg font-semibold">{zodiak.elemen}</p>
-                                            </div>
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Hari Hoki</h4>
-                                                <p className="text-white text-lg font-semibold">{zodiak.hariHoki}</p>
-                                            </div>
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Warna Hoki</h4>
-                                                <p className="text-white text-lg font-semibold">{zodiak.warnaHoki}</p>
-                                            </div>
-                                            <div>
-                                                <h4 className="text-xs uppercase tracking-widest font-bold text-white/70 mb-2">Angka Hoki</h4>
-                                                <p className="text-white text-lg font-semibold">{zodiak.angkaHoki.join(', ')}</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="mt-6 pt-6 border-t border-white/20">
-                                            <h4 className="text-xs uppercase tracking-widest font-bold text-purple-200 mb-2">Sifat Karakter</h4>
-                                            <p className="text-white/90 leading-relaxed">{zodiak.sifat}</p>
-                                        </div>
-                                    </div>
+                            {/* Pal Sri Sedana Chart - Fortune Cycle Visualization */}
+                            {result && birthDate && (
+                                <div className="mt-12">
+                                    <PalSriSedanaChart
+                                        totalUrip={result.totalUrip}
+                                        birthDate={new Date(birthDate)}
+                                    />
                                 </div>
                             )}
 
@@ -235,5 +258,13 @@ export default function RamalanOtonan() {
             {/* Footer */}
             <Footer />
         </div>
+    );
+}
+
+export default function RamalanOtonan() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background-light">Memuat...</div>}>
+            <RamalanOtonanContent />
+        </Suspense>
     );
 }

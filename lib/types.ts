@@ -11,12 +11,35 @@ export interface Wuku {
 }
 
 export interface Lintang {
-  nama: string;
   saptawara: string;
   pancawara: string;
-  sifat: string;
-  nasib: string;
+  lintang: string;
+  label: string;
+  makna: string;
+  penjelasan: string;
 }
+
+export interface Wewaran {
+  id: number;
+  nama: string;
+  urip: number;
+  karakter: string;
+}
+
+// Untuk dokumentasi kode yang lebih spesifik, kita bisa gunakan alias:
+export type Ekawara = Wewaran;
+export type Dwiwara = Wewaran;
+export type Triwara = Wewaran;
+export type Caturwara = Wewaran;
+export type Asatawara = Wewaran;
+export type Sangawara = Wewaran;
+export type Dasawara = Wewaran;
+
+/**
+ * Type gabungan jika Anda ingin membuat fungsi generic 
+ * yang bisa menerima data wewaran apa saja.
+ */
+export type AllWewaranData = Wewaran[];
 
 export interface Pancawara {
   id: number;
@@ -73,6 +96,17 @@ export interface BalineseDate {
   totalUripSodasaRsi: number; // Mod 16: Saptawara + Pancawara + Sadwara + Wuku
   lintang?: Lintang;
   nextOtonan?: string;
+}
+
+export interface IPalSriSedana {
+  urip: number;
+  siklus: number[]; // Nilai nasib (0-8) per 6 tahun usia, panjang berbeda per urip
+}
+
+export interface PalSriSedanaLabel {
+  label: string;
+  color: string;
+  desc: string;
 }
 
 export interface CompatibilityResult {

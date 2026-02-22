@@ -1,4 +1,4 @@
-import { Wuku, Pancawara, Saptawara, KategoriJodoh, Zodiak, Sadwara, SodasaRsi } from './types';
+import { Wuku, Pancawara, Saptawara, KategoriJodoh, Zodiak, Sadwara, SodasaRsi, Ekawara, Dwiwara, Triwara, Caturwara, Asatawara, Dasawara, Sangawara } from './types';
 
 // Wuku data (30 wuku dalam kalender Bali)
 export const wukuData: Wuku[] = [
@@ -337,6 +337,30 @@ export const dataZodiak: Zodiak[] = [
     }
 ];
 
+//wawaran 1 - 10
+
+export const ekawaraData: Ekawara[] = [
+    { id: 1, nama: "Luang", urip: 1, karakter: "Mandiri, memiliki pendirian kuat, namun cenderung penyendiri." }
+];
+
+export const dwiwaraData: Dwiwara[] = [
+    { id: 1, nama: "Menga", urip: 5, karakter: "Terbuka, komunikatif, dan mudah menerima masukan dari luar." },
+    { id: 2, nama: "Pepet", urip: 4, karakter: "Pandai menyimpan rahasia, waspada, dan pemikir yang mendalam." }
+];
+
+export const triwaraData: Triwara[] = [
+    { id: 1, nama: "Pasah", urip: 9, karakter: "Suka kebebasan, tidak suka diatur, dan sangat mandiri." },
+    { id: 2, nama: "Beteng", urip: 4, karakter: "Berjiwa pelindung, pandai mengelola sumber daya, dan makmur." },
+    { id: 3, nama: "Kajeng", urip: 7, karakter: "Kritis, memiliki intuisi tajam, dan teguh pada prinsip." }
+];
+
+export const caturwaraData: Caturwara[] = [
+    { id: 1, nama: "Sri", urip: 6, karakter: "Dermawan, pembawa kebahagiaan, dan senang berbagi rezeki." },
+    { id: 2, nama: "Laba", urip: 5, karakter: "Pandai mencari peluang dan sering berhasil dalam usaha." },
+    { id: 3, nama: "Jaya", urip: 2, karakter: "Pantang menyerah, kompetitif, dan memiliki mental pemenang." },
+    { id: 4, nama: "Menala", urip: 8, karakter: "Berwibawa, kharismatik, dan dihormati di lingkungannya." }
+];
+
 // Pancawara data (5 hari siklus)
 export const pancawaraData: Pancawara[] = [
     { id: 1, nama: "Umanis", urip: 5, karakter: "Penggerak, memiliki kemauan kuat, dan pemurah." },
@@ -346,7 +370,6 @@ export const pancawaraData: Pancawara[] = [
     { id: 5, nama: "Kliwon", urip: 8, karakter: "Pemaaf, pandai berbicara, dan memiliki spiritualitas tinggi." }
 ];
 
-// Sadwara data (6 hari siklus)
 // Sadwara data (6 hari siklus)
 export const sadwaraData: Sadwara[] = [
     {
@@ -410,6 +433,45 @@ export const saptawaraData: Saptawara[] = [
     { id: 7, hari: "Saniscara/Sabtu", urip: 9, sifat: "Tangguh", karakter: "Pekerja keras, kuat menghadapi cobaan, namun agak tertutup." }
 ];
 
+export const asatawaraData: Asatawara[] = [
+    { id: 1, nama: "Sri", urip: 6, karakter: "Pandai mengatur, rapi dalam bekerja, dan berjiwa pemimpin." },
+    { id: 2, nama: "Indra", urip: 5, karakter: "Visioner, berbakat dalam perencanaan, dan sangat tekun." },
+    { id: 3, nama: "Guru", urip: 8, karakter: "Suka membimbing, bijaksana, dan sabar dalam mengajar." },
+    { id: 4, nama: "Yama", urip: 9, karakter: "Sangat disiplin, menjunjung tinggi keadilan, dan tegas." },
+    { id: 5, nama: "Ludra", urip: 3, karakter: "Memiliki semangat yang meluap-luap dan tekad yang kuat." },
+    { id: 6, nama: "Brahma", urip: 7, karakter: "Kreatif, penuh inovasi, dan memiliki energi yang besar." },
+    { id: 7, nama: "Kala", urip: 1, karakter: "Sangat waspada terhadap perubahan dan peka pada situasi." },
+    { id: 8, nama: "Uma", urip: 4, karakter: "Penyayang, lembut hati, dan memiliki jiwa pengasuh." }
+];
+
+export const sangawaraData: Sangawara[] = [
+    { id: 1, nama: "Dangu", urip: 5, karakter: "Tenang, konsisten, dan tidak suka terburu-buru." },
+    { id: 2, nama: "Jangur", urip: 8, karakter: "Kokoh, sulit dipengaruhi, dan memiliki pendirian baja." },
+    { id: 3, nama: "Gigis", urip: 9, karakter: "Berwawasan luas, pemaaf, dan mudah beradaptasi." },
+    { id: 4, nama: "Nohan", urip: 3, karakter: "Ceria, optimis, dan selalu membawa suasana positif." },
+    { id: 5, nama: "Ogan", urip: 7, karakter: "Aktif, dinamis, dan senang dengan hal-hal baru." },
+    { id: 6, nama: "Erangan", urip: 1, karakter: "Intuitif, sensitif terhadap perasaan orang lain, dan halus." },
+    { id: 7, nama: "Urungan", urip: 4, karakter: "Penuh pertimbangan dan sangat hati-hati dalam melangkah." },
+    { id: 8, nama: "Tulus", urip: 6, karakter: "Jujur, apa adanya, dan sangat dapat dipercaya." },
+    { id: 9, nama: "Dadi", urip: 8, karakter: "Memiliki tujuan hidup yang pasti dan jarang ragu-ragu." }
+];
+
+export const dasawaraData: Dasawara[] = [
+    { id: 1, nama: "Pandita", urip: 5, karakter: "Bijaksana, tenang, dan memiliki kedalaman ilmu." },
+    { id: 2, nama: "Pati", urip: 7, karakter: "Tegas, memiliki otoritas, dan berani mengambil risiko." },
+    { id: 3, nama: "Suka", urip: 10, karakter: "Optimis, ceria, dan pandai menghibur orang lain." },
+    { id: 4, nama: "Duka", urip: 4, karakter: "Mudah berempati dan memiliki kepekaan sosial tinggi." },
+    { id: 5, nama: "Sri", urip: 2, karakter: "Menyukai keindahan, rapi, dan memiliki cita rasa tinggi." },
+    { id: 6, nama: "Manuh", urip: 3, karakter: "Disiplin, patuh pada aturan, dan rendah hati." },
+    { id: 7, nama: "Manusa", urip: 8, karakter: "Suka bersosialisasi dan sangat mementingkan hubungan manusia." },
+    { id: 8, nama: "Raja", urip: 1, karakter: "Berjiwa besar, kharismatik, dan berbakat mengatur orang." },
+    { id: 9, nama: "Dewa", urip: 9, karakter: "Memiliki spiritualitas tinggi dan fokus pada kebajikan." },
+    { id: 10, nama: "Raksasa", urip: 6, karakter: "Memiliki energi besar, kuat fisik, dan mental yang tangguh." }
+];
+
+
+
+
 // Kategori Jodoh data
 export const kategoriJodohData: KategoriJodoh[] = [
     { sisa: 1, kategori: "Sri", makna: "Rejeki melimpah, hidup makmur, dan harmonis." },
@@ -425,142 +487,389 @@ import { Lintang } from './types';
 
 // data/masterLintang.ts
 export const dataLintang: Lintang[] = [
-    { nama: "Gajah", saptawara: "Redite", pancawara: "Umanis", sifat: "Pemaaf dan jujur.", nasib: "Rezeki lancar dan tenang." },
-    { nama: "Patrem", saptawara: "Redite", pancawara: "Paing", sifat: "Cerdas dan lincah.", nasib: "Sukses dalam karier." },
-    { nama: "Sungsang", saptawara: "Redite", pancawara: "Pon", sifat: "Waspada dan teliti.", nasib: "Banyak tantangan namun kuat." },
-    { nama: "Lembu", saptawara: "Redite", pancawara: "Wage", sifat: "Sabar dan penolong.", nasib: "Hidup sederhana namun bahagia." },
-    { nama: "Depat", saptawara: "Redite", pancawara: "Kliwon", sifat: "Berwibawa.", nasib: "Sering dihormati orang lain." },
-    { nama: "Waluku", saptawara: "Soma", pancawara: "Umanis", sifat: "Rajin bekerja.", nasib: "Ekonomi stabil di masa tua." },
-    { nama: "Dupa", saptawara: "Soma", pancawara: "Paing", sifat: "Ramah dan ceria.", nasib: "Mudah mencari teman." },
-    { nama: "Lumbung", saptawara: "Soma", pancawara: "Pon", sifat: "Hemat dan kalkulatif.", nasib: "Pintar mengelola harta." },
-    { nama: "Lembu", saptawara: "Soma", pancawara: "Wage", sifat: "Tenang.", nasib: "Hidup damai." },
-    { nama: "Pedati", saptawara: "Soma", pancawara: "Kliwon", sifat: "Fokus pada tujuan.", nasib: "Pemimpin yang baik." },
-    { nama: "Asu", saptawara: "Anggara", pancawara: "Umanis", sifat: "Setia dan pemberani.", nasib: "Pelindung keluarga." },
-    { nama: "Yuyu", saptawara: "Anggara", pancawara: "Paing", sifat: "Gigih.", nasib: "Mampu mengatasi kesulitan." },
-    { nama: "Asu", saptawara: "Anggara", pancawara: "Pon", sifat: "Waspada.", nasib: "Sering terhindar dari bahaya." },
-    { nama: "Kartika", saptawara: "Anggara", pancawara: "Wage", sifat: "Populer.", nasib: "Banyak dikenal masyarakat." },
-    { nama: "Sidamalung", saptawara: "Anggara", pancawara: "Kliwon", sifat: "Religius.", nasib: "Mendapat ketenangan batin." },
-    { nama: "Gajah Minantraya", saptawara: "Buda", pancawara: "Umanis", sifat: "Bijaksana.", nasib: "Guru atau penasihat." },
-    { nama: "Gajah", saptawara: "Buda", pancawara: "Paing", sifat: "Kuat fisik dan mental.", nasib: "Tahan banting." },
-    { nama: "Lumbung", saptawara: "Buda", pancawara: "Pon", sifat: "Suka berbagi.", nasib: "Rezeki yang berkah." },
-    { nama: "Kartika", saptawara: "Buda", pancawara: "Wage", sifat: "Kreatif.", nasib: "Cocok di bidang seni." },
-    { nama: "Tiwa-tiwa", saptawara: "Buda", pancawara: "Kliwon", sifat: "Spiritualis.", nasib: "Memiliki intuisi tajam." },
-    { nama: "Sangkat Tikel", saptawara: "Wraspati", pancawara: "Umanis", sifat: "Tegas.", nasib: "Pembuat keputusan yang baik." },
-    { nama: "Salah Ukur", saptawara: "Wraspati", pancawara: "Paing", sifat: "Ambisius.", nasib: "Pekerja keras." },
-    { nama: "Bade", saptawara: "Wraspati", pancawara: "Pon", sifat: "Sabar menanti.", nasib: "Kesuksesan yang bertahap." },
-    { nama: "Kuda", saptawara: "Wraspati", pancawara: "Wage", sifat: "Cepat bertindak.", nasib: "Sering mendapat peluang emas." },
-    { nama: "Naga", saptawara: "Wraspati", pancawara: "Kliwon", sifat: "Misterius.", nasib: "Disegani kawan maupun lawan." },
-    { nama: "Angsa Angrem", saptawara: "Sukra", pancawara: "Umanis", sifat: "Lembut hati.", nasib: "Hidup penuh cinta." },
-    { nama: "Taru", saptawara: "Sukra", pancawara: "Paing", sifat: "Mandiri.", nasib: "Berdiri di atas kaki sendiri." },
-    { nama: "Perahu Sarat", saptawara: "Sukra", pancawara: "Pon", sifat: "Ulet.", nasib: "Sanggup memikul tanggung jawab besar." },
-    { nama: "Banyak Angrem", saptawara: "Sukra", pancawara: "Wage", sifat: "Penyayang.", nasib: "Keluarga yang harmonis." },
-    { nama: "Gajah Minantraya", saptawara: "Sukra", pancawara: "Kliwon", sifat: "Sabar dan berwibawa.", nasib: "Rezeki stabil." },
-    { nama: "Puputon", saptawara: "Saniscara", pancawara: "Umanis", sifat: "Pantang menyerah.", nasib: "Akhir yang manis." },
-    { nama: "Ayam", saptawara: "Saniscara", pancawara: "Paing", sifat: "Berani bersuara.", nasib: "Pekerja yang vokal." },
-    { nama: "Perahu Sarat", saptawara: "Saniscara", pancawara: "Pon", sifat: "Pekerja keras.", nasib: "Sukses setelah berjuang." },
-    { nama: "Bubu Bolong", saptawara: "Saniscara", pancawara: "Wage", sifat: "Sederhana.", nasib: "Tulus dalam bergaul." },
-    { nama: "Pagelongan", saptawara: "Saniscara", pancawara: "Kliwon", sifat: "Introspektif.", nasib: "Belajar dari pengalaman." }
+    {
+        "saptawara": "Redite",
+        "pancawara": "Paing",
+        "lintang": "Gajah",
+        "label": "Tenang & Teguh",
+        "makna": "Lakunya Bulan",
+        "penjelasan": "Pandai merahasiakan perasaan, meski sedang marah atau menyesal tetap terlihat tenang. Pandai bergaul dan banyak kawan, namun memiliki pendirian yang sangat kuat dan terkadang sulit dikendalikan nafsunya."
+    },
+    {
+        "saptawara": "Soma",
+        "pancawara": "Pon",
+        "lintang": "Kiriman",
+        "label": "Rendah Hati",
+        "makna": "Sumur Sinaba",
+        "penjelasan": "Meskipun terlihat suka pamer, aslinya sangat berhati-hati dan suka mengalah. Bicaranya mungkin terdengar keras, namun sebenarnya baik budi, ramah tamah, dan sangat menjunjung tata susila."
+    },
+    {
+        "saptawara": "Anggara",
+        "pancawara": "Wage",
+        "lintang": "Jongsarat",
+        "label": "Penyelidik Setia",
+        "makna": "Lakunya Bumi",
+        "penjelasan": "Suka mengalah dalam pergaulan dan gemar menolong orang yang sedang kesulitan. Sangat mantap dalam menyelidiki hal-hal penting, namun cenderung pencemburu dan mudah tersinggung."
+    },
+    {
+        "saptawara": "Buda",
+        "pancawara": "Kliwon",
+        "lintang": "Tiwa-tiwa",
+        "label": "Penyusun Kata",
+        "makna": "Lakunya Surya",
+        "penjelasan": "Memiliki sopan santun yang tinggi, ramah, dan lemah lembut. Pandai menimbang sesuatu dan ahli dalam merangkai kata atau mengarang, namun hatinya sensitif dan mudah tersinggung."
+    },
+    {
+        "saptawara": "Wraspati",
+        "pancawara": "Umanis",
+        "lintang": "Sangka Tikel",
+        "label": "Visioner Bijak",
+        "makna": "Lakunya Bintang",
+        "penjelasan": "Memiliki cita-cita setinggi langit, bijaksana, dan pandai bergaul. Bicaranya tegas dan keras, namun terkadang suka mencampuri urusan orang lain dan butuh dorongan agar tidak lekas patah hati."
+    },
+    {
+        "saptawara": "Sukra",
+        "pancawara": "Paing",
+        "lintang": "Bubu Bolong",
+        "label": "Jujur & Dermawan",
+        "makna": "Tunggak Semi",
+        "penjelasan": "Pribadi yang ramah, jujur, dan memiliki angan-angan mulia sehingga disukai banyak orang. Namun, perlu waspada terhadap sifat pemboros dan kemauan yang terlalu keras."
+    },
+    {
+        "saptawara": "Saniscara",
+        "pancawara": "Pon",
+        "lintang": "Sungenge",
+        "label": "Berwibawa Tinggi",
+        "makna": "Lakunya Air",
+        "penjelasan": "Bercita-cita mulia dan senang menunjukkan kepandaian atau kekayaan. Disegani oleh orang banyak dan memiliki sifat pemaaf bagi mereka yang mengakui kesalahan."
+    },
+    {
+        "saptawara": "Redite",
+        "pancawara": "Wage",
+        "lintang": "Uluku",
+        "label": "Pekerja Keras",
+        "makna": "Lakunya Angin",
+        "penjelasan": "Sangat suka bekerja dan pandai menjaga rahasia penting. Meskipun dermawan, mereka sangat teguh pada pendapatnya jika ditentang dan sering memiliki sifat mudah kaget."
+    },
+    {
+        "saptawara": "Soma",
+        "pancawara": "Kliwon",
+        "lintang": "Pedati",
+        "label": "Pengorban Tulus",
+        "makna": "Satria Wirang",
+        "penjelasan": "Lemah lembut dan berkelakuan pantas. Meskipun mudah sakit hati, mereka sangat cepat memaafkan dan melupakan dendam. Rela berkorban demi keadilan bagi orang lain."
+    },
+    {
+        "saptawara": "Anggara",
+        "pancawara": "Umanis",
+        "lintang": "Kuda",
+        "label": "Tangkas & Maju",
+        "makna": "Lakunya Api",
+        "penjelasan": "Sangat tangkas dalam bekerja dan selalu mengejar kemajuan. Memiliki cita-cita besar namun sering kali cemburu dan jengkel jika ada yang menentang pendiriannya."
+    },
+    {
+        "saptawara": "Buda",
+        "pancawara": "Paing",
+        "lintang": "Gajahmina",
+        "label": "Waspada & Murah Hati",
+        "makna": "Lakunya Bulan",
+        "penjelasan": "Sangat berhati-hati dan selalu mempertimbangkan segala hal sebelum bertindak. Tidak suka mencampuri urusan orang lain, namun jika marah bisa sangat hebat."
+    },
+    {
+        "saptawara": "Wraspati",
+        "pancawara": "Pon",
+        "lintang": "Bade",
+        "label": "Pencari Pengalaman",
+        "makna": "Lakunya Surya",
+        "penjelasan": "Selalu ingin menambah pengalaman dan mencari kemajuan lahir batin. Namun, perlu berhati-hati dengan sifat pamer kepandaian agar tidak mendatangkan bahaya bagi diri sendiri."
+    },
+    {
+        "saptawara": "Sukra",
+        "pancawara": "Wage",
+        "lintang": "Maglut",
+        "label": "Setia & Pengabdi",
+        "makna": "Pendeta Sakti",
+        "penjelasan": "Sangat jujur, setia, dan murah hati. Sering menjadi korban demi kepentingan keluarga atau saudaranya, namun tetap teguh dengan pendiriannya meskipun harus menderita."
+    },
+    {
+        "saptawara": "Saniscara",
+        "pancawara": "Kliwon",
+        "lintang": "Pagelangan",
+        "label": "Sopan & Hati-hati",
+        "makna": "Lakunya Bumi",
+        "penjelasan": "Ramah tamah dan sangat hati-hati dalam bertindak. Pandai menyusun kata-kata, namun terkadang kurang percaya diri dan mudah putus asa saat menghadapi kesulitan besar."
+    },
+    {
+        "saptawara": "Redite",
+        "pancawara": "Umanis",
+        "lintang": "Kala Sungsang",
+        "label": "Diplomat Tenang",
+        "makna": "Pendeta Sakti",
+        "penjelasan": "Pandai menyembunyikan perasaan dan tetap tenang meski sedang marah. Suka berdebat dan terkadang mencampuri urusan orang lain, namun aslinya berhati kaku."
+    },
+    {
+        "saptawara": "Soma",
+        "pancawara": "Paing",
+        "lintang": "Kukus",
+        "label": "Rajin & Setia",
+        "makna": "Lakunya Bintang",
+        "penjelasan": "Berkelakuan baik, jujur, dan rajin bekerja. Memiliki cita-cita tinggi dan sangat setia pada janjinya. Hidupnya cenderung hemat, cermat, dan tertata."
+    },
+    {
+        "saptawara": "Anggara",
+        "pancawara": "Pon",
+        "lintang": "Asu",
+        "label": "Waspada & Mewah",
+        "makna": "Satria Wibawa",
+        "penjelasan": "Menyukai kemewahan namun tetap waspada dan pandai berbahasa. Sangat baik terhadap kawan yang loyal, namun sulit percaya pada orang baru dan suka berdebat."
+    },
+    {
+        "saptawara": "Buda",
+        "pancawara": "Wage",
+        "lintang": "Kartika",
+        "label": "Adil & Pantas",
+        "makna": "Aras Tuding",
+        "penjelasan": "Umumnya berkelakuan baik dan mengerti nilai uang (ekonomis). Suka menimbang segala hal dengan adil, bicaranya tegas meskipun terkadang terdengar janggal."
+    },
+    {
+        "saptawara": "Wraspati",
+        "pancawara": "Kliwon",
+        "lintang": "Naga",
+        "label": "Tajam & Ulet",
+        "makna": "Lakunya Air",
+        "penjelasan": "Bicaranya tajam dan cita-citanya tinggi. Memiliki pikiran yang ulet dan ramah, namun hatinya sangat sensitif sehingga mudah tersinggung dan jatuh dalam kesedihan."
+    },
+    {
+        "saptawara": "Sukra",
+        "pancawara": "Umanis",
+        "lintang": "Banyak Angrem",
+        "label": "Terus Terang",
+        "makna": "Aras Tuding",
+        "penjelasan": "Jujur, suka berterus terang, dan dermawan. Sangat suka menolong, namun jika sudah tidak cocok dengan seseorang, mereka bisa memutus hubungan secara total."
+    },
+    {
+        "saptawara": "Saniscara",
+        "pancawara": "Paing",
+        "lintang": "Ru",
+        "label": "Cepat Memaafkan",
+        "makna": "Lakunya Api",
+        "penjelasan": "Memiliki nafsu yang besar dan lekas marah, namun sangat mudah sabar dan menyesal. Pintar mengurus rumah tangga dan sangat teliti dalam urusan keuangan."
+    },
+    {
+        "saptawara": "Redite",
+        "pancawara": "Pon",
+        "lintang": "Patrem",
+        "label": "Ahli Diplomasi",
+        "makna": "Aras Kembang",
+        "penjelasan": "Sangat licin dan pandai berdiplomasi. Suka memperlihatkan kekayaan dan kepandaiannya di hadapan orang lain, namun pandai menyimpan perasaan yang sesungguhnya."
+    },
+    {
+        "saptawara": "Soma",
+        "pancawara": "Wage",
+        "lintang": "Lembu",
+        "label": "Jujur & Empati",
+        "makna": "Lakunya Api",
+        "penjelasan": "Segala urusan ditimbang dengan baik dan tidak terburu nafsu. Memiliki empati yang tinggi terhadap kesulitan orang lain, namun jika marah sangat sulit diredakan."
+    },
+    {
+        "saptawara": "Anggara",
+        "pancawara": "Kliwon",
+        "lintang": "Depat",
+        "label": "Ramah & Menyenangkan",
+        "makna": "Sumur Sinaba",
+        "penjelasan": "Pintar menyusun kata-kata sehingga bicaranya menyenangkan pendengar. Murah hati, namun terkadang memiliki pikiran yang keruh dan sulit percaya pada orang lain."
+    },
+    {
+        "saptawara": "Buda",
+        "pancawara": "Umanis",
+        "lintang": "Tangis",
+        "label": "Bijaksana & Peka",
+        "makna": "Aras Kembang",
+        "penjelasan": "Berkelakuan sopan, adil, dan bijaksana. Suka menolong kawan setia, namun sering dilingkupi rasa bimbang dan kesedihan yang mendalam."
+    },
+    {
+        "saptawara": "Wraspati",
+        "pancawara": "Paing",
+        "lintang": "Salah Ukur",
+        "label": "Giat & Dinamis",
+        "makna": "Lakunya Bumi",
+        "penjelasan": "Memiliki kemauan yang tangkas dan giat mencari kemajuan lahir batin. Sangat rukun dengan keluarga, namun bicaranya terkadang menyinggung atau salah terka terhadap orang lain."
+    },
+    {
+        "saptawara": "Sukra",
+        "pancawara": "Pon",
+        "lintang": "Prahu Pegat",
+        "label": "Pecinta Keadilan",
+        "makna": "Lakunya Bintang",
+        "penjelasan": "Suka bergaul, jujur, dan memiliki perikemanusiaan yang tinggi. Namun, sering merasa bimbang dan sedih hati yang membuat kemauannya mudah terputus di tengah jalan."
+    },
+    {
+        "saptawara": "Saniscara",
+        "pancawara": "Wage",
+        "lintang": "Puwuh Atarung",
+        "label": "Tegas & Dermawan",
+        "makna": "Lakunya Bintang",
+        "penjelasan": "Pintar mengatur rumah tangga dan menyukai kemewahan. Bicaranya tegas dan sangat murah hati kepada mereka yang memuji dirinya, namun cenderung pencemburu."
+    },
+    {
+        "saptawara": "Redite",
+        "pancawara": "Kliwon",
+        "lintang": "Lawean",
+        "label": "Sabar & Sopan",
+        "makna": "Lakunya Bintang",
+        "penjelasan": "Pribadi yang sabar, sopan, dan pandai berdiplomasi. Memiliki derajat yang tinggi dan pendiam, namun sulit diubah jika sudah memiliki pendapat sendiri."
+    },
+    {
+        "saptawara": "Soma",
+        "pancawara": "Umanis",
+        "lintang": "Kelapa",
+        "label": "Sopan & Dermawan",
+        "makna": "Lakunya Angin",
+        "penjelasan": "Berperilaku sopan santun dan ingin selalu berbuat baik. Suka membantu orang yang disetujuinya, namun memiliki kegemaran mengembara dan berdebat."
+    },
+    {
+        "saptawara": "Anggara",
+        "pancawara": "Paing",
+        "lintang": "Yuyu",
+        "label": "Murah Rezeki",
+        "makna": "Aras Kembang",
+        "penjelasan": "Murah hati dan suka menolong orang yang disukai. Rezekinya lancar, namun cenderung serakah terhadap apa yang dilihat dan mudah menyesal setelah bertindak emosional."
+    },
+    {
+        "saptawara": "Buda",
+        "pancawara": "Pon",
+        "lintang": "Lumbung",
+        "label": "Waspada & Rajin",
+        "makna": "Lakunya Bulan",
+        "penjelasan": "Sopan santun, waspada, dan memiliki rezeki yang baik. Sangat rajin dalam bekerja dan dicintai banyak orang, namun mudah tersinggung jika merasa tidak dihargai."
+    },
+    {
+        "saptawara": "Wraspati",
+        "pancawara": "Wage",
+        "lintang": "Kumba",
+        "label": "Adil & Cerdas",
+        "makna": "Aras Kembang",
+        "penjelasan": "Memiliki angan-angan tinggi dan suka berlaku adil. Sangat cerdas dalam memikirkan solusi masalah, namun cenderung pendendam jika merasa disalahi."
+    },
+    {
+        "saptawara": "Sukra",
+        "pancawara": "Kliwon",
+        "lintang": "Udang",
+        "label": "Berpengaruh Besar",
+        "makna": "Lakunya Bulan",
+        "penjelasan": "Berbudi baik, sabar, dan sangat ahli dalam mengarang atau berdiplomasi. Memiliki pengaruh besar dan dicintai orang, sukses biasanya datang saat usia dewasa."
+    },
+    {
+        "saptawara": "Saniscara",
+        "pancawara": "Umanis",
+        "lintang": "Begoong",
+        "label": "Pandai & Berani",
+        "makna": "Lakunya Bulan",
+        "penjelasan": "Sangat terampil dalam segala pekerjaan dan berwawasan luas. Berani dalam bertindak, namun bicaranya tajam dan sering mencampuri urusan orang lain."
+    }
 ];
 
 
 
 // data/masterMod16.ts
-export const dataSodasaRsi: SodasaRsi[] = 
-[
-  {
-    "sisa": 1,
-    "label": "Ujian Kesabaran",
-    "makna": "Ketabahan",
-    "penjelasan": "Diliputi kebimbangan, dalam keadaan suka dan duka, baik buruk, sering dituntut ketabahan."
-  },
-  {
-    "sisa": 2,
-    "label": "Petualang Minim Rezeki",
-    "makna": "Durlaba",
-    "penjelasan": "Durlaba, rezeki seret tapi suka melancong."
-  },
-  {
-    "sisa": 3,
-    "label": "Sering Tertekan",
-    "makna": "Kekecewaan",
-    "penjelasan": "Sering mendapat malu dan kecewa."
-  },
-  {
-    "sisa": 4,
-    "label": "Sulit Keturunan",
-    "makna": "Keturunan",
-    "penjelasan": "Susah mendapatkan sentana (keturunan)."
-  },
-  {
-    "sisa": 5,
-    "label": "Rezeki Lancar",
-    "makna": "Dirgahayu",
-    "penjelasan": "Dirgahayu, rezekinya lancar dan menanjak."
-  },
-  {
-    "sisa": 6,
-    "label": "Rentan Sakit",
-    "makna": "Merana",
-    "penjelasan": "Merana, sering sakit."
-  },
-  {
-    "sisa": 7,
-    "label": "Proses Menuju Bahagia",
-    "makna": "Suka Duka",
-    "penjelasan": "Mengalami suka duka, baik buruk dalam perjalanan hidupnya, menuju bahagia."
-  },
-  {
-    "sisa": 8,
-    "label": "Kesulitan Ekonomi",
-    "makna": "Terak",
-    "penjelasan": "Sukar untuk memenuhi hajat hidup sehari-hari, bahkan sampai kekurangan (terak)."
-  },
-  {
-    "sisa": 9,
-    "label": "Penuh Penyesalan",
-    "makna": "Penyesalan",
-    "penjelasan": "Kurang hati-hati, kesakitan tak henti-hentinya mewarnai kehidupannya, sampai menimbulkan kekecewaan dan penyesalan hidup."
-  },
-  {
-    "sisa": 10,
-    "label": "Wibawa Pemimpin",
-    "makna": "Wibawa",
-    "penjelasan": "Mendapatkan wibawa serta disegani bagai raja/ratu yang berkuasa, sehingga dapat mengayomi keluarga."
-  },
-  {
-    "sisa": 11,
-    "label": "Sukses Sempurna",
-    "makna": "Sidha serta Sabita",
-    "penjelasan": "Mendapat sukses dalam perjalanan hidup, tercapainya cita-citanya dengan penuh kepuasan (sidha serta sabita)."
-  },
-  {
-    "sisa": 12,
-    "label": "Magnet Rezeki",
-    "makna": "Sedana Nulus",
-    "penjelasan": "Sedana nulus, rezeki lancar/gampang."
-  },
-  {
-    "sisa": 13,
-    "label": "Panjang Umur & Berkah",
-    "makna": "Dirgayusa",
-    "penjelasan": "Dirgayusa, panjang umur, rezekinya berkepanjangan."
-  },
-  {
-    "sisa": 14,
-    "label": "Selalu Bahagia",
-    "makna": "Kebahagiaan",
-    "penjelasan": "Mendapatkan kebahagiaan/kesenangan selalu."
-  },
-  {
-    "sisa": 15,
-    "label": "Banyak Masalah",
-    "makna": "Bermasalah",
-    "penjelasan": "Sering mengalami kesusahan, keadaan buruk serta banyak problem."
-  },
-  {
-    "sisa": 16,
-    "label": "Penuh Kesenangan",
-    "makna": "Kesenangan",
-    "penjelasan": "Memperoleh kebahagiaan/kesenangan."
-  }
-];
+export const dataSodasaRsi: SodasaRsi[] =
+    [
+        {
+            "sisa": 1,
+            "label": "Ujian Kesabaran",
+            "makna": "Ketabahan",
+            "penjelasan": "Diliputi kebimbangan, dalam keadaan suka dan duka, baik buruk, sering dituntut ketabahan."
+        },
+        {
+            "sisa": 2,
+            "label": "Petualang Minim Rezeki",
+            "makna": "Durlaba",
+            "penjelasan": "Durlaba, rezeki seret tapi suka melancong."
+        },
+        {
+            "sisa": 3,
+            "label": "Sering Tertekan",
+            "makna": "Kekecewaan",
+            "penjelasan": "Sering mendapat malu dan kecewa."
+        },
+        {
+            "sisa": 4,
+            "label": "Sulit Keturunan",
+            "makna": "Keturunan",
+            "penjelasan": "Susah mendapatkan sentana (keturunan)."
+        },
+        {
+            "sisa": 5,
+            "label": "Rezeki Lancar",
+            "makna": "Dirgahayu",
+            "penjelasan": "Dirgahayu, rezekinya lancar dan menanjak."
+        },
+        {
+            "sisa": 6,
+            "label": "Rentan Sakit",
+            "makna": "Merana",
+            "penjelasan": "Merana, sering sakit."
+        },
+        {
+            "sisa": 7,
+            "label": "Proses Menuju Bahagia",
+            "makna": "Suka Duka",
+            "penjelasan": "Mengalami suka duka, baik buruk dalam perjalanan hidupnya, menuju bahagia."
+        },
+        {
+            "sisa": 8,
+            "label": "Kesulitan Ekonomi",
+            "makna": "Terak",
+            "penjelasan": "Sukar untuk memenuhi hajat hidup sehari-hari, bahkan sampai kekurangan (terak)."
+        },
+        {
+            "sisa": 9,
+            "label": "Penuh Penyesalan",
+            "makna": "Penyesalan",
+            "penjelasan": "Kurang hati-hati, kesakitan tak henti-hentinya mewarnai kehidupannya, sampai menimbulkan kekecewaan dan penyesalan hidup."
+        },
+        {
+            "sisa": 10,
+            "label": "Wibawa Pemimpin",
+            "makna": "Wibawa",
+            "penjelasan": "Mendapatkan wibawa serta disegani bagai raja/ratu yang berkuasa, sehingga dapat mengayomi keluarga."
+        },
+        {
+            "sisa": 11,
+            "label": "Sukses Sempurna",
+            "makna": "Sidha serta Sabita",
+            "penjelasan": "Mendapat sukses dalam perjalanan hidup, tercapainya cita-citanya dengan penuh kepuasan (sidha serta sabita)."
+        },
+        {
+            "sisa": 12,
+            "label": "Magnet Rezeki",
+            "makna": "Sedana Nulus",
+            "penjelasan": "Sedana nulus, rezeki lancar/gampang."
+        },
+        {
+            "sisa": 13,
+            "label": "Panjang Umur & Berkah",
+            "makna": "Dirgayusa",
+            "penjelasan": "Dirgayusa, panjang umur, rezekinya berkepanjangan."
+        },
+        {
+            "sisa": 14,
+            "label": "Selalu Bahagia",
+            "makna": "Kebahagiaan",
+            "penjelasan": "Mendapatkan kebahagiaan/kesenangan selalu."
+        },
+        {
+            "sisa": 15,
+            "label": "Banyak Masalah",
+            "makna": "Bermasalah",
+            "penjelasan": "Sering mengalami kesusahan, keadaan buruk serta banyak problem."
+        },
+        {
+            "sisa": 16,
+            "label": "Penuh Kesenangan",
+            "makna": "Kesenangan",
+            "penjelasan": "Memperoleh kebahagiaan/kesenangan."
+        }
+    ];
+
+
