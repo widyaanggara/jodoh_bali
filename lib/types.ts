@@ -87,11 +87,25 @@ export interface Zodiak {
 
 // Calculated Types
 
+export interface WewaranLengkap {
+  ekawara: string;
+  dwiwara: string;
+  triwara: string;
+  caturwara: string;
+  pancawara: string;
+  sadwara: string;
+  saptawara: string;
+  asatawara: string;
+  sangawara: string;
+  dasawara: string;
+}
+
 export interface BalineseDate {
   wuku: Wuku;
   pancawara: Pancawara;
   saptawara: Saptawara;
   sadwara?: Sadwara;
+  wewaran?: WewaranLengkap;
   totalUrip: number; // Mod 5: Saptawara + Pancawara + Wuku
   totalUripSodasaRsi: number; // Mod 16: Saptawara + Pancawara + Sadwara + Wuku
   lintang?: Lintang;

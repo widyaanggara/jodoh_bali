@@ -100,15 +100,121 @@ export function getBalineseDate(date: Date, birthTime?: string): BalineseDate {
     // Calculate next Otonan
     const nextOtonan = getNextOtonan(adjustedDate);
 
+    // Calculate Wewaran Lengkap (Ekawara - Dasawara)
+    const wewaran = calculateWewaran(wukuTotalDays, wukuIndex, saptawara, pancawara);
+
     return {
         wuku,
         pancawara,
         saptawara,
         sadwara,
+        wewaran,
         totalUrip,
         totalUripSodasaRsi,
         lintang,
         nextOtonan
+    };
+}
+
+// ============================================================
+// Wewaran Lengkap: Ekawara – Dasawara (G-Formula)
+// ============================================================
+
+const TRIWARA_MAP = ['Kajeng', 'Pasah', 'Beteng'];
+const CATURWARA_MAP = ['Menala', 'Sri', 'Laba', 'Jaya'];
+const SADWARA_MAP = ['Maulu', 'Tungleh', 'Aryang', 'Urukung', 'Paniron', 'Was'];
+const ASATAWARA_MAP = ['Uma', 'Sri', 'Indra', 'Guru', 'Yama', 'Ludra', 'Brahma', 'Kala'];
+const SANGAWARA_MAP = ['Dadi', 'Dangu', 'Jangur', 'Gigis', 'Nohan', 'Ogan', 'Erangan', 'Urungan', 'Tulus'];
+const DASAWARA_MAP = ['Pandita', 'Pati', 'Suka', 'Duka', 'Sri', 'Manuh', 'Manusa', 'Raja', 'Dewa', 'Raksasa'];
+
+/**
+ * Hitung 10 Wewaran menggunakan rumus G-formula.
+ * G = wukuTotalDays + 1 (equivalent to (WukuIndex-1)*7 + SaptawaraIndex, 1-based)
+ *
+ * Pengecualian Jaya Tiga (Wuku Dungulan):
+ *   Redite Dungulan: G += 2
+ *   Soma Dungulan:   G += 1
+ *
+ * Pengalantaka Sangawara:
+ *   Hari 0-3 (Redite–Buda Sinta) = 'Dangu'
+ */
+import type { Saptawara, Pancawara, WewaranLengkap } from './types';
+
+function calculateWewaran(
+    wukuTotalDays: number,
+    wukuIndex: number,
+    saptawara: Saptawara,
+    pancawara: Pancawara
+): WewaranLengkap {
+    const dayInWuku = wukuTotalDays % 7; // 0=Redite .. 6=Saniscara
+
+    // G = wukuTotalDays + 1
+    let G = wukuTotalDays + 1;
+
+    // Pengecualian Jaya Tiga: Wuku Dungulan (index 10)
+    if (wukuIndex === 10 && dayInWuku === 0) G += 2; // Redite Dungulan
+    if (wukuIndex === 10 && dayInWuku === 1) G += 1; // Soma Dungulan
+
+    // JumlahUrip = UripSaptawara + UripPancawara
+    const jumlahUrip = saptawara.urip + pancawara.urip;
+
+    // Ekawara: ganjil → Luang, genap → '-'
+    const ekawara = jumlahUrip % 2 !== 0 ? 'Luang' : '-';
+
+    // Dwiwara: ganjil → Pepet, genap → Menga
+    const dwiwara = jumlahUrip % 2 !== 0 ? 'Pepet' : 'Menga';
+
+    // Triwara, Sadwara: G % n
+    const triwara = TRIWARA_MAP[G % 3];
+    const sadwaraW = SADWARA_MAP[G % 6];
+
+    // Caturwara, Asatawara, Dasawara from EXACT ARRAYS (by wukuTotalDays index)
+    const EXACT_CATURWARA = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 2, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3];
+    const EXACT_ASTAWARA = [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7];
+
+    const caturIndex = EXACT_CATURWARA[wukuTotalDays];
+    const astaIndex = EXACT_ASTAWARA[wukuTotalDays];
+
+    // For Caturwara: 0=Sri, 1=Laba, 2=Jaya, 3=Menala. Our map: ['Menala', 'Sri', 'Laba', 'Jaya']
+    // So 0=Sri(1), 1=Laba(2), 2=Jaya(3), 3=Menala(0)
+    const CATUR_ID_MAP = [1, 2, 3, 0];
+    const caturwara = CATURWARA_MAP[CATUR_ID_MAP[caturIndex]];
+
+    // For Asatawara: 0=Sri .. 7=Uma. Our map: ['Uma', 'Sri', 'Indra', 'Guru', 'Yama', 'Ludra', 'Brahma', 'Kala']
+    // So 0=Sri(1), 1=Indra(2), ..., 6=Kala(7), 7=Uma(0)
+    const ASTA_ID_MAP = [1, 2, 3, 4, 5, 6, 7, 0];
+    const asatawara = ASATAWARA_MAP[ASTA_ID_MAP[astaIndex]];
+
+    // Dasawara mapping replaced with user formula
+
+    // Sangawara: pengalantaka → 4 hari pertama Sinta = 'Dangu'
+    let sangawara: string;
+    if (wukuTotalDays < 4) {
+        sangawara = 'Dangu';
+    } else {
+        sangawara = SANGAWARA_MAP[((wukuTotalDays - 2) % 9 + 9) % 9];
+    }
+
+    // Dasawara: Explicit mapping based on Total Urip (Saptawara + Pancawara) 
+    // to match exactly with balinese-date-js-lib distribution
+    const dasawaraMapUrip: Record<number, string> = {
+        7: 'Raja', 8: 'Dewa', 9: 'Raksasa', 10: 'Pandita',
+        11: 'Pati', 12: 'Suka', 13: 'Duka', 14: 'Sri',
+        15: 'Manuh', 16: 'Manusa', 17: 'Raja', 18: 'Dewa'
+    };
+    const dasawara = dasawaraMapUrip[jumlahUrip];
+
+    return {
+        ekawara,
+        dwiwara,
+        triwara,
+        caturwara,
+        pancawara: pancawara.nama,
+        sadwara: sadwaraW,
+        saptawara: saptawara.hari.split('/')[0],
+        asatawara,
+        sangawara,
+        dasawara
     };
 }
 

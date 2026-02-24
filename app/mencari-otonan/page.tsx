@@ -347,6 +347,32 @@ export default function MencariOtonan() {
                                     </div>
                                 </div>
 
+                                {/* Wewaran Lengkap Card */}
+                                {otonanResult.wewaran && (
+                                    <div className="bg-white rounded-[2rem] shadow-xl p-8 border border-accent-gold/20 slide-up">
+                                        <h3 className="font-display text-2xl font-bold mb-6 text-stone-800 text-center">Wewaran Lengkap</h3>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                                            {[
+                                                { label: 'Eka Wara', value: otonanResult.wewaran.ekawara },
+                                                { label: 'Dwi Wara', value: otonanResult.wewaran.dwiwara },
+                                                { label: 'Tri Wara', value: otonanResult.wewaran.triwara },
+                                                { label: 'Catur Wara', value: otonanResult.wewaran.caturwara },
+                                                { label: 'Panca Wara', value: otonanResult.wewaran.pancawara },
+                                                { label: 'Sad Wara', value: otonanResult.wewaran.sadwara },
+                                                { label: 'Sapta Wara', value: otonanResult.wewaran.saptawara },
+                                                { label: 'Asta Wara', value: otonanResult.wewaran.asatawara },
+                                                { label: 'Sanga Wara', value: otonanResult.wewaran.sangawara },
+                                                { label: 'Dasa Wara', value: otonanResult.wewaran.dasawara },
+                                            ].map((item, idx) => (
+                                                <div key={idx} className="bg-stone-50 rounded-xl p-3 text-center border border-stone-100 hover:border-primary/30 hover:bg-white hover:shadow-md transition-all">
+                                                    <span className="block text-[10px] md:text-xs uppercase tracking-wider font-bold text-stone-400 mb-1">{item.label}</span>
+                                                    <span className="block font-bold text-stone-800 text-sm md:text-base">{item.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Wuku Detail Card */}
                                 <div className="bg-white rounded-[2rem] shadow-xl p-8 border border-accent-gold/20 slide-up">
                                     <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Detail Wuku {otonanResult.wuku.nama_wuku}</h3>

@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+#WEBSITE UTAMA
   nextjs:
     build:
       context: .
@@ -14,3 +15,29 @@ services:
       # Tambahkan ini agar Next.js tidak mencari-cari hostname container ID
       HOSTNAME: "0.0.0.0"
       PORT: 3010
+
+  # WEBSITE DEV
+  nextjs_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs_dev
+    ports:
+      - "3011:3010"
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      HOSTNAME: "0.0.0.0"
+      PORT: 3010
+
+  # REVERSE PROXY
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - nextjs
+      - nextjs_dev
