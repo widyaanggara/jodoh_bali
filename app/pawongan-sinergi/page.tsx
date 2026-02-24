@@ -78,7 +78,7 @@ export default function Samyoga() {
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">A</div>
-                                        <label className="text-xs uppercase tracking-widest font-bold text-stone-500">Mitra Kolaborasi A (Lead)</label>
+                                        <label className="text-xs uppercase tracking-widest font-bold text-stone-500">Mitra Kolaborasi A (Pemimpin)</label>
                                     </div>
                                     <div className="space-y-3">
                                         <div className="relative">
@@ -106,7 +106,7 @@ export default function Samyoga() {
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-8 h-8 rounded-full bg-accent-gold/20 text-accent-gold flex items-center justify-center font-bold text-sm">B</div>
-                                        <label className="text-xs uppercase tracking-widest font-bold text-stone-500">Mitra Kolaborasi B (Co-Lead)</label>
+                                        <label className="text-xs uppercase tracking-widest font-bold text-stone-500">Mitra Kolaborasi B (Wakil Pemimpin)</label>
                                     </div>
                                     <div className="space-y-3">
                                         <div className="relative">
