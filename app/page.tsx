@@ -66,34 +66,88 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
-                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
-                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">verified_user</span>
+              {/* Feature 1 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">verified_user</span>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Kecocokan Pasangan</h4>
-                <p className="text-stone-500 leading-relaxed">
-                  Menghitung titik temu energi antara dua individu melalui penggabungan nilai Neptu Pancawara dan Saptawara untuk mengungkap tingkat keharmonisan serta prediksi dinamika hubungan di masa depan.
-                </p>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Menghitung titik temu energi antara dua individu melalui penggabungan nilai Neptu Pancawara dan Saptawara untuk mengungkap tingkat keharmonisan serta prediksi dinamika hubungan di masa depan.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
               </div>
 
-              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
-                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
-                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">synagogue</span>
+              {/* Feature 2 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">synagogue</span>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-4">Mencari Jodoh</h4>
-                <p className="text-stone-500 leading-relaxed">
-                  Menemukan kriteria profil pasangan yang memiliki keselarasan energi paling seimbang dengan siklus kelahiran Anda berdasarkan perhitungan matematis Wewaran yang presisi.
-                </p>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Menemukan kriteria profil pasangan yang memiliki keselarasan energi paling seimbang dengan siklus kelahiran Anda berdasarkan perhitungan matematis Wewaran yang presisi.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
               </div>
 
-              <div className="bg-background-light p-10 rounded-[2rem] border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 transition-all group">
-                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white transition-colors">
-                  <span className="material-icons-outlined text-accent-gold group-hover:text-white text-3xl">lock</span>
+              {/* Feature 3 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">diversity_1</span>
                 </div>
-                <h4 className="font-display text-2xl font-bold mb-4">Apa itu Wuku?</h4>
-                <p className="text-stone-500 leading-relaxed">
-                  Dalam tradisi Bali, Wuku adalah siklus waktu dalam kalender Pawukon yang terdiri dari 30 pekan, di mana setiap pekan (satu Wuku) berdurasi 7 hari (Minggu hingga Sabtu).
-                </p>
+                <h4 className="font-display text-2xl font-bold mb-4">Ramalan Pernikahan</h4>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Menganalisis potensi dan dinamika perjalanan rumah tangga berdasarkan metode perjodohan tradisional Bali (Tenung Urip Panca & Sodasa Rsi) untuk merencanakan masa depan yang bahagia.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
+              </div>
+
+              {/* Feature 4 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">calendar_month</span>
+                </div>
+                <h4 className="font-display text-2xl font-bold mb-4">Mencari Otonan</h4>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Mencari jadwal pasti jatuhnya hari Otonan (Ulang Tahun Bali) Anda di siklus 210 hari pada bulan dan tahun-tahun mendatang dengan perhitungan kalender Pawukon yang terverifikasi.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
+              </div>
+
+              {/* Feature 5 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">auto_awesome</span>
+                </div>
+                <h4 className="font-display text-2xl font-bold mb-4">Ramalan Otonan</h4>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Mengetahui perayaan hari lahir versi Bali (Otonan) beserta kalkulasi komplit struktur wewaran (Ekawara hingga Dasawara) serta makna karakter spiritual di baliknya.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
+              </div>
+
+              {/* Feature 6 */}
+              <div tabIndex={0} className="block bg-background-light p-10 rounded-4xl border border-accent-gold/10 hover:shadow-xl hover:-translate-y-1 focus:shadow-xl focus:-translate-y-1 transition-all group outline-none cursor-default">
+                <div className="w-14 h-14 bg-accent-gold/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-gold group-hover:text-white group-focus:bg-accent-gold group-focus:text-white transition-colors">
+                  <span className="material-icons-outlined text-accent-gold group-hover:text-white group-focus:text-white text-3xl">spa</span>
+                </div>
+                <h4 className="font-display text-2xl font-bold mb-4">Samyoga</h4>
+                <div className="relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-[75px] group-hover:max-h-[400px] group-focus:max-h-[400px]">
+                  <p className="text-stone-500 leading-relaxed">
+                    Samyoga adalah fitur analisis kecocokan strategis yang dirancang untuk memetakan potensi sinergi antara dua individu dalam struktur organisasi atau pemerintahan. Diambil dari istilah Kawi/Sanskerta yang berarti "Penyatuan" atau "Pertautan yang Harmonis", fitur ini melampaui sekadar perjodohan kerja biasa.
+                  </p>
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-[#fcfbf9] to-transparent group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
               </div>
             </div>
           </div>

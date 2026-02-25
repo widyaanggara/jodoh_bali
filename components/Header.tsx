@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
@@ -54,7 +54,7 @@ export default function Header() {
         <header className="sticky top-0 z-50 bg-background-light/80 backdrop-blur-md border-b border-accent-gold/10">
             <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group">
+                <Link href="/" className="flex items-center gap-2 group shrink-0">
                     <span className="material-icons-outlined text-accent-gold text-3xl">flare</span>
                     <span className="font-display text-2xl font-bold tracking-tight text-primary">
                         Metemu
@@ -131,7 +131,7 @@ export default function Header() {
             </nav>
 
             {/* Mobile Navigation */}
-            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[500px] opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
                 <div className="px-6 flex flex-col gap-2 pt-4 border-t border-accent-gold/10 bg-white/95 backdrop-blur-sm">
                     {navLinks.map((link) => (
                         link.children ? (

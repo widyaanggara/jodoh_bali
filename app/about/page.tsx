@@ -40,7 +40,7 @@ export default function AboutPage() {
                 <div className="sticky top-[80px] z-40  backdrop-blur-md border-b border-stone-200 -mx-6 px-6 mb-12 transition-all duration-300">
                     <div className="max-w-4xl mx-auto">
                         <div className="flex overflow-x-auto no-scrollbar gap-2 py-4 justify-start md:justify-center">
-                            <div className="flex p-1.5 bg-stone-100/50 rounded-2xl backdrop-blur-sm">
+                            <div className="flex p-1.5 gap-1.5 bg-stone-100/50 rounded-2xl backdrop-blur-sm">
                                 {tabs.map((tab) => (
                                     <button
                                         key={tab.id}
@@ -536,6 +536,10 @@ export default function AboutPage() {
                             <p className="mt-6">
                                 Mengutip <span className="font-bold">Ida Bagus Rai Putra</span> dalam tulisannya di buku <span className="italic">Prabhājñana</span> yang diterbitkan Universitas Udayana, siklus kehidupan manusia diyakini memiliki pola tertentu setiap enam tahun. Dalam rentang waktu tersebut, seseorang bisa mengalami perubahan nasib—dari kekurangan hingga kemakmuran—yang semuanya bisa dianalisis lewat Pal Sri Sedana.
                             </p>
+
+                            <div className="bg-primary/5 p-8 rounded-3xl my-8 border border-primary/10">
+                                <BlockMath math={"\\text{Total Urip} = \\text{Urip Saptawara} + \\text{Urip Pancawara}"} />
+                            </div>
 
                             {/* Tabel Pal Sri Sedana */}
                             <div className="mt-10 overflow-hidden rounded-2xl border border-stone-200 shadow-sm bg-white">
