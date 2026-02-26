@@ -13,8 +13,8 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
     // [NEW] State untuk menyimpan jam lahir
     const [birthTime, setBirthTime] = useState('12:00');
     const currentYear = new Date().getFullYear();
-    const [startYear, setStartYear] = useState(currentYear);
-    const [endYear, setEndYear] = useState(currentYear + 5);
+    const [startYear, setStartYear] = useState<string | number>(currentYear);
+    const [endYear, setEndYear] = useState<string | number>(currentYear + 5);
     const { recentDates } = useSession();
 
     const handleSubmit = () => {
@@ -23,17 +23,20 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
             return;
         }
 
-        if (!startYear || !endYear) {
+        const finalStart = startYear === '' ? 1900 : Number(startYear);
+        const finalEnd = endYear === '' ? 2100 : Number(endYear);
+
+        if (!finalStart || !finalEnd) {
             alert('Mohon masukkan rentang tahun pencarian');
             return;
         }
 
-        if (startYear > endYear) {
+        if (finalStart > finalEnd) {
             alert('Tahun mulai tidak boleh lebih besar dari tahun akhir');
             return;
         }
 
-        onSearch(birthDate, birthTime, startYear, endYear);
+        onSearch(birthDate, birthTime, finalStart, finalEnd);
     };
 
     const handleReset = () => {
@@ -102,12 +105,9 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
                                     <input
                                         id="startYear"
                                         type="number"
-                                        min="1900"
-                                        max="2100"
                                         value={startYear}
-                                        onChange={(e) => setStartYear(parseInt(e.target.value) || currentYear)}
+                                        onChange={(e) => setStartYear(e.target.value)}
                                         className="w-full pl-10 pr-3 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
-                                        placeholder="2025"
                                     />
                                 </div>
                             </div>
@@ -122,18 +122,15 @@ export default function IdealMatchSearchForm({ onSearch, isLoading }: SearchForm
                                     <input
                                         id="endYear"
                                         type="number"
-                                        min="1900"
-                                        max="2100"
                                         value={endYear}
-                                        onChange={(e) => setEndYear(parseInt(e.target.value) || currentYear + 5)}
+                                        onChange={(e) => setEndYear(e.target.value)}
                                         className="w-full pl-10 pr-3 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none"
-                                        placeholder="2030"
                                     />
                                 </div>
                             </div>
                         </div>
                         <p className="text-xs text-stone-500 text-center mt-2">
-                            Mencari dari tahun {startYear} sampai {endYear} ({endYear - startYear + 1} tahun)
+                            Mencari dari tahun {startYear || 1900} sampai {endYear || 2100} ({Math.max(0, (Number(endYear || 2100) - Number(startYear || 1900)) + 1)} tahun)
                         </p>
                     </div>
 

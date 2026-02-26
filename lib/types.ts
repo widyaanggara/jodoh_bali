@@ -72,6 +72,8 @@ export interface KategoriJodoh {
   sisa: number;
   kategori: string;
   makna: string;
+  deskripsi?: string;
+  score: number;
 }
 
 export interface Zodiak {
@@ -123,6 +125,17 @@ export interface PalSriSedanaLabel {
   desc: string;
 }
 
+export type HybridStatus = 'Utama' | 'Madia' | 'Nista';
+
+export interface KombinasiTenung {
+  mod5Label: string;
+  mod16Label: string;
+  hybridStatus: HybridStatus;
+  hybridDesc: string;
+  hybridScore: number;
+  narasi: string;
+}
+
 export interface CompatibilityResult {
   person1: BalineseDate;
   person2: BalineseDate;
@@ -131,6 +144,7 @@ export interface CompatibilityResult {
   percentage: number;
   mod16Result?: SodasaRsi;
   combinedTotalUrip?: number;
+  kombinasi?: KombinasiTenung;
   matchConclusion?: {
     title: string;
     content: string;
@@ -159,5 +173,6 @@ export interface SodasaRsi {
   sisa: number;
   label: string;
   makna: string;
-  penjelasan: string;
+  deskripsi: string;
+  score: number;
 }

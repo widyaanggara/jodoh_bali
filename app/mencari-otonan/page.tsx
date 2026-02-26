@@ -31,8 +31,8 @@ export default function MencariOtonan() {
     const [selSaptawara, setSelSaptawara] = useState('');
     const [selPancawara, setSelPancawara] = useState('');
     const [selWuku, setSelWuku] = useState('');
-    const [startYear, setStartYear] = useState(1945);
-    const [endYear, setEndYear] = useState(2026);
+    const [startYear, setStartYear] = useState<string | number>(1945);
+    const [endYear, setEndYear] = useState<string | number>(2026);
     const [tanggalResults, setTanggalResults] = useState<MasehiMatchResult[]>([]);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -78,7 +78,9 @@ export default function MencariOtonan() {
         if (!selSaptawara || !selPancawara || !selWuku) return;
         setIsLoading(true);
         setTimeout(() => {
-            const results = findMasehiDates(selSaptawara, selPancawara, selWuku, startYear, endYear);
+            const finalStart = startYear === '' ? 1900 : Number(startYear);
+            const finalEnd = endYear === '' ? 2100 : Number(endYear);
+            const results = findMasehiDates(selSaptawara, selPancawara, selWuku, finalStart, finalEnd);
             setTanggalResults(results);
             setHasSearched(true);
             setIsLoading(false);
@@ -264,9 +266,7 @@ export default function MencariOtonan() {
                                             <input
                                                 type="number"
                                                 value={startYear}
-                                                onChange={(e) => setStartYear(Number(e.target.value))}
-                                                min={1900}
-                                                max={2100}
+                                                onChange={(e) => setStartYear(e.target.value)}
                                                 className="w-full px-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none text-center"
                                             />
                                         </div>
@@ -275,9 +275,7 @@ export default function MencariOtonan() {
                                             <input
                                                 type="number"
                                                 value={endYear}
-                                                onChange={(e) => setEndYear(Number(e.target.value))}
-                                                min={1900}
-                                                max={2100}
+                                                onChange={(e) => setEndYear(e.target.value)}
                                                 className="w-full px-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-stone-800 focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm transition-all outline-none text-center"
                                             />
                                         </div>
@@ -418,7 +416,7 @@ export default function MencariOtonan() {
                                         Menampilkan hasil untuk <span className="font-bold text-stone-800">{selSaptawara} {selPancawara} Wuku {selWuku}</span>
                                     </p>
                                     <p className="text-stone-400 text-xs mt-1">
-                                        Rentang: {startYear} – {endYear} &middot; Ditemukan <span className="font-bold text-primary">{tanggalResults.length}</span> tanggal
+                                        Rentang: {startYear || 1900} – {endYear || 2100} &middot; Ditemukan <span className="font-bold text-primary">{tanggalResults.length}</span> tanggal
                                     </p>
                                 </div>
 
@@ -427,7 +425,7 @@ export default function MencariOtonan() {
                                         <span className="material-symbols-outlined text-6xl text-stone-300 mb-4 block">event_busy</span>
                                         <h3 className="font-display text-xl font-bold text-stone-700 mb-2">Tidak Ditemukan</h3>
                                         <p className="text-stone-500 text-sm max-w-md mx-auto">
-                                            Tidak ada tanggal Masehi dengan kombinasi {selSaptawara} {selPancawara} Wuku {selWuku} dalam rentang {startYear}–{endYear}.
+                                            Tidak ada tanggal Masehi dengan kombinasi {selSaptawara} {selPancawara} Wuku {selWuku} dalam rentang {startYear || 1900}–{endYear || 2100}.
                                         </p>
                                     </div>
                                 ) : (

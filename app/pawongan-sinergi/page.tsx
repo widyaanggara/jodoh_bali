@@ -302,7 +302,7 @@ export default function Samyoga() {
                                     <div className="relative">
                                         <div className="pl-4 border-l-2 border-stone-200">
                                             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-2">Penjelasan Klasik</p>
-                                            <p className="text-stone-600 italic leading-relaxed text-sm">"{result.sodasaRsi.penjelasan}"</p>
+                                            <p className="text-stone-600 italic leading-relaxed text-sm">"{result.sodasaRsi.deskripsi}"</p>
                                         </div>
                                     </div>
                                 </div>

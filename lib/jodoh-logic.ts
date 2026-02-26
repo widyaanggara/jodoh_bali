@@ -1,5 +1,5 @@
-import { getBalineseDate, findLintang } from './balinese-calendar';
-import { BalineseDate, Lintang, Zodiak } from './types';
+import { getBalineseDate, findLintang, getKategoriJodoh } from './balinese-calendar';
+import { BalineseDate, Lintang, Zodiak, KategoriJodoh } from './types';
 import { dataZodiak } from './data';
 
 export interface IdealMatch {
@@ -8,6 +8,7 @@ export interface IdealMatch {
     lintang?: Lintang;
     totalUrip: number;
     sisa: number;
+    kategori: KategoriJodoh;
 }
 
 /**
@@ -58,7 +59,8 @@ export function findIdealMatches(
                     balineseDate: candidateBalinese,
                     lintang,
                     totalUrip,
-                    sisa
+                    sisa,
+                    kategori: getKategoriJodoh(totalUrip)
                 });
             }
 

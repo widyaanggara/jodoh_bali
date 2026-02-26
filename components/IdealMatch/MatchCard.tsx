@@ -35,11 +35,11 @@ export default function IdealMatchCard({ match, index }: MatchCardProps) {
                 {/* Status Badge */}
                 <div className="flex items-center gap-4 self-end sm:self-center">
                     <span className="px-4 py-1.5 rounded-full bg-emerald-500 text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg shadow-emerald-200/50">
-                        ✨ SRI
+                        ✨ {match.kategori?.kategori || 'SRI'}
                     </span>
                     <div className="flex flex-col items-end">
                         <span className="text-2xl font-bold text-emerald-500">
-                            95%
+                            {match.kategori?.score || 100}%
                         </span>
                         <span className="text-[10px] text-stone-400 uppercase font-bold tracking-tighter">
                             Kecocokan

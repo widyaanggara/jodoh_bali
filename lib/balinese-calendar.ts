@@ -2,6 +2,7 @@ import {
     BalineseDate,
     KategoriJodoh,
     SodasaRsi,
+    KombinasiTenung,
     CompatibilityResult,
     MarriageCycle,
     Lintang,
@@ -45,7 +46,8 @@ function getSaptawaraIndex(date: Date): number {
 function getSadwaraIndex(date: Date): number {
     const days = daysBetween(REFERENCE_DATE, date);
     // Sadwara cycles every 6 days (Tungleh, Aryang, Urukung, Paniron, Was, Maulu)
-    return ((days % 6) + 6) % 6;
+    // The reference date 27 July 2005 is Paniron (index 3 in sadwaraData)
+    return (((days + 3) % 6) + 6) % 6;
 }
 
 /**
@@ -250,7 +252,7 @@ export function getNextOtonan(birthDate: Date): string {
 /**
  * Get kategori jodoh based on total urip sum (Mod 5)
  */
-function getKategoriJodoh(totalUrip: number): KategoriJodoh {
+export function getKategoriJodoh(totalUrip: number): KategoriJodoh {
     const sisa = totalUrip % 5;
     return kategoriJodohData.find(k => k.sisa === sisa) || kategoriJodohData[0];
 }
@@ -267,14 +269,7 @@ function getSodasaRsi(combinedTotalUrip: number): SodasaRsi {
  * Calculate compatibility percentage based on kategori
  */
 function calculatePercentage(kategori: KategoriJodoh): number {
-    switch (kategori.kategori) {
-        case 'Sri': return 95;
-        case 'Dana': return 85;
-        case 'Laba': return 75;
-        case 'Sakti': return 60;
-        case 'Tiwas': return 45;
-        default: return 50;
-    }
+    return kategori.score;
 }
 
 const POSITIVE_MOD5 = ['Sri', 'Dana', 'Laba', 'Lungguh'];
@@ -403,34 +398,116 @@ export function calculateCompatibility(date1: Date, date2: Date, time1?: string,
     // Mod 5 calculation (original - for Rezeki/Fortune)
     const totalUrip = person1.totalUrip + person2.totalUrip;
     const kategori = getKategoriJodoh(totalUrip);
-    const percentage = calculatePercentage(kategori);
+    const mod5Score = kategori.score;
 
     // Mod 16 calculation (new - for Karakter & Wibawa) using comprehensive Urip
     const combinedTotalUrip = person1.totalUripSodasaRsi + person2.totalUripSodasaRsi;
     const mod16Result = getSodasaRsi(combinedTotalUrip);
+    const mod16Score = mod16Result.score;
 
     // Generate conclusion narrative
     const matchConclusion = generateMatchConclusion(kategori, mod16Result);
 
     // Calculate Marriage Cycles (using Mod 5 Combined Total Urip: Sapta + Panca)
-    // The previous `totalUrip` variable is sum of both person's Mod 5 Urip
     const marriageCycles = calculateMarriageCycles(totalUrip);
 
     // Bonus if wuku is recommended partner
     const isRecommended = person1.wuku.rekomendasi_pasangan.includes(person2.wuku.nama_wuku) ||
         person2.wuku.rekomendasi_pasangan.includes(person1.wuku.nama_wuku);
 
+    // Combination Matrix lookup (Tenung Panca Sodasa)
+    const mod16Sisa = mod16Result.sisa === 0 ? 16 : mod16Result.sisa;
+    const kombinasi = getKombinasiTenung(kategori, mod16Result, mod5Score, mod16Score);
+
+    // Final percentage = hybrid score + wuku bonus
+    const finalPercentage = isRecommended ? Math.min(kombinasi.hybridScore + 10, 100) : kombinasi.hybridScore;
+
     return {
         person1,
         person2,
         totalUrip,
         kategori,
-        percentage: isRecommended ? Math.min(percentage + 10, 100) : percentage,
+        percentage: finalPercentage,
         mod16Result,
         combinedTotalUrip,
+        kombinasi,
         matchConclusion,
         marriageCycles
     };
+}
+
+/**
+ * Generate combination result with narrative based on Mod 5 + Mod 16 scores
+ * Hybrid Score = (Mod5_Score * 0.4) + (Mod16_Score * 0.6)
+ */
+function getKombinasiTenung(
+    kategori: KategoriJodoh,
+    mod16Result: SodasaRsi,
+    mod5Score: number,
+    mod16Score: number
+): KombinasiTenung {
+    // Hybrid Score: 40% Mod 5 + 60% Mod 16
+    const hybridScore = Math.round((mod5Score * 0.4) + (mod16Score * 0.6));
+
+    // Determine hybrid status based on score
+    let hybridStatus: 'Utama' | 'Madia' | 'Nista';
+    if (hybridScore >= 70) {
+        hybridStatus = 'Utama';
+    } else if (hybridScore >= 40) {
+        hybridStatus = 'Madia';
+    } else {
+        hybridStatus = 'Nista';
+    }
+
+    const hybridDescMap = {
+        'Utama': 'Sangat Baik',
+        'Madia': 'Cukup / Seimbang',
+        'Nista': 'Perlu Upacara / Pebayuhan'
+    };
+
+    // Threshold: score >= 60 = Tinggi, < 60 = Rendah
+    const isMod5High = mod5Score >= 60;
+    const isMod16High = mod16Score >= 60;
+
+    // Generate narrative with score-based connectors
+    const narasi = generateKombinasiNarrative(kategori, mod16Result, isMod5High, isMod16High);
+
+    return {
+        mod5Label: kategori.kategori,
+        mod16Label: mod16Result.label,
+        hybridStatus,
+        hybridDesc: hybridDescMap[hybridStatus],
+        hybridScore,
+        narasi
+    };
+}
+
+/**
+ * Generate narrative with Wisdom Logic connectors based on high/low scores
+ */
+function generateKombinasiNarrative(
+    mod5: KategoriJodoh,
+    mod16: SodasaRsi,
+    isMod5High: boolean,
+    isMod16High: boolean
+): string {
+    const mod5Desc = mod5.deskripsi || mod5.makna;
+    const mod16Desc = mod16.deskripsi;
+
+    if (isMod5High && isMod16High) {
+        // Keduanya Tinggi: " yang disempurnakan dengan "
+        return `${mod5Desc} (${mod5.kategori}) yang disempurnakan dengan ${mod16Desc.charAt(0).toLowerCase() + mod16Desc.slice(1)} (${mod16.makna}).`;
+    }
+    if (isMod5High && !isMod16High) {
+        // Mod 5 Tinggi, Mod 16 Rendah: ", tetapi perlu diwaspadai..."
+        return `${mod5Desc} (${mod5.kategori}), tetapi perlu diwaspadai ${mod16Desc.charAt(0).toLowerCase() + mod16Desc.slice(1)} (${mod16.makna}).`;
+    }
+    if (!isMod5High && isMod16High) {
+        // Mod 5 Rendah, Mod 16 Tinggi: ", namun luar biasanya..."
+        return `Kehidupan mungkin diuji dengan ${mod5Desc.charAt(0).toLowerCase() + mod5Desc.slice(1)} (${mod5.kategori}), namun luar biasanya ${mod16Desc.charAt(0).toLowerCase() + mod16Desc.slice(1)} (${mod16.makna}).`;
+    }
+    // Keduanya Rendah: " serta perlu perjuangan ekstra menghadapi "
+    return `${mod5Desc} (${mod5.kategori}) serta perlu perjuangan ekstra menghadapi ${mod16Desc.charAt(0).toLowerCase() + mod16Desc.slice(1)} (${mod16.makna}). Disarankan untuk melakukan upacara Pebayuhan.`;
 }
 
 /**

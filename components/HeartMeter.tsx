@@ -1,11 +1,17 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { KategoriJodoh } from '@/lib/types';
+import { KategoriJodoh, KombinasiTenung } from '@/lib/types';
 
 interface HeartMeterProps {
     percentage: number;
     kategori: KategoriJodoh;
+    kombinasi?: KombinasiTenung;
+    conclusion?: {
+        title: string;
+        content: string;
+        sentiment: 'positive' | 'neutral' | 'challenge';
+    };
     isVisible: boolean;
 }
 
@@ -27,7 +33,7 @@ interface Sparkle {
     delay: number;
 }
 
-export default function HeartMeter({ percentage, kategori, isVisible }: HeartMeterProps) {
+export default function HeartMeter({ percentage, kategori, kombinasi, conclusion, isVisible }: HeartMeterProps) {
     const [currentFill, setCurrentFill] = useState(100);
     const [particles, setParticles] = useState<Particle[]>([]);
     const [sparkles, setSparkles] = useState<Sparkle[]>([]);
@@ -121,9 +127,12 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                 }}
             />
 
-            <h3 className="font-display text-3xl font-bold text-stone-900 mb-10 relative z-10">
-                Hasil Kecocokan
+            <h3 className="font-display text-3xl font-bold text-stone-900 mb-2 relative z-10">
+                Analisis Dinamika Pasangan
             </h3>
+            <p className="text-xs text-stone-400 uppercase tracking-widest mb-10 relative z-10">
+                Berdasarkan Kombinasi Mod 5 (Artha) × Mod 16 (Dharma)
+            </p>
 
             {/* Animated Heart Container */}
             <div className="heart-container mb-10 relative">
@@ -254,8 +263,8 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                 </div>
             </div>
 
-            {/* Kategori Badge with animation */}
-            <div className="mb-8 relative z-10">
+            {/* Kombinasi Badge */}
+            <div className="mb-4 relative z-10">
                 <span
                     className="inline-block px-10 py-4 rounded-full text-white font-bold text-xl shadow-xl transition-transform"
                     style={{
@@ -263,14 +272,34 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                         boxShadow: `0 10px 40px ${colors.start}50`
                     }}
                 >
-                    ✨ {kategori.kategori} ✨
+                    ✨ {kombinasi ? `${kombinasi.mod5Label} × ${kombinasi.mod16Label}` : kategori.kategori} ✨
                 </span>
             </div>
 
-            {/* Makna */}
-            <p className="font-display text-xl text-stone-700 max-w-md mx-auto leading-relaxed italic relative z-10">
-                "{kategori.makna}"
-            </p>
+            {/* Hybrid Status Badge */}
+            {kombinasi && (
+                <div className="mb-4 relative z-10">
+                    <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${kombinasi.hybridStatus === 'Utama' ? 'bg-emerald-100 text-emerald-700' :
+                        kombinasi.hybridStatus === 'Madia' ? 'bg-amber-100 text-amber-700' :
+                            'bg-rose-100 text-rose-700'
+                        }`}>
+                        {kombinasi.hybridStatus} — {kombinasi.hybridDesc}
+                    </span>
+                </div>
+            )}
+
+            {/* Kombinasi Narasi or Makna */}
+            {kombinasi ? (
+                <div className="relative z-10 max-w-lg mx-auto">
+                    <p className="font-display text-base text-stone-700 leading-relaxed italic">
+                        &ldquo;{kombinasi.narasi}&rdquo;
+                    </p>
+                </div>
+            ) : (
+                <p className="font-display text-xl text-stone-700 max-w-md mx-auto leading-relaxed italic relative z-10">
+                    &ldquo;{kategori.makna}&rdquo;
+                </p>
+            )}
 
             {/* Divider */}
             <div
@@ -278,10 +307,20 @@ export default function HeartMeter({ percentage, kategori, isVisible }: HeartMet
                 style={{ background: `linear-gradient(90deg, transparent, ${colors.start}40, transparent)` }}
             />
 
-            {/* Additional Info */}
-            <p className="text-xs uppercase tracking-[0.2em] font-bold text-stone-400 relative z-10">
-                Berdasarkan Nilai Urip Gabungan
-            </p>
+            {/* Match Conclusion - Refined to have no background and matching colors */}
+            {conclusion && (
+                <div className="relative z-10 max-w-xl mx-auto pt-8 border-t border-dashed border-stone-200 space-y-4">
+                    <h4 className="text-stone-500 font-bold text-sm uppercase tracking-widest text-center">
+                        Kesimpulan Berdasarkan Tenung Panca Sodasa
+                    </h4>
+                    <div className="text-center px-4">
+                        <h5 className="font-bold text-xl text-stone-800 mb-2">{conclusion.title}</h5>
+                        <p className="text-lg text-stone-700 leading-relaxed italic">
+                            &ldquo;{conclusion.content}&rdquo;
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* Floating Hearts Background */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -54,6 +54,8 @@ export function findMasehiDates(
     const endDate = new Date(endYear, 11, 31);
     const current = new Date(startDate);
 
+    let firstFound = false;
+
     while (current <= endDate) {
         const baliDate = getBalineseDate(current);
 
@@ -71,9 +73,15 @@ export function findMasehiDates(
                     year: 'numeric'
                 })
             });
-        }
 
-        current.setDate(current.getDate() + 1);
+            // Setelah ketemu yang pertama, kita bisa lompat 210 hari (siklus Pawukon)
+            // karena kombinasi Saptawara+Pancawara+Wuku pasti berulang setiap 210 hari.
+            current.setDate(current.getDate() + 210);
+            firstFound = true;
+        } else {
+            // Jika belum ketemu yang pertama, geser 1 hari
+            current.setDate(current.getDate() + 1);
+        }
     }
 
     return results;

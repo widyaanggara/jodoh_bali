@@ -206,7 +206,7 @@ export default function AboutPage() {
                                             <span className="text-xs font-bold w-6 h-6 rounded bg-stone-100 flex items-center justify-center text-stone-500">{item.sisa}</span>
                                             <h4 className="font-bold text-primary">{item.label}</h4>
                                         </div>
-                                        <p className="text-xs text-stone-600 italic leading-relaxed">{item.penjelasan}</p>
+                                        <p className="text-xs text-stone-600 italic leading-relaxed">{item.deskripsi}</p>
                                     </div>
                                 ))}
                             </div>

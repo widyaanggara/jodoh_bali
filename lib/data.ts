@@ -472,15 +472,44 @@ export const dasawaraData: Dasawara[] = [
 
 
 
-// Kategori Jodoh data
+// Kategori Jodoh data (mod 5)
 export const kategoriJodohData: KategoriJodoh[] = [
-    { sisa: 1, kategori: "Sri", makna: "Rejeki melimpah, hidup makmur, dan harmonis." },
-    { sisa: 2, kategori: "Dana", makna: "Kehidupan ekonomi stabil, berkecukupan (Kaya)." },
-    { sisa: 3, kategori: "Laba", makna: "Selalu beruntung dalam usaha dan pekerjaan." },
-    { sisa: 4, kategori: "Tiwas", makna: "Banyak rintangan, kesulitan ekonomi, atau sering sakit." },
-    { sisa: 0, kategori: "Sakti", makna: "Sering mendapat cobaan tapi memiliki kekuatan untuk bangkit." }
+    {
+        sisa: 1,
+        kategori: "Sri",
+        makna: "Rejeki melimpah, hidup makmur, dan harmonis.",
+        deskripsi: "Melambangkan kemurahan rezeki dan keberkahan hidup. Kategori ini memprediksi kehidupan yang makmur, harmonis, serta penuh kedamaian dalam rumah tangga sehingga membawa aura positif bagi lingkungan sekitar.",
+        score: 95
+    },
+    {
+        sisa: 2,
+        kategori: "Dana",
+        makna: "Kehidupan ekonomi stabil, berkecukupan (Kaya).",
+        deskripsi: "Mencerminkan kondisi ekonomi yang stabil dan mapan. Menunjukkan kemandirian finansial yang kuat serta kemampuan untuk hidup berkecukupan dan menjadi saluran berkat bagi orang lain melalui kedermawanan.",
+        score: 85
+    },
+    {
+        sisa: 3,
+        kategori: "Laba",
+        makna: "Selalu beruntung dalam usaha dan pekerjaan.",
+        deskripsi: "Menunjukkan garis keberuntungan yang selalu menyertai usaha dan pekerjaan. Setiap rencana cenderung membuahkan hasil maksimal, memberikan kemudahan dalam meraih kesuksesan karier maupun relasi bisnis.",
+        score: 75
+    },
+    {
+        sisa: 4,
+        kategori: "Tiwas",
+        makna: "Banyak rintangan, kesulitan ekonomi, atau sering sakit.",
+        deskripsi: "Menggambarkan perjalanan yang penuh tantangan ekonomi maupun kesehatan. Kategori ini hadir sebagai peringatan agar lebih bijaksana, waspada, dan tekun dalam berusaha guna meminimalisir hambatan yang muncul.",
+        score: 25
+    },
+    {
+        sisa: 0,
+        kategori: "Sakti",
+        makna: "Sering mendapat cobaan tapi memiliki kekuatan untuk bangkit.",
+        deskripsi: "Melambangkan ketangguhan mental and spiritual. Meskipun sering diterpa cobaan hidup, kategori ini menjanjikan kemampuan luar biasa untuk bangkit kembali dan menjadi pribadi yang lebih kuat serta bijaksana.",
+        score: 50
+    }
 ];
-
 
 // data/masterLintang.ts
 import { Lintang } from './types';
@@ -776,100 +805,118 @@ export const dataSodasaRsi: SodasaRsi[] =
     [
         {
             "sisa": 1,
-            "label": "Ujian Kesabaran",
-            "makna": "Ketabahan",
-            "penjelasan": "Diliputi kebimbangan, dalam keadaan suka dan duka, baik buruk, sering dituntut ketabahan."
+            "label": "Calaka",
+            "makna": "Bergejolak",
+            "deskripsi": "Perjalanan hubungan diwarnai berbagai dinamika yang menjadi ruang pembelajaran menuju kebahagiaan yang lebih matang.",
+            "score": 50
         },
         {
             "sisa": 2,
-            "label": "Petualang Minim Rezeki",
-            "makna": "Durlaba",
-            "penjelasan": "Durlaba, rezeki seret tapi suka melancong."
+            "label": "Borosing Artha",
+            "makna": "Banyak pengeluaran",
+            "deskripsi": "Diperlukan kebijaksanaan dalam mengelola kehidupan bersama agar keseimbangan batin dan materi tetap terjaga.",
+            "score": 40
         },
         {
             "sisa": 3,
-            "label": "Sering Tertekan",
-            "makna": "Kekecewaan",
-            "penjelasan": "Sering mendapat malu dan kecewa."
+            "label": "Satru",
+            "makna": "Selalu bertentangan",
+            "deskripsi": "Perbedaan pandangan dapat sering muncul, namun komunikasi yang baik mampu menumbuhkan saling pengertian.",
+            "score": 30
         },
         {
             "sisa": 4,
-            "label": "Sulit Keturunan",
-            "makna": "Keturunan",
-            "penjelasan": "Susah mendapatkan sentana (keturunan)."
+            "label": "Alpa Sentana",
+            "makna": "Sulit punya anak",
+            "deskripsi": "Perjalanan keluarga mungkin memerlukan kesabaran lebih serta doa dan usaha yang tulus.",
+            "score": 45
         },
         {
             "sisa": 5,
-            "label": "Rezeki Lancar",
-            "makna": "Dirgahayu",
-            "penjelasan": "Dirgahayu, rezekinya lancar dan menanjak."
+            "label": "Rahajeng",
+            "makna": "Harmonis",
+            "deskripsi": "Kehidupan bersama cenderung berjalan selaras, didukung rezeki yang baik dan rasa saling memahami.",
+            "score": 85
         },
         {
             "sisa": 6,
-            "label": "Rentan Sakit",
-            "makna": "Merana",
-            "penjelasan": "Merana, sering sakit."
+            "label": "Duhkha",
+            "makna": "Menderita",
+            "deskripsi": "Beberapa tantangan hidup dapat hadir sebagai sarana pendewasaan dan penguatan batin.",
+            "score": 35
         },
         {
             "sisa": 7,
-            "label": "Proses Menuju Bahagia",
-            "makna": "Suka Duka",
-            "penjelasan": "Mengalami suka duka, baik buruk dalam perjalanan hidupnya, menuju bahagia."
+            "label": "Mandagati",
+            "makna": "Lambat berkembang",
+            "deskripsi": "Kemajuan mungkin terasa bertahap, namun ketekunan membawa hasil yang baik seiring waktu.",
+            "score": 65
         },
         {
             "sisa": 8,
-            "label": "Kesulitan Ekonomi",
-            "makna": "Terak",
-            "penjelasan": "Sukar untuk memenuhi hajat hidup sehari-hari, bahkan sampai kekurangan (terak)."
+            "label": "Kurangan",
+            "makna": "Kekurangan",
+            "deskripsi": "Diperlukan usaha bersama untuk menjaga keseimbangan agar hubungan tetap hangat dan saling menguatkan.",
+            "score": 25
         },
         {
             "sisa": 9,
-            "label": "Penuh Penyesalan",
-            "makna": "Penyesalan",
-            "penjelasan": "Kurang hati-hati, kesakitan tak henti-hentinya mewarnai kehidupannya, sampai menimbulkan kekecewaan dan penyesalan hidup."
+            "label": "Artha Rikuh",
+            "makna": "Kaya tapi ricuh",
+            "deskripsi": "Keberhasilan materi perlu diiringi kebijaksanaan agar keharmonisan tetap terpelihara.",
+            "score": 20
         },
         {
             "sisa": 10,
-            "label": "Wibawa Pemimpin",
-            "makna": "Wibawa",
-            "penjelasan": "Mendapatkan wibawa serta disegani bagai raja/ratu yang berkuasa, sehingga dapat mengayomi keluarga."
+            "label": "Wibawa",
+            "makna": "Berwibawa",
+            "deskripsi": "Hubungan memiliki kekuatan dan pengaruh yang besar, sehingga penting menjaga keseimbangan peran satu sama lain.",
+            "score": 90
         },
         {
             "sisa": 11,
-            "label": "Sukses Sempurna",
-            "makna": "Sidha serta Sabita",
-            "penjelasan": "Mendapat sukses dalam perjalanan hidup, tercapainya cita-citanya dengan penuh kepuasan (sidha serta sabita)."
+            "label": "Santosa",
+            "makna": "Selalu puas",
+            "deskripsi": "Kehidupan rumah tangga cenderung membawa rasa cukup, damai, dan kebahagiaan yang stabil.",
+            "score": 95
         },
         {
             "sisa": 12,
-            "label": "Magnet Rezeki",
-            "makna": "Sedana Nulus",
-            "penjelasan": "Sedana nulus, rezeki lancar/gampang."
+            "label": "Subhaga",
+            "makna": "Rezeki lancar",
+            "deskripsi": "Kehangatan cinta dan kemudahan rezeki menjadi penopang hubungan yang penuh rasa syukur.",
+            "score": 90
         },
         {
             "sisa": 13,
-            "label": "Panjang Umur & Berkah",
-            "makna": "Dirgayusa",
-            "penjelasan": "Dirgayusa, panjang umur, rezekinya berkepanjangan."
+            "label": "Dirghayusa",
+            "makna": "Langgeng",
+            "deskripsi": "Hubungan berpotensi panjang dan kuat, disertai kebahagiaan yang perlu dijaga dengan kesadaran bersama.",
+            "score": 95
         },
         {
             "sisa": 14,
-            "label": "Selalu Bahagia",
-            "makna": "Kebahagiaan",
-            "penjelasan": "Mendapatkan kebahagiaan/kesenangan selalu."
+            "label": "Alpa Sukha",
+            "makna": "Kebahagiaan berkurang",
+            "deskripsi": "Sesekali muncul perbedaan yang menguji kesabaran, namun dapat menjadi jalan menuju kedewasaan bersama.",
+            "score": 60
         },
         {
             "sisa": 15,
-            "label": "Banyak Masalah",
-            "makna": "Bermasalah",
-            "penjelasan": "Sering mengalami kesusahan, keadaan buruk serta banyak problem."
+            "label": "Asandhi",
+            "makna": "Tidak rukun",
+            "deskripsi": "Diperlukan usaha lebih dalam membangun keselarasan agar hubungan dapat berjalan lebih harmonis.",
+            "score": 15
         },
         {
             "sisa": 16,
-            "label": "Penuh Kesenangan",
-            "makna": "Kesenangan",
-            "penjelasan": "Memperoleh kebahagiaan/kesenangan."
+            "label": "Jayeng",
+            "makna": "Semakin sukses",
+            "deskripsi": "Kehidupan keluarga menunjukkan perkembangan baik, membawa kebahagiaan dan keberhasilan bersama.",
+            "score": 100
         }
     ];
+
+
 
 
