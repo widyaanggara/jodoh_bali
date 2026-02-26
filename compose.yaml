@@ -16,17 +16,3 @@ services:
       HOSTNAME: "0.0.0.0"
       PORT: 3010
 
-  # WEBSITE DEV
-  nextjs_dev:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nextjs_dev
-    ports:
-      - "3011:3010"
-    restart: unless-stopped
-    environment:
-      NODE_ENV: development
-      HOSTNAME: "0.0.0.0"
-      PORT: 3010
-
