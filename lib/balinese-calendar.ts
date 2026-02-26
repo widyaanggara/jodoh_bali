@@ -403,7 +403,7 @@ export function calculateCompatibility(date1: Date, date2: Date, time1?: string,
     // Mod 16 calculation (new - for Karakter & Wibawa) using comprehensive Urip
     const combinedTotalUrip = person1.totalUripSodasaRsi + person2.totalUripSodasaRsi;
     const mod16Result = getSodasaRsi(combinedTotalUrip);
-    const mod16Score = mod16Result.score;
+    const mod16Score = mod16Result.score ?? 0;
 
     // Generate conclusion narrative
     const matchConclusion = generateMatchConclusion(kategori, mod16Result);
@@ -492,7 +492,7 @@ function generateKombinasiNarrative(
     isMod16High: boolean
 ): string {
     const mod5Desc = mod5.deskripsi || mod5.makna;
-    const mod16Desc = mod16.deskripsi;
+    const mod16Desc = mod16.penjelasan || mod16.deskripsi || "";
 
     if (isMod5High && isMod16High) {
         // Keduanya Tinggi: " yang disempurnakan dengan "

@@ -136,6 +136,22 @@ export interface KombinasiTenung {
   narasi: string;
 }
 
+export interface LeadershipSynergyResult {
+  person1: BalineseDate;
+  person2: BalineseDate;
+  combinedUrip: number;
+  modulo16: number;
+  modulo5: number;
+  sodasaRsi: SodasaRsi;
+  hybridStatus: string;
+  synergyTier: {
+    tier: string;
+    status: string;
+    analisis: string;
+    rekomendasi: string;
+  };
+}
+
 export interface CompatibilityResult {
   person1: BalineseDate;
   person2: BalineseDate;
@@ -173,6 +189,7 @@ export interface SodasaRsi {
   sisa: number;
   label: string;
   makna: string;
-  deskripsi: string;
-  score: number;
+  penjelasan: string;
+  deskripsi?: string;
+  score?: number;
 }
