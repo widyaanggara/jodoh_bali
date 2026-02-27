@@ -32,17 +32,22 @@ export default function IdealMatchCard({ match, index }: MatchCardProps) {
                     </div>
                 </div>
 
-                {/* Status Badge */}
+                {/* Hybrid Status Badge */}
                 <div className="flex items-center gap-4 self-end sm:self-center">
-                    <span className="px-4 py-1.5 rounded-full bg-emerald-500 text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg shadow-emerald-200/50">
-                        ✨ {match.kategori?.kategori || 'SRI'}
-                    </span>
+                    <div className="flex flex-col items-end gap-1">
+                        <span className="px-3 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg shadow-emerald-200/50">
+                            ✨ {match.kategori?.kategori || 'SRI'}
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-violet-100 text-violet-600 text-[9px] font-bold tracking-wide">
+                            {match.mod16Result?.label}
+                        </span>
+                    </div>
                     <div className="flex flex-col items-end">
                         <span className="text-2xl font-bold text-emerald-500">
-                            {match.kategori?.score || 100}%
+                            {match.hybridScore}%
                         </span>
                         <span className="text-[10px] text-stone-400 uppercase font-bold tracking-tighter">
-                            Kecocokan
+                            Hybrid Score
                         </span>
                     </div>
                 </div>

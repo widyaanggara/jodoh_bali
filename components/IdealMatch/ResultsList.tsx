@@ -43,7 +43,7 @@ export default function IdealMatchResultsList({ matches }: ResultsListProps) {
                         Tanggal Jodoh Ideal
                     </h3>
                     <p className="text-stone-500 text-sm">
-                        Status <span className="text-emerald-500 font-bold">SRI</span> - Rejeki melimpah & harmonis
+                        Hybrid Score ≥ 95% — <span className="text-emerald-500 font-bold">SRI</span> + <span className="text-violet-500 font-bold">Sodasa Rsi</span>
                     </p>
                 </div>
 

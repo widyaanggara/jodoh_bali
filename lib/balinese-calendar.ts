@@ -260,7 +260,7 @@ export function getKategoriJodoh(totalUrip: number): KategoriJodoh {
 /**
  * Get Sodasa Rsi (Mod 16) result
  */
-function getSodasaRsi(combinedTotalUrip: number): SodasaRsi {
+export function getSodasaRsi(combinedTotalUrip: number): SodasaRsi {
     const sisa = combinedTotalUrip % 16;
     return dataSodasaRsi.find(s => s.sisa === sisa) || dataSodasaRsi[0];
 }

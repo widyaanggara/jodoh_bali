@@ -22,7 +22,7 @@ export default function MencariJodoh() {
 
     const handleSearch = (birthDate: string, birthTime: string, startYear: number, endYear: number) => {
         setIsLoading(true);
-    
+
         setTimeout(() => {
             // [NEW] Memasukkan data jam lahir ke fungsi profil Bali
             const profile = getBalineseDate(new Date(birthDate), birthTime);
@@ -32,7 +32,7 @@ export default function MencariJodoh() {
                 startYear,
                 endYear
             );
-    
+
             setUserProfile(profile);
             setMatches(idealMatches);
 
@@ -72,7 +72,7 @@ export default function MencariJodoh() {
                                 Temukan Tanggal Jodoh Ideal
                             </h1>
                             <p className="text-lg text-stone-600 mb-12 max-w-2xl mx-auto leading-relaxed slide-up delay-100">
-                                Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan perhitungan Tenung Urip Panca.
+                                Cari tanggal kelahiran yang menghasilkan status <span className="text-emerald-500 font-bold">SRI</span> (rejeki melimpah & harmonis) berdasarkan <span className="font-bold text-primary">Perhitungan Hybrid</span> (Mod 5 + Mod 16) dengan skor ≥ 95%.
                             </p>
                             {sessionID && (
                                 <div className="mb-10 hidden items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[10px] font-mono text-stone-400 uppercase tracking-tighter">
@@ -119,9 +119,13 @@ export default function MencariJodoh() {
                                         <span className="text-stone-500">Saptawara</span>
                                         <span className="font-bold">{userProfile.saptawara.hari}</span>
                                     </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-stone-500">Total Urip</span>
+                                    <div className="flex justify-between items-center pb-3 border-b border-stone-200">
+                                        <span className="text-stone-500">Total Urip (Mod 5)</span>
                                         <span className="font-bold text-accent-gold text-xl">{userProfile.totalUrip}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-stone-500">Total Urip (Mod 16)</span>
+                                        <span className="font-bold text-violet-500 text-xl">{userProfile.totalUripSodasaRsi}</span>
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +144,7 @@ export default function MencariJodoh() {
                                     ))}
                                 </div>
                                 <p className="text-stone-500 text-sm italic">
-                                    "Wuku-wuku di atas adalah tanggal kelahiran yang menghasilkan harmoni 'SRI' dengan profil Anda."
+                                    "Wuku-wuku di atas menghasilkan Hybrid Score ≥ 95% (Mod 5 + Mod 16) dengan profil Anda."
                                 </p>
                             </div>
 

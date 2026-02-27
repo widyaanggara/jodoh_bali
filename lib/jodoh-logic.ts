@@ -1,6 +1,6 @@
-import { getBalineseDate, findLintang, getKategoriJodoh } from './balinese-calendar';
-import { BalineseDate, Lintang, Zodiak, KategoriJodoh } from './types';
-import { dataZodiak } from './data';
+import { getBalineseDate, findLintang, getKategoriJodoh, getSodasaRsi } from './balinese-calendar';
+import { BalineseDate, Lintang, Zodiak, KategoriJodoh, SodasaRsi, HybridStatus } from './types';
+import { dataZodiak, kategoriJodohData } from './data';
 
 export interface IdealMatch {
     date: Date;
@@ -9,16 +9,26 @@ export interface IdealMatch {
     totalUrip: number;
     sisa: number;
     kategori: KategoriJodoh;
+    // Hybrid fields
+    totalUripSodasaRsi: number;
+    mod5Score: number;
+    mod16Score: number;
+    hybridScore: number;
+    hybridStatus: HybridStatus;
+    mod16Result: SodasaRsi;
 }
 
 /**
- * Find ideal match dates based on Tenung Urip Panca (Modulo 5)
- * Only returns dates that result in sisa 1 (SRI - the best category)
+ * Find ideal match dates based on Hybrid Calculation (Mod 5 + Mod 16)
+ * Only returns dates where the hybrid score >= 95%
+ * 
+ * Hybrid Score = (Mod5_Score * 0.4) + (Mod16_Score * 0.6)
  * 
  * @param userBirthDate - User's birth date
+ * @param birthTime - User's birth time
  * @param startYear - Starting year to search
  * @param endYear - Ending year to search (inclusive)
- * @returns Array of ideal match dates with SRI status
+ * @returns Array of ideal match dates with hybrid score >= 95%
  */
 export function findIdealMatches(
     userBirthDate: Date,
@@ -28,6 +38,7 @@ export function findIdealMatches(
 ): IdealMatch[] {
     const userBalinese = getBalineseDate(userBirthDate, birthTime);
     const userUrip = userBalinese.totalUrip;
+    const userUripSodasaRsi = userBalinese.totalUripSodasaRsi;
     const matches: IdealMatch[] = [];
 
     // Loop through each year in the range
@@ -41,18 +52,39 @@ export function findIdealMatches(
         while (currentDate <= endDate) {
             const candidateBalinese = getBalineseDate(currentDate);
             const candidateUrip = candidateBalinese.totalUrip;
+            const candidateUripSodasaRsi = candidateBalinese.totalUripSodasaRsi;
 
-            // Calculate total urip
+            // Mod 5 calculation
             const totalUrip = userUrip + candidateUrip;
             const sisa = totalUrip % 5;
+            const kategori = getKategoriJodoh(totalUrip);
+            const mod5Score = kategori.score;
 
-            // Only include if sisa is 1 (SRI category)
-            if (sisa === 1) {
+            // Mod 16 calculation
+            const combinedSodasaRsi = userUripSodasaRsi + candidateUripSodasaRsi;
+            const mod16Result = getSodasaRsi(combinedSodasaRsi);
+            const mod16Score = mod16Result.score ?? 0;
+
+            // Hybrid Score: 40% Mod 5 + 60% Mod 16
+            const hybridScore = Math.round((mod5Score * 0.4) + (mod16Score * 0.6));
+
+            // Only include if hybrid score >= 95
+            if (hybridScore >= 95) {
                 // Get Lintang for this date
                 const lintang = findLintang(
                     candidateBalinese.saptawara.hari,
                     candidateBalinese.pancawara.nama
                 );
+
+                // Determine hybrid status
+                let hybridStatus: HybridStatus;
+                if (hybridScore >= 70) {
+                    hybridStatus = 'Utama';
+                } else if (hybridScore >= 40) {
+                    hybridStatus = 'Madia';
+                } else {
+                    hybridStatus = 'Nista';
+                }
 
                 matches.push({
                     date: new Date(currentDate),
@@ -60,7 +92,13 @@ export function findIdealMatches(
                     lintang,
                     totalUrip,
                     sisa,
-                    kategori: getKategoriJodoh(totalUrip)
+                    kategori,
+                    totalUripSodasaRsi: combinedSodasaRsi,
+                    mod5Score,
+                    mod16Score,
+                    hybridScore,
+                    hybridStatus,
+                    mod16Result
                 });
             }
 
@@ -139,4 +177,3 @@ export function getZodiak(date: Date): Zodiak {
     // Fallback: return the first zodiac if no match found
     return dataZodiak[0];
 }
-
