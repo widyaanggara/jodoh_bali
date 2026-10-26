@@ -143,6 +143,47 @@ function RamalanOtonanContent() {
                                 </button>
                             </div>
                             <div className="space-y-8 slide-up">
+                                {/* Tanggal Lahir yang Dicari — Verification Card */}
+                                <div className="bg-gradient-to-br from-primary/5 via-white to-accent-gold/5 rounded-4xl shadow-xl p-8 border border-primary/15 relative overflow-hidden">
+                                    <div className="absolute -top-4 -right-4 opacity-[0.07]">
+                                        <span className="material-symbols-outlined" style={{ fontSize: '120px' }}>event_available</span>
+                                    </div>
+                                    <div className="relative z-10">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="material-symbols-outlined text-primary text-lg">fact_check</span>
+                                            <h3 className="text-xs uppercase tracking-widest font-bold text-stone-400">Tanggal Lahir yang Dicari</h3>
+                                        </div>
+                                        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+                                            <div className="flex-1">
+                                                <p className="font-display text-3xl md:text-4xl font-bold text-stone-900 leading-tight">
+                                                    {new Date(birthDate).toLocaleDateString('id-ID', {
+                                                        weekday: 'long',
+                                                        day: 'numeric',
+                                                        month: 'long',
+                                                        year: 'numeric',
+                                                    })}
+                                                </p>
+                                                <div className="flex items-center gap-2 mt-2">
+                                                    <span className="material-symbols-outlined text-stone-400 text-sm">schedule</span>
+                                                    <span className="text-stone-500 font-semibold text-sm">
+                                                        Jam Lahir: {birthTime || '12:00'} WITA
+                                                    </span>
+                                                    {birthTime && parseInt(birthTime.split(':')[0]) < 6 && (
+                                                        <span className="ml-2 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider">Kelahiran Subuh</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="flex-shrink-0">
+                                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200">
+                                                    <span className="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+                                                    <span className="text-emerald-700 text-xs font-bold">Terverifikasi</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="text-stone-400 text-xs mt-4 italic">Pastikan tanggal di atas sudah benar sebelum membaca hasil ramalan.</p>
+                                    </div>
+                                </div>
+
                                 <div className="grid md:grid-cols-2 gap-8 items-start">
                                     {/* Balinese Birth Info (Shortest) */}
                                     <div className="bg-white rounded-4xl shadow-xl p-8 border border-accent-gold/20 h-full">

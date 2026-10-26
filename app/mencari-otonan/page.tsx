@@ -321,6 +321,16 @@ export default function MencariOtonan() {
                                     <div className="bg-white rounded-[2rem] shadow-xl p-8 border border-accent-gold/20">
                                         <h3 className="font-display text-2xl font-bold mb-6 text-stone-800">Kelahiran Bali</h3>
                                         <div className="space-y-4">
+                                            <div className="flex justify-between items-center pb-3 border-b border-primary/20">
+                                                <span className="text-stone-500">Tanggal Lahir</span>
+                                                <span className="font-bold text-primary">
+                                                    {new Date(birthDate).toLocaleDateString('id-ID', {
+                                                        day: 'numeric',
+                                                        month: 'long',
+                                                        year: 'numeric',
+                                                    })}
+                                                </span>
+                                            </div>
                                             <div className="flex justify-between items-center pb-3 border-b border-stone-100">
                                                 <span className="text-stone-500">Saptawara</span>
                                                 <span className="font-bold text-stone-800">{otonanResult.saptawara.hari}</span>
@@ -331,11 +341,11 @@ export default function MencariOtonan() {
                                             </div>
                                             <div className="flex justify-between items-center pb-3 border-b border-stone-100">
                                                 <span className="text-stone-500">Wuku</span>
-                                                <span className="font-bold text-primary">{otonanResult.wuku.nama_wuku}</span>
+                                                <span className="font-bold text-stone-800">{otonanResult.wuku.nama_wuku}</span>
                                             </div>
                                             <div className="flex justify-between items-center pb-3 border-b border-stone-100">
                                                 <span className="text-stone-500">Total Urip</span>
-                                                <span className="font-bold text-accent-gold text-lg">{otonanResult.totalUrip}</span>
+                                                <span className="font-bold text-stone-800 text-lg">{otonanResult.totalUrip}</span>
                                             </div>
                                             <div className="flex justify-between items-center">
                                                 <span className="text-stone-500">Next Otonan</span>
