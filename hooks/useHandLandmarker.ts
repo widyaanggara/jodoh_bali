@@ -4,14 +4,30 @@ import type { HandLandmarker, NormalizedLandmark } from "@mediapipe/tasks-vision
 import type { RefObject } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type {
+  HandObservation,
   LandmarkConnection,
   VisionDelegate,
 } from "@/lib/netra-hasta/types";
+import {
+  analyzePalmImageQuality,
+  calculatePalmStability,
+  createInitialPalmQualityReport,
+  createPalmPoseSample,
+  evaluatePalmQuality,
+  type PalmPoseSample,
+} from "@/lib/netra-hasta/image-quality";
+import {
+  calculatePalmRoiGeometry,
+  DEFAULT_PALM_ROI_CONFIG,
+  extractPalmRoi,
+} from "@/lib/netra-hasta/palm-roi";
 
 const WASM_ROOT = "/mediapipe/wasm";
 const MODEL_PATH = "/mediapipe/models/hand_landmarker.task";
 const TARGET_INFERENCE_FPS = 15;
 const INFERENCE_INTERVAL_MS = 1000 / TARGET_INFERENCE_FPS;
+const QUALITY_SAMPLE_INTERVAL_MS = 180;
+const QUALITY_ROI_MAXIMUM_DIMENSION = 192;
 
 type ModelStatus = "idle" | "loading" | "ready" | "error";
 
@@ -136,6 +152,14 @@ export function useHandLandmarker({
   const landmarkerRef = useRef<HandLandmarker | null>(null);
   const connectionsRef = useRef<LandmarkConnection[]>([]);
   const animationFrameRef = useRef<number | null>(null);
+  const latestObservationRef = useRef<HandObservation | null>(null);
+  const poseSamplesRef = useRef<PalmPoseSample[]>([]);
+  const [palmQuality, setPalmQuality] = useState(createInitialPalmQualityReport);
+
+  const getLatestHandObservation = useCallback(
+    () => latestObservationRef.current,
+    [],
+  );
 
   const clearCanvas = useCallback(() => {
     const canvas = canvasRef.current;
@@ -165,6 +189,9 @@ export function useHandLandmarker({
       setDelegate(null);
       setGuidance("idle");
       setMetrics({ fps: 0, processingMs: 0, handCount: 0 });
+      latestObservationRef.current = null;
+      poseSamplesRef.current = [];
+      setPalmQuality(createInitialPalmQualityReport());
       return;
     }
 
@@ -238,6 +265,7 @@ export function useHandLandmarker({
     let metricsWindowStartedAt = performance.now();
     let metricsFrames = 0;
     let metricsProcessingTotal = 0;
+    let lastQualitySampleAt = 0;
 
     const renderLoop = (timestamp: number) => {
       const video = videoRef.current;
@@ -281,9 +309,99 @@ export function useHandLandmarker({
         const startedAt = performance.now();
         const result = landmarker.detectForVideo(video, startedAt);
         const processingMs = performance.now() - startedAt;
+        const handCount = result.landmarks.length;
 
         drawHands(context, result.landmarks, connectionsRef.current);
         setGuidance(assessHandPosition(result.landmarks));
+
+        if (handCount === 1) {
+          const handednessName = result.handedness[0]?.[0]?.categoryName;
+          latestObservationRef.current = {
+            landmarks: result.landmarks[0].map((landmark) => ({ ...landmark })),
+            handedness:
+              handednessName === "Left" || handednessName === "Right"
+                ? handednessName
+                : null,
+            timestamp: startedAt,
+          };
+
+          const poseSample = createPalmPoseSample(result.landmarks[0], startedAt);
+          if (poseSample) {
+            poseSamplesRef.current = [
+              ...poseSamplesRef.current.filter(
+                (sample) => startedAt - sample.timestamp <= 900,
+              ),
+              poseSample,
+            ];
+          }
+        } else {
+          latestObservationRef.current = null;
+          poseSamplesRef.current = [];
+        }
+
+        if (startedAt - lastQualitySampleAt >= QUALITY_SAMPLE_INTERVAL_MS) {
+          lastQualitySampleAt = startedAt;
+          let roiValid = false;
+          let palmLargeEnough = false;
+          let imageMetrics = null;
+
+          if (handCount === 1) {
+            const relaxedGeometry = calculatePalmRoiGeometry(
+              result.landmarks[0],
+              video.videoWidth,
+              video.videoHeight,
+              {
+                ...DEFAULT_PALM_ROI_CONFIG,
+                minimumWidthPixels: 0,
+                minimumHeightPixels: 0,
+              },
+            );
+
+            if (relaxedGeometry.ok) {
+              roiValid = true;
+              palmLargeEnough =
+                relaxedGeometry.geometry.palmWidth >=
+                  DEFAULT_PALM_ROI_CONFIG.minimumWidthPixels &&
+                relaxedGeometry.geometry.palmHeight >=
+                  DEFAULT_PALM_ROI_CONFIG.minimumHeightPixels;
+
+              const qualityCanvas = extractPalmRoi(
+                video,
+                relaxedGeometry.geometry,
+                QUALITY_ROI_MAXIMUM_DIMENSION,
+              );
+              const qualityContext = qualityCanvas.getContext("2d", {
+                willReadFrequently: true,
+              });
+              if (qualityContext) {
+                const qualityImage = qualityContext.getImageData(
+                  0,
+                  0,
+                  qualityCanvas.width,
+                  qualityCanvas.height,
+                );
+                imageMetrics = analyzePalmImageQuality({
+                  width: qualityImage.width,
+                  height: qualityImage.height,
+                  data: qualityImage.data,
+                });
+                qualityImage.data.fill(0);
+              }
+              qualityCanvas.width = 0;
+              qualityCanvas.height = 0;
+            }
+          }
+
+          setPalmQuality(
+            evaluatePalmQuality({
+              handCount,
+              roiValid,
+              palmLargeEnough,
+              imageMetrics,
+              stability: calculatePalmStability(poseSamplesRef.current, startedAt),
+            }),
+          );
+        }
 
         metricsFrames += 1;
         metricsProcessingTotal += processingMs;
@@ -320,5 +438,7 @@ export function useHandLandmarker({
     delegate,
     guidance,
     metrics,
+    palmQuality,
+    getLatestHandObservation,
   };
 }

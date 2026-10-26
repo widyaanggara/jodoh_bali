@@ -1,19 +1,40 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CameraStage from "./CameraStage";
 import ConsentPanel from "./ConsentPanel";
 import FaceTrackingPanel from "./FaceTrackingPanel";
+import PalmCapturePanel from "./PalmCapturePanel";
+import PalmPreviewPanel from "./PalmPreviewPanel";
 import QualityIndicator from "./QualityIndicator";
 import ScanModePicker from "./ScanModePicker";
 import { useCamera } from "@/hooks/useCamera";
 import { useFaceLandmarker } from "@/hooks/useFaceLandmarker";
 import { useHandLandmarker } from "@/hooks/useHandLandmarker";
+import { getPalmCaptureDecision } from "@/lib/netra-hasta/image-quality";
+import {
+  clearPalmCaptureArtifacts,
+  createEmptyPalmCaptureArtifacts,
+  createPalmCaptureArtifacts,
+  type PalmCaptureArtifacts,
+} from "@/lib/netra-hasta/palm-capture-state";
 import type { ScanMode } from "@/lib/netra-hasta/types";
+import { calculatePalmRoiGeometry, extractPalmRoi } from "@/lib/netra-hasta/palm-roi";
+import {
+  preprocessPalmImage,
+  type PalmCapture,
+} from "@/lib/netra-hasta/palm-preprocessing";
 
 export default function NetraHastaClient() {
   const [hasConsented, setHasConsented] = useState(false);
   const [mode, setMode] = useState<ScanMode>("hand");
+  const [palmArtifacts, setPalmArtifacts] = useState(
+    createEmptyPalmCaptureArtifacts,
+  );
+  const [captureError, setCaptureError] = useState<string | null>(null);
+  const [hasCaptureConsent, setHasCaptureConsent] = useState(false);
+  const palmArtifactsRef = useRef<PalmCaptureArtifacts>(palmArtifacts);
+  const palmCapture = palmArtifacts.capture;
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const camera = useCamera();
@@ -34,7 +55,143 @@ export default function NetraHastaClient() {
   };
 
   const handleRestart = () => {
+    setHasCaptureConsent(false);
     void camera.startCamera();
+  };
+
+  const clearPalmCapture = useCallback(() => {
+    const clearedArtifacts = clearPalmCaptureArtifacts(palmArtifactsRef.current);
+    palmArtifactsRef.current = clearedArtifacts;
+    setPalmArtifacts(clearedArtifacts);
+    setCaptureError(null);
+    setHasCaptureConsent(false);
+  }, []);
+
+  useEffect(() => {
+    const clearWhenPageLeaves = () => {
+      if (document.hidden) clearPalmCapture();
+    };
+    const clearOnPageHide = () => clearPalmCapture();
+
+    document.addEventListener("visibilitychange", clearWhenPageLeaves);
+    window.addEventListener("pagehide", clearOnPageHide);
+    return () => {
+      document.removeEventListener("visibilitychange", clearWhenPageLeaves);
+      window.removeEventListener("pagehide", clearOnPageHide);
+      palmArtifactsRef.current = clearPalmCaptureArtifacts(
+        palmArtifactsRef.current,
+      );
+    };
+  }, [clearPalmCapture]);
+
+  const handleModeChange = (nextMode: ScanMode) => {
+    clearPalmCapture();
+    setMode(nextMode);
+  };
+
+  const handleStop = () => {
+    clearPalmCapture();
+    camera.stopCamera();
+  };
+
+  const handlePalmCapture = () => {
+    const video = videoRef.current;
+    const observation = handTracking.getLatestHandObservation();
+    const decision = getPalmCaptureDecision({
+      cameraActive: camera.status === "active",
+      hasConsent: hasCaptureConsent,
+      quality: handTracking.palmQuality,
+    });
+    setCaptureError(null);
+
+    if (
+      mode !== "hand" ||
+      !video ||
+      !video.videoWidth ||
+      !video.videoHeight
+    ) {
+      setCaptureError("Kualitas frame berubah. Posisikan kembali telapak lalu coba lagi.");
+      return;
+    }
+
+    if (!decision.canCapture) {
+      setCaptureError(
+        decision.failedHardChecks.length > 0
+          ? `Syarat wajib belum terpenuhi: ${decision.failedHardChecks.map((check) => check.label).join(", ")}.`
+          : "Aktifkan kamera dan berikan persetujuan sebelum mengambil gambar.",
+      );
+      return;
+    }
+
+    if (!observation || performance.now() - observation.timestamp > 400) {
+      setCaptureError("Landmark terbaru tidak tersedia. Tahan telapak di depan kamera.");
+      return;
+    }
+
+    const geometryResult = calculatePalmRoiGeometry(
+      observation.landmarks,
+      video.videoWidth,
+      video.videoHeight,
+    );
+    if (!geometryResult.ok) {
+      setCaptureError(geometryResult.reason);
+      return;
+    }
+
+    const frameCanvas = document.createElement("canvas");
+    frameCanvas.width = video.videoWidth;
+    frameCanvas.height = video.videoHeight;
+    const frameContext = frameCanvas.getContext("2d", { willReadFrequently: true });
+    if (!frameContext) {
+      setCaptureError("Browser tidak dapat menyiapkan frame telapak.");
+      return;
+    }
+
+    let roiCanvas: HTMLCanvasElement | null = null;
+    try {
+      frameContext.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
+      roiCanvas = extractPalmRoi(frameCanvas, geometryResult.geometry);
+      const roiContext = roiCanvas.getContext("2d", { willReadFrequently: true });
+      if (!roiContext) throw new Error("Kanvas ROI tidak tersedia.");
+
+      const imageData = roiContext.getImageData(0, 0, roiCanvas.width, roiCanvas.height);
+      const processed = preprocessPalmImage({
+        width: imageData.width,
+        height: imageData.height,
+        data: imageData.data,
+      });
+      imageData.data.fill(0);
+      const capture: PalmCapture = {
+        ...processed,
+        capturedAt: Date.now(),
+        handedness: observation.handedness,
+        rotationDegrees: geometryResult.geometry.rotationDegrees,
+        qualityMode: decision.mode === "normal" ? "normal" : "manual-override",
+        qualityWarnings: decision.failedSoftChecks.map(
+          (check) =>
+            `${check.label}: ${check.value ?? "gagal"} (target ${check.target ?? "ideal"})`,
+        ),
+      };
+
+      const previousArtifacts = palmArtifactsRef.current;
+      clearPalmCaptureArtifacts(previousArtifacts);
+      const nextArtifacts = createPalmCaptureArtifacts(
+        capture,
+        handTracking.palmQuality,
+      );
+      palmArtifactsRef.current = nextArtifacts;
+      setPalmArtifacts(nextArtifacts);
+    } catch {
+      setCaptureError("Gambar telapak gagal diproses. Silakan coba lagi.");
+    } finally {
+      frameContext.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+      frameCanvas.width = 0;
+      frameCanvas.height = 0;
+      if (roiCanvas) {
+        roiCanvas.width = 0;
+        roiCanvas.height = 0;
+      }
+    }
   };
 
   return (
@@ -42,7 +199,7 @@ export default function NetraHastaClient() {
       <ScanModePicker
         mode={mode}
         disabled={camera.status === "requesting"}
-        onChange={setMode}
+        onChange={handleModeChange}
       />
 
       {!hasConsented ? (
@@ -78,7 +235,7 @@ export default function NetraHastaClient() {
               videoRef={videoRef}
               canvasRef={canvasRef}
               mode={mode}
-              onStop={() => camera.stopCamera()}
+              onStop={handleStop}
             />
 
             <aside className="space-y-4 lg:sticky lg:top-24">
@@ -98,6 +255,18 @@ export default function NetraHastaClient() {
                   delegate={faceTracking.delegate}
                   modelError={faceTracking.modelError}
                   cameraNotice={camera.notice}
+                />
+              )}
+
+              {mode === "hand" && camera.status === "active" && !palmCapture && (
+                <PalmCapturePanel
+                  key={camera.stream?.id ?? "no-stream"}
+                  cameraStatus={camera.status}
+                  quality={handTracking.palmQuality}
+                  hasCaptureConsent={hasCaptureConsent}
+                  captureError={captureError}
+                  onConsentChange={setHasCaptureConsent}
+                  onCapture={handlePalmCapture}
                 />
               )}
 
@@ -130,6 +299,15 @@ export default function NetraHastaClient() {
               </div>
             </aside>
           </div>
+
+          {mode === "hand" && palmCapture && palmArtifacts.capturedQualityMetrics && (
+            <PalmPreviewPanel
+              capture={palmCapture}
+              quality={palmArtifacts.capturedQualityMetrics}
+              onRetry={clearPalmCapture}
+              onDelete={clearPalmCapture}
+            />
+          )}
         </>
       )}
     </div>
