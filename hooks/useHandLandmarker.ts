@@ -3,6 +3,10 @@
 import type { HandLandmarker, NormalizedLandmark } from "@mediapipe/tasks-vision";
 import type { RefObject } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type {
+  LandmarkConnection,
+  VisionDelegate,
+} from "@/lib/netra-hasta/types";
 
 const WASM_ROOT = "/mediapipe/wasm";
 const MODEL_PATH = "/mediapipe/models/hand_landmarker.task";
@@ -10,7 +14,6 @@ const TARGET_INFERENCE_FPS = 15;
 const INFERENCE_INTERVAL_MS = 1000 / TARGET_INFERENCE_FPS;
 
 type ModelStatus = "idle" | "loading" | "ready" | "error";
-type Delegate = "GPU" | "CPU";
 
 export type GuidanceStatus =
   | "idle"
@@ -25,11 +28,6 @@ export interface HandTrackingMetrics {
   fps: number;
   processingMs: number;
   handCount: number;
-}
-
-interface Connection {
-  start: number;
-  end: number;
 }
 
 interface UseHandLandmarkerOptions {
@@ -71,7 +69,7 @@ function assessHandPosition(landmarks: NormalizedLandmark[][]): GuidanceStatus {
 function drawHands(
   context: CanvasRenderingContext2D,
   landmarks: NormalizedLandmark[][],
-  connections: Connection[],
+  connections: LandmarkConnection[],
 ) {
   const { width, height } = context.canvas;
   context.clearRect(0, 0, width, height);
@@ -127,7 +125,7 @@ export function useHandLandmarker({
 }: UseHandLandmarkerOptions) {
   const [modelStatus, setModelStatus] = useState<ModelStatus>("idle");
   const [modelError, setModelError] = useState<string | null>(null);
-  const [delegate, setDelegate] = useState<Delegate | null>(null);
+  const [delegate, setDelegate] = useState<VisionDelegate | null>(null);
   const [guidance, setGuidance] = useState<GuidanceStatus>("idle");
   const [metrics, setMetrics] = useState<HandTrackingMetrics>({
     fps: 0,
@@ -136,7 +134,7 @@ export function useHandLandmarker({
   });
 
   const landmarkerRef = useRef<HandLandmarker | null>(null);
-  const connectionsRef = useRef<Connection[]>([]);
+  const connectionsRef = useRef<LandmarkConnection[]>([]);
   const animationFrameRef = useRef<number | null>(null);
 
   const clearCanvas = useCallback(() => {
@@ -179,7 +177,7 @@ export function useHandLandmarker({
         const vision = await import("@mediapipe/tasks-vision");
         const fileset = await vision.FilesetResolver.forVisionTasks(WASM_ROOT);
 
-        const createWithDelegate = (selectedDelegate: Delegate) =>
+        const createWithDelegate = (selectedDelegate: VisionDelegate) =>
           vision.HandLandmarker.createFromOptions(fileset, {
             baseOptions: {
               modelAssetPath: MODEL_PATH,
@@ -192,7 +190,7 @@ export function useHandLandmarker({
             minTrackingConfidence: 0.5,
           });
 
-        let selectedDelegate: Delegate = "GPU";
+        let selectedDelegate: VisionDelegate = "GPU";
         try {
           createdLandmarker = await createWithDelegate("GPU");
         } catch {

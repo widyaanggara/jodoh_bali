@@ -21,6 +21,15 @@ The SIMD, non-SIMD, and ES module loader/binary pairs are kept together and must
 
 The model card describes the model as experimental, unsuitable for identity recognition or surveillance, and sensitive to occlusion, jewelry, tattoos, henna, low light, and motion blur.
 
+## Face Landmarker model
+
+- File: `models/face_landmarker.task`
+- Official source: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`
+- Face Mesh model card: `https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Face%20Mesh%20V2.pdf`
+- License stated by the model card: Apache License 2.0
+
+The model outputs 478 three-dimensional landmarks. Its model card states that the landmarks do not provide face recognition or identity representation, and that accuracy is affected by pose, distance, lighting, noise, motion, and partial visibility.
+
 ## Network and privacy note
 
 The application loads the model and WASM from `/mediapipe/` on the same origin. It does not upload camera frames, images, landmarks, or detection results.

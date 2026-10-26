@@ -23,7 +23,7 @@ export default function ConsentPanel({ isRequesting, onConsent }: ConsentPanelPr
       <div className="mt-6 grid gap-3 text-sm leading-relaxed text-stone-600 md:grid-cols-2">
         <div className="rounded-2xl bg-[#fbf6ea] p-4">
           <p className="font-bold text-stone-800">Pemrosesan lokal</p>
-          <p className="mt-1">Frame video dan 21 titik tangan diproses langsung di browser dan tidak disimpan oleh Metemu.</p>
+          <p className="mt-1">Frame video serta landmark tangan atau wajah diproses langsung di browser dan tidak disimpan oleh Metemu.</p>
         </div>
         <div className="rounded-2xl bg-[#fbf6ea] p-4">
           <p className="font-bold text-stone-800">Tanpa rekaman</p>

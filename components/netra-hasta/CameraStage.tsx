@@ -3,12 +3,14 @@
 import type { RefObject } from "react";
 import { useEffect, useState } from "react";
 import type { CameraStatus } from "@/hooks/useCamera";
+import type { ScanMode } from "@/lib/netra-hasta/types";
 
 interface CameraStageProps {
   stream: MediaStream | null;
   status: CameraStatus;
   videoRef: RefObject<HTMLVideoElement | null>;
   canvasRef: RefObject<HTMLCanvasElement | null>;
+  mode: ScanMode;
   onStop: () => void;
 }
 
@@ -17,6 +19,7 @@ export default function CameraStage({
   status,
   videoRef,
   canvasRef,
+  mode,
   onStop,
 }: CameraStageProps) {
   const [aspectRatio, setAspectRatio] = useState("4 / 3");
@@ -66,7 +69,7 @@ export default function CameraStage({
           muted
           playsInline
           className="absolute inset-0 h-full w-full -scale-x-100 object-contain"
-          aria-label="Pratinjau kamera untuk pemindaian tangan"
+          aria-label={`Pratinjau kamera untuk pemindaian ${mode === "hand" ? "tangan" : "wajah"}`}
         />
         <canvas
           ref={canvasRef}
@@ -77,7 +80,7 @@ export default function CameraStage({
         {status !== "active" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#211815] px-6 text-center text-white">
             <span className="material-symbols-outlined text-5xl text-[#e0b85d]" aria-hidden="true">
-              {status === "requesting" ? "hourglass_top" : "back_hand"}
+              {status === "requesting" ? "hourglass_top" : mode === "hand" ? "back_hand" : "face"}
             </span>
             <p className="font-display text-xl font-semibold">
               {status === "requesting" ? "Menunggu izin kamera" : "Kamera belum aktif"}
@@ -86,9 +89,13 @@ export default function CameraStage({
         )}
 
         {status === "active" && (
-          <div className="pointer-events-none absolute inset-[7%] rounded-[2rem] border border-dashed border-[#f3c969]/60">
+          <div className={`pointer-events-none absolute border border-dashed border-[#f3c969]/60 ${
+            mode === "hand"
+              ? "inset-[7%] rounded-[2rem]"
+              : "inset-x-[22%] inset-y-[8%] rounded-[48%]"
+          }`}>
             <span className="absolute left-1/2 top-3 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#f7db91] backdrop-blur-sm">
-              Area panduan tangan
+              Area panduan {mode === "hand" ? "tangan" : "wajah"}
             </span>
           </div>
         )}

@@ -3,17 +3,27 @@
 import { useRef, useState } from "react";
 import CameraStage from "./CameraStage";
 import ConsentPanel from "./ConsentPanel";
+import FaceTrackingPanel from "./FaceTrackingPanel";
 import QualityIndicator from "./QualityIndicator";
+import ScanModePicker from "./ScanModePicker";
 import { useCamera } from "@/hooks/useCamera";
+import { useFaceLandmarker } from "@/hooks/useFaceLandmarker";
 import { useHandLandmarker } from "@/hooks/useHandLandmarker";
+import type { ScanMode } from "@/lib/netra-hasta/types";
 
 export default function NetraHastaClient() {
   const [hasConsented, setHasConsented] = useState(false);
+  const [mode, setMode] = useState<ScanMode>("hand");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const camera = useCamera();
-  const tracking = useHandLandmarker({
-    enabled: camera.status === "active",
+  const handTracking = useHandLandmarker({
+    enabled: camera.status === "active" && mode === "hand",
+    videoRef,
+    canvasRef,
+  });
+  const faceTracking = useFaceLandmarker({
+    enabled: camera.status === "active" && mode === "face",
     videoRef,
     canvasRef,
   });
@@ -29,6 +39,12 @@ export default function NetraHastaClient() {
 
   return (
     <div className="space-y-6">
+      <ScanModePicker
+        mode={mode}
+        disabled={camera.status === "requesting"}
+        onChange={setMode}
+      />
+
       {!hasConsented ? (
         <ConsentPanel
           isRequesting={camera.status === "requesting"}
@@ -61,17 +77,29 @@ export default function NetraHastaClient() {
               status={camera.status}
               videoRef={videoRef}
               canvasRef={canvasRef}
+              mode={mode}
               onStop={() => camera.stopCamera()}
             />
 
             <aside className="space-y-4 lg:sticky lg:top-24">
-              <QualityIndicator
-                guidance={camera.status === "active" ? tracking.guidance : "idle"}
-                metrics={tracking.metrics}
-                delegate={tracking.delegate}
-                modelError={tracking.modelError}
-                cameraNotice={camera.notice}
-              />
+              {mode === "hand" ? (
+                <QualityIndicator
+                  guidance={camera.status === "active" ? handTracking.guidance : "idle"}
+                  metrics={handTracking.metrics}
+                  delegate={handTracking.delegate}
+                  modelError={handTracking.modelError}
+                  cameraNotice={camera.notice}
+                />
+              ) : (
+                <FaceTrackingPanel
+                  guidance={camera.status === "active" ? faceTracking.guidance : "idle"}
+                  metrics={faceTracking.metrics}
+                  geometry={faceTracking.geometry}
+                  delegate={faceTracking.delegate}
+                  modelError={faceTracking.modelError}
+                  cameraNotice={camera.notice}
+                />
+              )}
 
               {camera.status === "idle" && (
                 <button
@@ -85,12 +113,20 @@ export default function NetraHastaClient() {
               )}
 
               <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600">
-                <p className="font-bold text-stone-900">Panduan singkat</p>
-                <ol className="mt-3 list-decimal space-y-2 pl-5">
-                  <li>Gunakan ruangan dengan cahaya merata.</li>
-                  <li>Buka telapak dan renggangkan jari secara alami.</li>
-                  <li>Jaga seluruh tangan tetap di dalam garis panduan.</li>
-                </ol>
+                <p className="font-bold text-stone-900">Panduan {mode === "hand" ? "Hasta Rekha" : "Rupa Lakshana"}</p>
+                {mode === "hand" ? (
+                  <ol className="mt-3 list-decimal space-y-2 pl-5">
+                    <li>Gunakan ruangan dengan cahaya merata.</li>
+                    <li>Buka telapak dan renggangkan jari secara alami.</li>
+                    <li>Jaga seluruh tangan tetap di dalam garis panduan.</li>
+                  </ol>
+                ) : (
+                  <ol className="mt-3 list-decimal space-y-2 pl-5">
+                    <li>Gunakan cahaya merata dari arah depan.</li>
+                    <li>Posisikan satu wajah di tengah area oval.</li>
+                    <li>Hadapkan kepala lurus dengan ekspresi netral.</li>
+                  </ol>
+                )}
               </div>
             </aside>
           </div>

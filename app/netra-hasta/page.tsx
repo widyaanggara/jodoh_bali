@@ -5,7 +5,7 @@ import NetraHastaClient from "@/components/netra-hasta/NetraHastaClient";
 
 export const metadata: Metadata = {
   title: "Netra-Hasta AI | Metemu",
-  description: "Prototipe pemindaian landmark tangan secara lokal di browser dengan MediaPipe.",
+  description: "Prototipe pemindaian landmark tangan dan wajah secara lokal di browser dengan MediaPipe.",
 };
 
 export default function NetraHastaPage() {
@@ -18,14 +18,14 @@ export default function NetraHastaPage() {
           <div className="pointer-events-none absolute -right-10 top-22 h-40 w-40 rounded-full border border-[#c59b3d]/25" />
           <div className="relative mx-auto max-w-5xl text-center">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c59b3d]/30 bg-white/70 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-[#9f3e2f] backdrop-blur-sm">
-              <span className="material-symbols-outlined text-base" aria-hidden="true">back_hand</span>
-              Milestone 2A · Hand Tracking
+              <span className="material-symbols-outlined text-base" aria-hidden="true">motion_photos_on</span>
+              Hand & Face Tracking
             </div>
             <h1 className="font-display text-4xl font-bold leading-tight text-stone-950 md:text-6xl">
               Metemu <span className="italic font-normal text-[#9f3e2f]">Netra-Hasta AI</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">
-              Lihat 21 titik struktur tangan bergerak secara real-time. Tahap fondasi ini hanya mendeteksi landmark tangan dan belum menafsirkan garis telapak.
+              Pilih Hasta Rekha untuk melihat 21 titik tangan atau Rupa Lakshana untuk memetakan 478 landmark dan geometri wajah secara real-time.
             </p>
           </div>
         </section>
@@ -37,8 +37,8 @@ export default function NetraHastaPage() {
         <section className="border-t border-[#c59b3d]/15 bg-white px-5 py-10">
           <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3">
             <Feature icon="lock" title="Privasi lokal" text="Frame tidak disimpan atau diunggah oleh Metemu." />
-            <Feature icon="gesture" title="21 landmark" text="Titik sendi dan koneksi tangan ditampilkan langsung." />
-            <Feature icon="science" title="Prototipe awal" text="Belum mendeteksi atau menafsirkan garis telapak tangan." />
+            <Feature icon="gesture" title="Dua mode vision" text="Landmark tangan dan mesh wajah berjalan bergantian, bukan bersamaan." />
+            <Feature icon="science" title="Data teknis" text="Tanpa ramalan, identifikasi, atau penilaian karakter dari bentuk wajah." />
           </div>
         </section>
       </main>
