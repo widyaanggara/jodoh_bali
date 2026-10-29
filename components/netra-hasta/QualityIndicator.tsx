@@ -87,14 +87,22 @@ export default function QualityIndicator({
       )}
 
       {delegate && (
-        <div className="grid grid-cols-3 gap-2">
-          <Metric label="Tangan" value={String(metrics.handCount)} />
-          <Metric label="FPS AI" value={metrics.fps ? metrics.fps.toFixed(1) : "—"} />
-          <Metric label="Proses" value={metrics.processingMs ? `${metrics.processingMs.toFixed(1)} ms` : "—"} />
-          <p className="col-span-3 text-center text-[11px] text-stone-400">
-            Runtime aktif dengan delegate {delegate}
-          </p>
-        </div>
+        <details className="group rounded-2xl border border-[#c59b3d]/15 bg-white">
+          <summary className="cursor-pointer list-none px-4 py-3 text-xs font-bold text-stone-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c59b3d]">
+            <span className="inline-flex items-center gap-2">
+              <span className="material-symbols-outlined text-base transition group-open:rotate-180" aria-hidden="true">expand_more</span>
+              Detail teknis live
+            </span>
+          </summary>
+          <div className="grid grid-cols-3 gap-2 border-t border-stone-100 p-3">
+            <Metric label="Tangan" value={String(metrics.handCount)} />
+            <Metric label="FPS AI" value={metrics.fps ? metrics.fps.toFixed(1) : "—"} />
+            <Metric label="Proses" value={metrics.processingMs ? `${metrics.processingMs.toFixed(1)} ms` : "—"} />
+            <p className="col-span-3 text-center text-[11px] text-stone-400">
+              Runtime aktif dengan delegate {delegate}
+            </p>
+          </div>
+        </details>
       )}
     </div>
   );

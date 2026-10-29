@@ -1,6 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  createCameraDeviceOptions,
+  createCameraVideoConstraints,
+  getCameraErrorMessage,
+  type CameraDeviceOption,
+} from "@/lib/netra-hasta/camera";
 
 export type CameraStatus = "idle" | "requesting" | "active" | "error";
 
@@ -18,32 +24,24 @@ const INITIAL_STATE: CameraState = {
   notice: null,
 };
 
-function getCameraErrorMessage(error: unknown): string {
-  if (!(error instanceof DOMException)) {
-    return "Kamera tidak dapat dimulai. Silakan coba lagi.";
-  }
-
-  switch (error.name) {
-    case "NotAllowedError":
-    case "SecurityError":
-      return "Izin kamera ditolak. Izinkan akses kamera melalui pengaturan browser, lalu coba lagi.";
-    case "NotFoundError":
-    case "DevicesNotFoundError":
-      return "Kamera tidak ditemukan pada perangkat ini.";
-    case "NotReadableError":
-    case "TrackStartError":
-      return "Kamera sedang digunakan aplikasi lain atau tidak dapat dibaca.";
-    case "OverconstrainedError":
-      return "Kamera tersedia, tetapi tidak mendukung konfigurasi video yang diminta.";
-    default:
-      return "Kamera tidak dapat dimulai. Periksa izin browser dan coba lagi.";
-  }
-}
-
 export function useCamera() {
   const [camera, setCamera] = useState<CameraState>(INITIAL_STATE);
+  const [devices, setDevices] = useState<CameraDeviceOption[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const requestIdRef = useRef(0);
+
+  const refreshDevices = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) return;
+    try {
+      const availableDevices = createCameraDeviceOptions(
+        await navigator.mediaDevices.enumerateDevices(),
+      );
+      setDevices(availableDevices);
+    } catch {
+      // Device enumeration is optional; camera capture can still continue.
+    }
+  }, []);
 
   const releaseStream = useCallback(() => {
     requestIdRef.current += 1;
@@ -59,7 +57,7 @@ export function useCamera() {
     [releaseStream],
   );
 
-  const startCamera = useCallback(async () => {
+  const startCamera = useCallback(async (deviceId?: string) => {
     releaseStream();
     const requestId = requestIdRef.current;
     setCamera({ status: "requesting", stream: null, error: null, notice: null });
@@ -87,11 +85,7 @@ export function useCamera() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
-        video: {
-          facingMode: "user",
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
+        video: createCameraVideoConstraints(deviceId),
       });
 
       if (requestId !== requestIdRef.current) {
@@ -100,7 +94,24 @@ export function useCamera() {
       }
 
       streamRef.current = stream;
+      const videoTrack = stream.getVideoTracks()[0];
+      const activeDeviceId = videoTrack?.getSettings().deviceId ?? deviceId ?? null;
+      setSelectedDeviceId(activeDeviceId);
+      videoTrack?.addEventListener("ended", () => {
+        if (streamRef.current !== stream) return;
+        streamRef.current = null;
+        requestIdRef.current += 1;
+        setSelectedDeviceId(null);
+        setCamera({
+          status: "error",
+          stream: null,
+          error: "Kamera terputus. Pilih kamera lain atau sambungkan kembali perangkat.",
+          notice: null,
+        });
+        void refreshDevices();
+      }, { once: true });
       setCamera({ status: "active", stream, error: null, notice: null });
+      void refreshDevices();
     } catch (error) {
       if (requestId !== requestIdRef.current) return;
 
@@ -111,7 +122,7 @@ export function useCamera() {
         notice: null,
       });
     }
-  }, [releaseStream]);
+  }, [refreshDevices, releaseStream]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -121,14 +132,18 @@ export function useCamera() {
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    navigator.mediaDevices?.addEventListener?.("devicechange", refreshDevices);
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      navigator.mediaDevices?.removeEventListener?.("devicechange", refreshDevices);
       releaseStream();
     };
-  }, [releaseStream, stopCamera]);
+  }, [refreshDevices, releaseStream, stopCamera]);
 
   return {
     ...camera,
+    devices,
+    selectedDeviceId,
     startCamera,
     stopCamera,
   };

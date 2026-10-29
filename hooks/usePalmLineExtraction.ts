@@ -17,6 +17,8 @@ interface UsePalmLineExtractionInput {
   capture: PalmCapture | null;
 }
 
+const WORKER_TIMEOUT_MS = 15_000;
+
 export function usePalmLineExtraction({
   enabled,
   capture,
@@ -34,6 +36,14 @@ export function usePalmLineExtraction({
     let worker: Worker | null = null;
     let cancelled = false;
     let startTimer: number | null = null;
+    let workerTimeout: number | null = null;
+
+    const clearWorkerTimeout = () => {
+      if (workerTimeout !== null) {
+        window.clearTimeout(workerTimeout);
+        workerTimeout = null;
+      }
+    };
 
     wipePalmLineLiveResult(retainedResultRef.current);
     retainedResultRef.current = null;
@@ -64,6 +74,7 @@ export function usePalmLineExtraction({
           { type: "module", name: "metemu-palm-line" },
         );
         worker.onmessage = ({ data }: MessageEvent<PalmLineWorkerResponse>) => {
+          clearWorkerTimeout();
           if (
             cancelled ||
             data.requestId !== requestId ||
@@ -81,13 +92,28 @@ export function usePalmLineExtraction({
           worker?.terminate();
           worker = null;
         };
-        worker.onerror = () => {
+        worker.onerror = (event) => {
+          event.preventDefault();
+          clearWorkerTimeout();
           if (!cancelled) {
             dispatch({
               type: "fail",
               requestId,
               captureId,
               reason: "Worker ekstraksi kandidat lipatan berhenti secara tidak terduga.",
+            });
+          }
+          worker?.terminate();
+          worker = null;
+        };
+        worker.onmessageerror = () => {
+          clearWorkerTimeout();
+          if (!cancelled) {
+            dispatch({
+              type: "fail",
+              requestId,
+              captureId,
+              reason: "Hasil worker kandidat tidak dapat dibaca oleh browser.",
             });
           }
           worker?.terminate();
@@ -103,7 +129,19 @@ export function usePalmLineExtraction({
           palmInteriorGeometry: capture.palmInteriorGeometry,
         };
         worker.postMessage(request, [inputData.buffer]);
+        workerTimeout = window.setTimeout(() => {
+          if (cancelled) return;
+          dispatch({
+            type: "fail",
+            requestId,
+            captureId,
+            reason: "Analisis kandidat melewati batas waktu. Ambil ulang foto untuk mencoba lagi.",
+          });
+          worker?.terminate();
+          worker = null;
+        }, WORKER_TIMEOUT_MS);
       } catch {
+        clearWorkerTimeout();
         if (inputData.byteLength > 0) inputData.fill(0);
         dispatch({
           type: "fail",
@@ -119,6 +157,7 @@ export function usePalmLineExtraction({
     return () => {
       cancelled = true;
       if (startTimer !== null) window.clearTimeout(startTimer);
+      clearWorkerTimeout();
       worker?.terminate();
       worker = null;
       wipePalmLineLiveResult(retainedResultRef.current);

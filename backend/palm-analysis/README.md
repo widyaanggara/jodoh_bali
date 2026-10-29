@@ -17,6 +17,11 @@ Dependency production berada di `requirements.txt`; pytest dan HTTP test client
 berada di `requirements-dev.txt`. Docker tetap memakai Python 3.11 Linux dan
 tidak menyalin environment Conda Windows.
 
+Dependency model pretrained sengaja dipisahkan dalam
+`requirements-experimental.txt` dan tidak disalin ke image production. Audit
+model, provenance, kontrak tensor, serta alasan status HOLD tercatat di
+`PRETRAINED_MODEL_AUDIT.md`.
+
 ## Detector offline
 
 `opencv-palm-lines-v1` menerima satu citra ROI telapak yang sudah dipotong dan
@@ -145,6 +150,57 @@ C:\Users\wisnu\miniconda3\Scripts\conda.exe run --no-capture-output -n metemu `
 ```
 
 CLI menolak `sample_id` duplikat agar satu ROI tidak terhitung dua kali.
+
+Eksperimen model pretrained dijalankan terpisah dan memerlukan path bobot lokal
+yang berada di dalam `dataset/` (di-ignore Git/Docker):
+
+```powershell
+C:\Users\wisnu\miniconda3\Scripts\conda.exe run --no-capture-output -n metemu `
+  python -m app.pretrained_benchmark `
+  dataset\palm-benchmark\pilot-01\palm-b0bf5cc69448-benchmark.json `
+  --model dataset\palm-models\palm-line-reader\<commit>\student_fp16.onnx `
+  --iterations 10
+```
+
+Tidak ada file yang dibuat secara otomatis. Tambahkan `--output <file.json>`
+atau `--diagnostics <folder>` hanya saat developer memang ingin menyimpan hasil
+lokal. Untuk satu ROI, gunakan `python -m app.pretrained_cli <roi.png> --model
+<model.onnx> --hand right`. Model dinilai class-agnostic dari union foreground;
+nama kelas upstream tidak dipetakan menjadi Rekha Metemu.
+
+Diagnostik parity/crop menjalankan dua kontrol yang ditetapkan sebelum scoring:
+plain stretch sesuai modul web dan black letterbox sesuai generator training.
+Ia juga memeriksa positive control upstream serta probabilitas mentah. Output
+tetap hanya ditulis melalui flag eksplisit:
+
+```powershell
+C:\Users\wisnu\miniconda3\Scripts\conda.exe run --no-capture-output -n metemu `
+  python -m app.pretrained_diagnostic <benchmark.json> `
+  --model <student_fp16.onnx> --upstream-root <upstream-commit-folder> `
+  --output <diagnostic.json> --diagnostics <diagnostic-folder>
+```
+
+`--resize-mode letterbox-black` juga tersedia pada CLI satu gambar. Mode ini
+adalah diagnostic control, bukan default production dan bukan perubahan pada
+ROI historis.
+
+Kontrol full-hand dapat mencari foto sumber secara streaming berdasarkan
+fingerprint anotasi. Tanpa landmark export, hasil diberi label
+`full-source-letterbox-control` dan scoring wajib `N/A`:
+
+```powershell
+python -m app.full_hand_diagnostic `
+  --annotations <annotations-v2.json> <annotations-v2-lain.json> `
+  --dataset-root <dataset-palm-hand> --model <student_fp16.onnx> `
+  --output <full-hand.json> --diagnostics <folder>
+```
+
+Pipeline landmark crop menerima `--landmarks-dir <folder>`. File eksplisit
+`<sample_id>.json` wajib berformat `metemu-hand-landmarks` versi 1, membawa
+`source_fingerprint`, `coordinate_space` (`normalized` atau `pixels`),
+`handedness`, dan tepat 21 titik `{x,y}`. Output mencatat matriks
+source→crop→model serta inversenya. Tanpa matriks source→annotation-ROI yang sah,
+hasil full-hand tetap tidak diberi F1 terhadap anotasi palm-only.
 
 Coverage, precision, dan F1 dihitung secara length-weighted pada toleransi 3, 6,
 dan 9 piksel untuk `dark-ridge-v1` serta `opencv-palm-lines-v1` pada byte piksel

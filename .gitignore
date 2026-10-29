@@ -43,5 +43,8 @@ next-env.d.ts
 # Local research datasets
 /dataset/
 
-# PRD Metemu
-/docs/
+# PRD dan dokumen kerja Metemu tetap lokal; hanya audit rilis yang dilacak.
+/docs/*
+!/docs/netra-hasta/
+/docs/netra-hasta/*
+!/docs/netra-hasta/DEMO_RELEASE_2026-10-31.md

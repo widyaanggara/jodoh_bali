@@ -1,0 +1,2 @@
+# Local research only; intentionally excluded from the production Docker image.
+onnxruntime==1.31.1

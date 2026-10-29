@@ -54,6 +54,39 @@ const lineLive = loadTypeScriptModule("lib/netra-hasta/palm-line-live.ts");
 const groundTruth = loadTypeScriptModule("lib/netra-hasta/palm-ground-truth.ts");
 const palmExport = loadTypeScriptModule("lib/netra-hasta/palm-export.ts");
 const zipArchive = loadTypeScriptModule("lib/netra-hasta/zip-archive.ts");
+const camera = loadTypeScriptModule("lib/netra-hasta/camera.ts");
+
+test("constraint kamera memakai device exact saat kamera eksternal dipilih", () => {
+  assert.deepEqual(camera.createCameraVideoConstraints("external-camera"), {
+    deviceId: { exact: "external-camera" },
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+  });
+  assert.deepEqual(camera.createCameraVideoConstraints(), {
+    facingMode: "user",
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+  });
+});
+
+test("daftar kamera hanya memuat video unik dan memberi label fallback", () => {
+  const options = camera.createCameraDeviceOptions([
+    { kind: "audioinput", deviceId: "mic", label: "Mic" },
+    { kind: "videoinput", deviceId: "built-in", label: "Kamera laptop" },
+    { kind: "videoinput", deviceId: "external", label: "" },
+    { kind: "videoinput", deviceId: "external", label: "Duplikat" },
+  ]);
+  assert.deepEqual(options, [
+    { deviceId: "built-in", label: "Kamera laptop" },
+    { deviceId: "external", label: "Kamera 2" },
+  ]);
+});
+
+test("error kamera permission, missing device, dan busy mudah dipahami", () => {
+  assert.match(camera.getCameraErrorMessage({ name: "NotAllowedError" }), /Izin kamera ditolak/);
+  assert.match(camera.getCameraErrorMessage({ name: "NotFoundError" }), /Kamera tidak ditemukan/);
+  assert.match(camera.getCameraErrorMessage({ name: "NotReadableError" }), /digunakan aplikasi lain/);
+});
 
 function makeLandmarks(transformX = (x) => x) {
   const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }));
@@ -271,6 +304,21 @@ test("live line reducer menolak hasil worker lama setelah capture baru", () => {
   assert.equal(current.result.captureId, 200);
 });
 
+test("live line reducer menolak error worker lama setelah retake", () => {
+  const state = {
+    phase: "processing",
+    requestId: 8,
+    captureId: 800,
+  };
+  const afterStaleFailure = lineLive.reducePalmLineLiveState(state, {
+    type: "fail",
+    requestId: 7,
+    captureId: 700,
+    reason: "worker lama gagal",
+  });
+  assert.deepEqual(afterStaleFailure, state);
+});
+
 test("retake mereset status dan membersihkan buffer overlay lama", () => {
   const result = makeLiveLineResult(3, 300, 99);
   const ready = lineLive.reducePalmLineLiveState(
@@ -291,6 +339,7 @@ test("integrasi live tidak memiliki transport atau penyimpanan biometrik", () =>
     "components/netra-hasta/NetraHastaClient.tsx",
     "components/netra-hasta/PalmCapturePanel.tsx",
     "components/netra-hasta/PalmLineLiveDiagnostic.tsx",
+    "components/netra-hasta/PalmLineResultPanel.tsx",
     "hooks/useHandLandmarker.ts",
     "hooks/usePalmLineExtraction.ts",
     "workers/palm-line.worker.ts",
@@ -299,6 +348,31 @@ test("integrasi live tidak memiliki transport atau penyimpanan biometrik", () =>
 
   assert.equal(/\bfetch\s*\(/.test(sources), false);
   assert.equal(/XMLHttpRequest|sendBeacon|localStorage|indexedDB|firebase/i.test(sources), false);
+});
+
+test("hasil kandidat pengguna jujur dan baseline tetap berjalan di production", () => {
+  const clientSource = fs.readFileSync(
+    path.join(projectRoot, "components/netra-hasta/NetraHastaClient.tsx"),
+    "utf8",
+  );
+  const resultSource = fs.readFileSync(
+    path.join(projectRoot, "components/netra-hasta/PalmLineResultPanel.tsx"),
+    "utf8",
+  );
+  const workerHookSource = fs.readFileSync(
+    path.join(projectRoot, "hooks/usePalmLineExtraction.ts"),
+    "utf8",
+  );
+
+  assert.match(clientSource, /enabled:\s*mode\s*===\s*["']hand["']/);
+  assert.match(clientSource, /showDeveloperDiagnostics\s*=\s*process\.env\.NODE_ENV\s*===\s*["']development["']/);
+  assert.match(resultSource, /kandidat hasil deteksi otomatis/i);
+  assert.match(resultSource, /kontur luar tangan atau bayangan/i);
+  assert.match(resultSource, /belum tervalidasi/i);
+  assert.match(resultSource, /memilih abstain/i);
+  assert.equal(/kepribadian|karier|confidence|Rekha Hayu|Rekha Jnana|Rekha Hredaya|Rekha Bhaga/i.test(resultSource), false);
+  assert.match(workerHookSource, /WORKER_TIMEOUT_MS\s*=\s*15_000/);
+  assert.match(workerHookSource, /onmessageerror/);
 });
 
 test("ekstraksi garis abstain pada citra polos dan bayangan halus", () => {

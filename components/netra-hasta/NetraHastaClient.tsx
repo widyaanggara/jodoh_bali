@@ -42,7 +42,7 @@ export default function NetraHastaClient() {
   const captureInProgressRef = useRef(false);
   const palmArtifactsRef = useRef<PalmCaptureArtifacts>(palmArtifacts);
   const palmCapture = palmArtifacts.capture;
-  const palmLineExperimentEnabled = process.env.NODE_ENV === "development";
+  const showDeveloperDiagnostics = process.env.NODE_ENV === "development";
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const camera = useCamera();
@@ -57,7 +57,7 @@ export default function NetraHastaClient() {
     canvasRef,
   });
   const palmLineExtraction = usePalmLineExtraction({
-    enabled: palmLineExperimentEnabled && mode === "hand",
+    enabled: mode === "hand",
     capture: palmCapture,
   });
 
@@ -106,6 +106,12 @@ export default function NetraHastaClient() {
   const handleStop = () => {
     clearPalmCapture();
     camera.stopCamera();
+  };
+
+  const handleCameraChange = (deviceId: string) => {
+    if (!deviceId || deviceId === camera.selectedDeviceId) return;
+    clearPalmCapture();
+    void camera.startCamera(deviceId);
   };
 
   const handlePalmCapture = () => {
@@ -278,21 +284,23 @@ export default function NetraHastaClient() {
                 videoRef={videoRef}
                 canvasRef={canvasRef}
                 mode={mode}
+                devices={camera.devices}
+                selectedDeviceId={camera.selectedDeviceId}
+                onCameraChange={handleCameraChange}
                 onStop={handleStop}
               />
 
-              {mode === "hand" && (
-                <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600 shadow-lg shadow-stone-900/5">
-                  <p className="font-bold text-stone-900">Panduan Hasta Rekha</p>
-                  <ol className="mt-3 list-decimal space-y-2 pl-5">
-                    <li>Gunakan ruangan dengan cahaya merata.</li>
-                    <li>Buka telapak dan renggangkan jari secara alami.</li>
-                    <li>
-                      Ikuti garis emas pada area telapak; jari tetap terlihat agar
-                      orientasi dapat dihitung.
-                    </li>
-                  </ol>
-                </div>
+              {mode === "hand" && camera.status === "active" && !palmCapture && (
+                <PalmCapturePanel
+                  key={camera.stream?.id ?? "no-stream"}
+                  cameraStatus={camera.status}
+                  quality={handTracking.palmQuality}
+                  hasCaptureConsent={hasCaptureConsent}
+                  isCapturing={isCapturing}
+                  captureError={captureError}
+                  onConsentChange={setHasCaptureConsent}
+                  onCapture={handlePalmCapture}
+                />
               )}
             </div>
 
@@ -316,17 +324,18 @@ export default function NetraHastaClient() {
                 />
               )}
 
-              {mode === "hand" && camera.status === "active" && !palmCapture && (
-                <PalmCapturePanel
-                  key={camera.stream?.id ?? "no-stream"}
-                  cameraStatus={camera.status}
-                  quality={handTracking.palmQuality}
-                  hasCaptureConsent={hasCaptureConsent}
-                  isCapturing={isCapturing}
-                  captureError={captureError}
-                  onConsentChange={setHasCaptureConsent}
-                  onCapture={handlePalmCapture}
-                />
+              {mode === "hand" && (
+                <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600 shadow-lg shadow-stone-900/5">
+                  <p className="font-bold text-stone-900">Panduan Hasta Rekha</p>
+                  <ol className="mt-3 list-decimal space-y-2 pl-5">
+                    <li>Gunakan ruangan dengan cahaya merata.</li>
+                    <li>Buka telapak dan renggangkan jari secara alami.</li>
+                    <li>
+                      Ikuti garis emas pada area telapak; jari tetap terlihat agar
+                      orientasi dapat dihitung.
+                    </li>
+                  </ol>
+                </div>
               )}
 
               {camera.status === "idle" && (
@@ -358,7 +367,7 @@ export default function NetraHastaClient() {
               key={palmCapture.capturedAt}
               capture={palmCapture}
               quality={palmArtifacts.capturedQualityMetrics}
-              lineExperimentEnabled={palmLineExperimentEnabled}
+              showDeveloperDiagnostics={showDeveloperDiagnostics}
               lineExtraction={palmLineExtraction}
               onRetry={clearPalmCapture}
               onDelete={clearPalmCapture}
