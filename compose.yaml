@@ -15,12 +15,14 @@ services:
       # Tambahkan ini agar Next.js tidak mencari-cari hostname container ID
       HOSTNAME: "0.0.0.0"
       PORT: 3010
+      PALM_API_INTERNAL_URL: "http://palm-api:8000"
 
   # WEBSITE DEV
   nextjs_dev:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
     container_name: nextjs_dev
     ports:
       - "3011:3010"
@@ -29,4 +31,27 @@ services:
       NODE_ENV: development
       HOSTNAME: "0.0.0.0"
       PORT: 3010
+      PALM_API_INTERNAL_URL: "http://palm-api:8000"
+
+  # PALM ANALYSIS INTERNAL API — belum terhubung ke alur upload production
+  palm-api:
+    build:
+      context: ./backend/palm-analysis
+      dockerfile: Dockerfile
+    container_name: palm_analysis_api
+    expose:
+      - "8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).read()
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
 

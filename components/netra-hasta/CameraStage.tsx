@@ -88,15 +88,19 @@ export default function CameraStage({
           </div>
         )}
 
-        {status === "active" && (
-          <div className={`pointer-events-none absolute border border-dashed border-[#f3c969]/60 ${
-            mode === "hand"
-              ? "inset-[7%] rounded-[2rem]"
-              : "inset-x-[22%] inset-y-[8%] rounded-[48%]"
-          }`}>
+        {status === "active" && mode === "face" && (
+          <div className="pointer-events-none absolute inset-x-[22%] inset-y-[8%] rounded-[48%] border border-dashed border-[#f3c969]/60">
             <span className="absolute left-1/2 top-3 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#f7db91] backdrop-blur-sm">
-              Area panduan {mode === "hand" ? "tangan" : "wajah"}
+              Area panduan wajah
             </span>
+          </div>
+        )}
+
+        {status === "active" && mode === "hand" && (
+          <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-center sm:inset-x-5">
+            <p className="max-w-md rounded-full bg-black/65 px-3 py-1.5 text-center text-[10px] font-bold leading-snug text-[#f7db91] backdrop-blur-sm sm:text-xs">
+              Garis emas mengikuti telapak secara live — ROI final ditentukan saat dijepret
+            </p>
           </div>
         )}
       </div>

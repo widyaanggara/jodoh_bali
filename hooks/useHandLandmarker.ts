@@ -132,6 +132,54 @@ function drawHands(
 
     context.shadowBlur = 0;
   });
+
+  if (landmarks.length === 1) {
+    drawPalmRoiGuide(context, landmarks[0]);
+  }
+}
+
+/**
+ * Draws a live palm-focused guide from the same landmark geometry used by the
+ * capture ROI. MediaPipe still receives the complete, uncropped video frame.
+ */
+function drawPalmRoiGuide(
+  context: CanvasRenderingContext2D,
+  landmarks: NormalizedLandmark[],
+) {
+  const { width, height } = context.canvas;
+  const guide = calculatePalmRoiGeometry(landmarks, width, height, {
+    ...DEFAULT_PALM_ROI_CONFIG,
+    minimumWidthPixels: 0,
+    minimumHeightPixels: 0,
+  });
+  if (!guide.ok) return;
+
+  const corners = guide.geometry.sourceCorners;
+  if (corners.length !== 4) return;
+
+  context.save();
+  context.shadowColor = "rgba(0, 0, 0, 0.45)";
+  context.shadowBlur = Math.max(4, width / 220);
+  context.fillStyle = "rgba(243, 201, 105, 0.09)";
+  context.strokeStyle = "rgba(247, 219, 145, 0.96)";
+  context.lineWidth = Math.max(3, width / 260);
+  context.setLineDash([Math.max(10, width / 55), Math.max(6, width / 90)]);
+
+  context.beginPath();
+  context.moveTo(corners[0].x, corners[0].y);
+  corners.slice(1).forEach((corner) => context.lineTo(corner.x, corner.y));
+  context.closePath();
+  context.fill();
+  context.stroke();
+
+  context.setLineDash([]);
+  context.fillStyle = "#fff8df";
+  corners.forEach((corner) => {
+    context.beginPath();
+    context.arc(corner.x, corner.y, Math.max(3, width / 210), 0, Math.PI * 2);
+    context.fill();
+  });
+  context.restore();
 }
 
 export function useHandLandmarker({

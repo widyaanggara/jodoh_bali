@@ -6,6 +6,18 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
 
+# ===== development preview =====
+# Komodo still builds from this Dockerfile, but the preview service targets this
+# stage so it runs a real Next.js development server instead of server.js from a
+# production standalone build.
+FROM deps AS development
+WORKDIR /app
+COPY . .
+ENV NODE_ENV=development
+ENV PORT=3010
+EXPOSE 3010
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0", "-p", "3010"]
+
 # ===== build =====
 FROM base AS builder
 WORKDIR /app

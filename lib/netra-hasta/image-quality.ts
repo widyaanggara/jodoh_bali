@@ -42,6 +42,81 @@ export interface PalmImageMetrics {
   brightPixelRatio: number;
 }
 
+export type StaticPalmQualityStatus = "valid" | "warning" | "failed";
+
+export interface StaticPalmQualityEvaluation {
+  status: StaticPalmQualityStatus;
+  reasons: string[];
+  brightnessPassed: boolean;
+  contrastPassed: boolean;
+  sharpnessPassed: boolean;
+}
+
+interface EvaluateStaticPalmQualityInput {
+  handCount: number;
+  roiValid: boolean;
+  palmLargeEnough: boolean;
+  imageMetrics: PalmImageMetrics | null;
+  config?: PalmQualityConfig;
+}
+
+/**
+ * Evaluates a still image without motion stability. Static photos must never
+ * fail merely because timestamped VIDEO samples do not exist.
+ */
+export function evaluateStaticPalmQuality({
+  handCount,
+  roiValid,
+  palmLargeEnough,
+  imageMetrics,
+  config = DEFAULT_PALM_QUALITY_CONFIG,
+}: EvaluateStaticPalmQualityInput): StaticPalmQualityEvaluation {
+  const reasons: string[] = [];
+  if (handCount === 0) reasons.push("Tangan tidak terdeteksi.");
+  if (handCount > 1) reasons.push("Lebih dari satu tangan terdeteksi.");
+  if (handCount === 1 && !roiValid) reasons.push("ROI telapak tidak valid atau terpotong.");
+  if (handCount === 1 && roiValid && !palmLargeEnough) {
+    reasons.push("Ukuran ROI telapak terlalu kecil.");
+  }
+
+  const brightnessPassed = Boolean(
+    imageMetrics &&
+      imageMetrics.brightness >= config.minimumBrightness &&
+      imageMetrics.brightness <= config.maximumBrightness,
+  );
+  const contrastPassed = Boolean(
+    imageMetrics && imageMetrics.contrast >= config.minimumContrast,
+  );
+  const sharpnessPassed = Boolean(
+    imageMetrics && imageMetrics.sharpness >= config.minimumSharpness,
+  );
+  const hardFailed = handCount !== 1 || !roiValid || !palmLargeEnough;
+
+  if (imageMetrics) {
+    if (imageMetrics.brightness < config.minimumBrightness) {
+      reasons.push("Pencahayaan terlalu redup.");
+    } else if (imageMetrics.brightness > config.maximumBrightness) {
+      reasons.push("Pencahayaan terlalu terang.");
+    }
+    if (!contrastPassed) reasons.push("Kontras belum ideal.");
+    if (!sharpnessPassed) reasons.push("Ketajaman belum ideal.");
+  } else {
+    reasons.push("Metrik citra tidak tersedia.");
+  }
+
+  return {
+    status: hardFailed
+      ? "failed"
+      : brightnessPassed && contrastPassed && sharpnessPassed
+        ? "valid"
+        : "warning",
+    reasons,
+    brightnessPassed,
+    contrastPassed,
+    sharpnessPassed,
+  };
+}
+
 export interface PalmPoseSample {
   timestamp: number;
   centroidX: number;

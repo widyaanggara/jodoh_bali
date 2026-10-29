@@ -11,6 +11,7 @@ import ScanModePicker from "./ScanModePicker";
 import { useCamera } from "@/hooks/useCamera";
 import { useFaceLandmarker } from "@/hooks/useFaceLandmarker";
 import { useHandLandmarker } from "@/hooks/useHandLandmarker";
+import { usePalmLineExtraction } from "@/hooks/usePalmLineExtraction";
 import { getPalmCaptureDecision } from "@/lib/netra-hasta/image-quality";
 import {
   clearPalmCaptureArtifacts,
@@ -19,7 +20,11 @@ import {
   type PalmCaptureArtifacts,
 } from "@/lib/netra-hasta/palm-capture-state";
 import type { ScanMode } from "@/lib/netra-hasta/types";
-import { calculatePalmRoiGeometry, extractPalmRoi } from "@/lib/netra-hasta/palm-roi";
+import {
+  calculatePalmRoiGeometry,
+  createPalmInteriorGeometry,
+  extractPalmRoi,
+} from "@/lib/netra-hasta/palm-roi";
 import {
   preprocessPalmImage,
   type PalmCapture,
@@ -33,8 +38,11 @@ export default function NetraHastaClient() {
   );
   const [captureError, setCaptureError] = useState<string | null>(null);
   const [hasCaptureConsent, setHasCaptureConsent] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const captureInProgressRef = useRef(false);
   const palmArtifactsRef = useRef<PalmCaptureArtifacts>(palmArtifacts);
   const palmCapture = palmArtifacts.capture;
+  const palmLineExperimentEnabled = process.env.NODE_ENV === "development";
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const camera = useCamera();
@@ -48,6 +56,10 @@ export default function NetraHastaClient() {
     videoRef,
     canvasRef,
   });
+  const palmLineExtraction = usePalmLineExtraction({
+    enabled: palmLineExperimentEnabled && mode === "hand",
+    capture: palmCapture,
+  });
 
   const handleConsent = () => {
     setHasConsented(true);
@@ -60,6 +72,8 @@ export default function NetraHastaClient() {
   };
 
   const clearPalmCapture = useCallback(() => {
+    captureInProgressRef.current = false;
+    setIsCapturing(false);
     const clearedArtifacts = clearPalmCaptureArtifacts(palmArtifactsRef.current);
     palmArtifactsRef.current = clearedArtifacts;
     setPalmArtifacts(clearedArtifacts);
@@ -95,102 +109,130 @@ export default function NetraHastaClient() {
   };
 
   const handlePalmCapture = () => {
-    const video = videoRef.current;
-    const observation = handTracking.getLatestHandObservation();
-    const decision = getPalmCaptureDecision({
-      cameraActive: camera.status === "active",
-      hasConsent: hasCaptureConsent,
-      quality: handTracking.palmQuality,
-    });
-    setCaptureError(null);
+    if (captureInProgressRef.current) return;
+    captureInProgressRef.current = true;
+    setIsCapturing(true);
 
-    if (
-      mode !== "hand" ||
-      !video ||
-      !video.videoWidth ||
-      !video.videoHeight
-    ) {
-      setCaptureError("Kualitas frame berubah. Posisikan kembali telapak lalu coba lagi.");
-      return;
-    }
-
-    if (!decision.canCapture) {
-      setCaptureError(
-        decision.failedHardChecks.length > 0
-          ? `Syarat wajib belum terpenuhi: ${decision.failedHardChecks.map((check) => check.label).join(", ")}.`
-          : "Aktifkan kamera dan berikan persetujuan sebelum mengambil gambar.",
-      );
-      return;
-    }
-
-    if (!observation || performance.now() - observation.timestamp > 400) {
-      setCaptureError("Landmark terbaru tidak tersedia. Tahan telapak di depan kamera.");
-      return;
-    }
-
-    const geometryResult = calculatePalmRoiGeometry(
-      observation.landmarks,
-      video.videoWidth,
-      video.videoHeight,
-    );
-    if (!geometryResult.ok) {
-      setCaptureError(geometryResult.reason);
-      return;
-    }
-
-    const frameCanvas = document.createElement("canvas");
-    frameCanvas.width = video.videoWidth;
-    frameCanvas.height = video.videoHeight;
-    const frameContext = frameCanvas.getContext("2d", { willReadFrequently: true });
-    if (!frameContext) {
-      setCaptureError("Browser tidak dapat menyiapkan frame telapak.");
-      return;
-    }
-
-    let roiCanvas: HTMLCanvasElement | null = null;
     try {
-      frameContext.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
-      roiCanvas = extractPalmRoi(frameCanvas, geometryResult.geometry);
-      const roiContext = roiCanvas.getContext("2d", { willReadFrequently: true });
-      if (!roiContext) throw new Error("Kanvas ROI tidak tersedia.");
-
-      const imageData = roiContext.getImageData(0, 0, roiCanvas.width, roiCanvas.height);
-      const processed = preprocessPalmImage({
-        width: imageData.width,
-        height: imageData.height,
-        data: imageData.data,
+      const video = videoRef.current;
+      const observation = handTracking.getLatestHandObservation();
+      const decision = getPalmCaptureDecision({
+        cameraActive: camera.status === "active",
+        hasConsent: hasCaptureConsent,
+        quality: handTracking.palmQuality,
       });
-      imageData.data.fill(0);
-      const capture: PalmCapture = {
-        ...processed,
-        capturedAt: Date.now(),
-        handedness: observation.handedness,
-        rotationDegrees: geometryResult.geometry.rotationDegrees,
-        qualityMode: decision.mode === "normal" ? "normal" : "manual-override",
-        qualityWarnings: decision.failedSoftChecks.map(
-          (check) =>
-            `${check.label}: ${check.value ?? "gagal"} (target ${check.target ?? "ideal"})`,
-        ),
-      };
+      setCaptureError(null);
 
-      const previousArtifacts = palmArtifactsRef.current;
-      clearPalmCaptureArtifacts(previousArtifacts);
-      const nextArtifacts = createPalmCaptureArtifacts(
-        capture,
-        handTracking.palmQuality,
-      );
-      palmArtifactsRef.current = nextArtifacts;
-      setPalmArtifacts(nextArtifacts);
-    } catch {
-      setCaptureError("Gambar telapak gagal diproses. Silakan coba lagi.");
-    } finally {
-      frameContext.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
-      frameCanvas.width = 0;
-      frameCanvas.height = 0;
-      if (roiCanvas) {
-        roiCanvas.width = 0;
-        roiCanvas.height = 0;
+      if (
+        mode !== "hand" ||
+        !video ||
+        !video.videoWidth ||
+        !video.videoHeight
+      ) {
+        setCaptureError(
+          "Kualitas frame berubah. Posisikan kembali telapak lalu coba lagi.",
+        );
+        return;
       }
+
+      if (!decision.canCapture) {
+        setCaptureError(
+          decision.failedHardChecks.length > 0
+            ? `Syarat wajib belum terpenuhi: ${decision.failedHardChecks.map((check) => check.label).join(", ")}.`
+            : "Aktifkan kamera dan berikan persetujuan sebelum mengambil gambar.",
+        );
+        return;
+      }
+
+      if (!observation || performance.now() - observation.timestamp > 400) {
+        setCaptureError(
+          "Landmark terbaru tidak tersedia. Tahan telapak di depan kamera.",
+        );
+        return;
+      }
+
+      const geometryResult = calculatePalmRoiGeometry(
+        observation.landmarks,
+        video.videoWidth,
+        video.videoHeight,
+      );
+      if (!geometryResult.ok) {
+        setCaptureError(geometryResult.reason);
+        return;
+      }
+
+      const frameCanvas = document.createElement("canvas");
+      frameCanvas.width = video.videoWidth;
+      frameCanvas.height = video.videoHeight;
+      const frameContext = frameCanvas.getContext("2d", {
+        willReadFrequently: true,
+      });
+      if (!frameContext) {
+        setCaptureError("Browser tidak dapat menyiapkan frame telapak.");
+        return;
+      }
+
+      let roiCanvas: HTMLCanvasElement | null = null;
+      try {
+        frameContext.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
+        roiCanvas = extractPalmRoi(frameCanvas, geometryResult.geometry);
+        const roiContext = roiCanvas.getContext("2d", {
+          willReadFrequently: true,
+        });
+        if (!roiContext) throw new Error("Kanvas ROI tidak tersedia.");
+
+        const imageData = roiContext.getImageData(
+          0,
+          0,
+          roiCanvas.width,
+          roiCanvas.height,
+        );
+        const processed = preprocessPalmImage({
+          width: imageData.width,
+          height: imageData.height,
+          data: imageData.data,
+        });
+        imageData.data.fill(0);
+        const capture: PalmCapture = {
+          ...processed,
+          capturedAt: Date.now(),
+          handedness: observation.handedness,
+          rotationDegrees: geometryResult.geometry.rotationDegrees,
+          qualityMode: decision.mode === "normal" ? "normal" : "manual-override",
+          qualityWarnings: decision.failedSoftChecks.map(
+            (check) =>
+              `${check.label}: ${check.value ?? "gagal"} (target ${check.target ?? "ideal"})`,
+          ),
+          palmInteriorGeometry: createPalmInteriorGeometry(
+            observation.landmarks,
+            video.videoWidth,
+            video.videoHeight,
+            geometryResult.geometry,
+          ),
+        };
+
+        const previousArtifacts = palmArtifactsRef.current;
+        clearPalmCaptureArtifacts(previousArtifacts);
+        const nextArtifacts = createPalmCaptureArtifacts(
+          capture,
+          handTracking.palmQuality,
+        );
+        palmArtifactsRef.current = nextArtifacts;
+        setPalmArtifacts(nextArtifacts);
+      } catch {
+        setCaptureError("Gambar telapak gagal diproses. Silakan coba lagi.");
+      } finally {
+        frameContext.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+        frameCanvas.width = 0;
+        frameCanvas.height = 0;
+        if (roiCanvas) {
+          roiCanvas.width = 0;
+          roiCanvas.height = 0;
+        }
+      }
+    } finally {
+      captureInProgressRef.current = false;
+      setIsCapturing(false);
     }
   };
 
@@ -229,14 +271,30 @@ export default function NetraHastaClient() {
           )}
 
           <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
-            <CameraStage
-              stream={camera.stream}
-              status={camera.status}
-              videoRef={videoRef}
-              canvasRef={canvasRef}
-              mode={mode}
-              onStop={handleStop}
-            />
+            <div className="min-w-0 space-y-4">
+              <CameraStage
+                stream={camera.stream}
+                status={camera.status}
+                videoRef={videoRef}
+                canvasRef={canvasRef}
+                mode={mode}
+                onStop={handleStop}
+              />
+
+              {mode === "hand" && (
+                <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600 shadow-lg shadow-stone-900/5">
+                  <p className="font-bold text-stone-900">Panduan Hasta Rekha</p>
+                  <ol className="mt-3 list-decimal space-y-2 pl-5">
+                    <li>Gunakan ruangan dengan cahaya merata.</li>
+                    <li>Buka telapak dan renggangkan jari secara alami.</li>
+                    <li>
+                      Ikuti garis emas pada area telapak; jari tetap terlihat agar
+                      orientasi dapat dihitung.
+                    </li>
+                  </ol>
+                </div>
+              )}
+            </div>
 
             <aside className="space-y-4 lg:sticky lg:top-24">
               {mode === "hand" ? (
@@ -264,6 +322,7 @@ export default function NetraHastaClient() {
                   cameraStatus={camera.status}
                   quality={handTracking.palmQuality}
                   hasCaptureConsent={hasCaptureConsent}
+                  isCapturing={isCapturing}
                   captureError={captureError}
                   onConsentChange={setHasCaptureConsent}
                   onCapture={handlePalmCapture}
@@ -281,29 +340,26 @@ export default function NetraHastaClient() {
                 </button>
               )}
 
-              <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600">
-                <p className="font-bold text-stone-900">Panduan {mode === "hand" ? "Hasta Rekha" : "Rupa Lakshana"}</p>
-                {mode === "hand" ? (
-                  <ol className="mt-3 list-decimal space-y-2 pl-5">
-                    <li>Gunakan ruangan dengan cahaya merata.</li>
-                    <li>Buka telapak dan renggangkan jari secara alami.</li>
-                    <li>Jaga seluruh tangan tetap di dalam garis panduan.</li>
-                  </ol>
-                ) : (
+              {mode === "face" && (
+                <div className="rounded-3xl border border-[#c59b3d]/20 bg-white p-5 text-sm leading-relaxed text-stone-600">
+                  <p className="font-bold text-stone-900">Panduan Rupa Lakshana</p>
                   <ol className="mt-3 list-decimal space-y-2 pl-5">
                     <li>Gunakan cahaya merata dari arah depan.</li>
                     <li>Posisikan satu wajah di tengah area oval.</li>
                     <li>Hadapkan kepala lurus dengan ekspresi netral.</li>
                   </ol>
-                )}
-              </div>
+                </div>
+              )}
             </aside>
           </div>
 
           {mode === "hand" && palmCapture && palmArtifacts.capturedQualityMetrics && (
             <PalmPreviewPanel
+              key={palmCapture.capturedAt}
               capture={palmCapture}
               quality={palmArtifacts.capturedQualityMetrics}
+              lineExperimentEnabled={palmLineExperimentEnabled}
+              lineExtraction={palmLineExtraction}
               onRetry={clearPalmCapture}
               onDelete={clearPalmCapture}
             />

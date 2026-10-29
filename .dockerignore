@@ -2,3 +2,23 @@ node_modules
 .next
 .git
 .env*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local datasets, annotations, exports, and temporary biometric artifacts
+dataset
+docs
+tmp
+coverage
+annotations
+**/annotations
+metemu-palm-evaluation*.csv
+*palm-annotation*.json
+
+# The frontend image does not need backend source or local tooling
+backend
+tests
+*.md
+compose.yaml
