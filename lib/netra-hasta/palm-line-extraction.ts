@@ -111,9 +111,24 @@ export interface PalmLineExtractionSummary {
   parameters: PalmLineExtractionConfig;
 }
 
+export type PalmVisualClass =
+  | "life"
+  | "head"
+  | "heart"
+  | "fate"
+  | "other"
+  | "unknown";
+
+export type PalmLineLabelStatus = "provisional" | "verified" | "ambiguous";
+export type PalmLineVisibility = "visible" | "obscured" | "absent" | "undetermined";
+
 export interface ManualPalmLineAnnotation {
   id: string;
   points: PalmLinePoint[];
+  visualClass: PalmVisualClass;
+  labelStatus: PalmLineLabelStatus;
+  visibility: Exclude<PalmLineVisibility, "absent" | "undetermined">;
+  truncated: boolean;
 }
 
 export interface PalmLineAgreement {
@@ -755,6 +770,102 @@ function buildOverlay(source: RgbaImage, candidates: PalmLineCandidate[]): RgbaI
   return { width: source.width, height: source.height, data };
 }
 
+/**
+ * Production-only baseline path. Keep this independent from research variants
+ * so the browser worker does not pull palm-interior/refinement code into its
+ * bundle. The operations and thresholds intentionally mirror the baseline
+ * branch of runPalmLineExtraction without changing the algorithm.
+ */
+function runBaselinePalmLineExtraction(
+  source: RgbaImage,
+  config: PalmLineExtractionConfig,
+): PalmLineExtractionResult {
+  const startedAt = typeof performance === "undefined" ? Date.now() : performance.now();
+  const working = resizeToGrayscale(source, config.maximumAnalysisDimension);
+  const sourceContrast = calculateStandardDeviation(working.values);
+  const textureEnergy = calculateTextureEnergy(working.values, working.width, working.height);
+  const normalizedValues = normalizeIllumination(
+    working.values,
+    working.width,
+    working.height,
+    config,
+  );
+  const ridge = detectDarkRidges(normalizedValues, working.width, working.height, config);
+  const thresholded = ridge.binary;
+  const filtered = filterNeighbors(
+    thresholded,
+    working.width,
+    working.height,
+    config.minimumNeighborCount,
+  );
+  const closed = erode(
+    dilate(filtered, working.width, working.height, config.gapClosingRadius),
+    working.width,
+    working.height,
+    config.gapClosingRadius,
+  );
+  const thinned = thinBinary(closed, working.width, working.height, config.thinningIterations);
+  const activePixels = thinned.reduce((total, value) => total + value, 0);
+  const candidatePixelRatio = activePixels / thinned.length;
+  const candidates = traceCandidates(
+    thinned,
+    ridge.response,
+    working.width,
+    working.height,
+    working.scale,
+    config,
+  );
+  let abstainReason: string | null = null;
+  if (sourceContrast < 2.5) {
+    abstainReason = "Kontras citra terlalu rendah untuk mendukung kandidat garis.";
+  } else if (textureEnergy > config.maximumTextureEnergy) {
+    abstainReason = "Energi tekstur terlalu tinggi; kandidat tidak dapat dipisahkan dari noise.";
+  } else if (candidatePixelRatio > 0.16) {
+    abstainReason = "Respons tekstur terlalu padat; kandidat tidak dapat dipisahkan dari noise.";
+  } else if (candidates.length === 0) {
+    abstainReason = "Tidak ada segmen terhubung yang melewati panjang minimum.";
+  }
+
+  const acceptedCandidates = abstainReason ? [] : candidates;
+  const finishedAt = typeof performance === "undefined" ? Date.now() : performance.now();
+  const responseValues = new Float32Array(ridge.response.length);
+  for (let index = 0; index < ridge.response.length; index += 1) {
+    responseValues[index] = Math.min(
+      255,
+      ridge.response[index] / config.responseThreshold * 96,
+    );
+  }
+  return {
+    variant: "baseline",
+    refinementVersion: null,
+    acceptedBridgeCount: 0,
+    maskStatus: "not-used",
+    maskReason: null,
+    status: abstainReason ? "abstain" : "detected",
+    abstainReason,
+    candidates: acceptedCandidates,
+    normalized: createRgbaImage(normalizedValues, working.width, working.height),
+    candidateMap: buildCandidateMap(
+      working.width,
+      working.height,
+      acceptedCandidates,
+      working.scale,
+    ),
+    overlay: buildOverlay(source, acceptedCandidates),
+    ridgeResponseMap: createRgbaImage(responseValues, working.width, working.height),
+    thresholdMap: binaryToImage(thresholded, working.width, working.height),
+    morphologyMap: binaryToImage(closed, working.width, working.height),
+    skeletonMap: binaryToImage(thinned, working.width, working.height),
+    interiorMaskMap: null,
+    analysisWidth: working.width,
+    analysisHeight: working.height,
+    sourceContrast,
+    candidatePixelRatio,
+    textureEnergy,
+    processingMs: finishedAt - startedAt,
+  };
+}
+
 function runPalmLineExtraction(
   source: RgbaImage,
   config: PalmLineExtractionConfig,
@@ -858,7 +969,7 @@ export function extractPalmLineCandidates(
   source: RgbaImage,
   config: PalmLineExtractionConfig = DEFAULT_PALM_LINE_CONFIG,
 ): PalmLineExtractionResult {
-  return runPalmLineExtraction(source, config, null, null);
+  return runBaselinePalmLineExtraction(source, config);
 }
 
 export function extractRefinedPalmLineCandidates(

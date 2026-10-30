@@ -19,13 +19,13 @@ export default function NetraHastaPage() {
           <div className="relative mx-auto max-w-5xl text-center">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c59b3d]/30 bg-white/70 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-[#9f3e2f] backdrop-blur-sm">
               <span className="material-symbols-outlined text-base" aria-hidden="true">motion_photos_on</span>
-              Hand & Face Tracking
+              Beta · Dalam Pengembangan
             </div>
             <h1 className="font-display text-4xl font-bold leading-tight text-stone-950 md:text-6xl">
               Metemu <span className="italic font-normal text-[#9f3e2f]">Netra-Hasta AI</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">
-              Pilih Hasta Rekha untuk melihat 21 titik tangan atau Rupa Lakshana untuk memetakan 478 landmark dan geometri wajah secara real-time.
+              Pilih Hasta Rekha untuk melihat 21 titik tangan atau Rupa Lakshana untuk memetakan 478 landmark dan geometri wajah secara real-time. Kandidat garis telapak masih eksperimental dan belum mengenali empat Rekha.
             </p>
           </div>
         </section>

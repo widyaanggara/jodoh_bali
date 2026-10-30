@@ -60,15 +60,33 @@ export interface PalmBenchmarkManifest {
 
 export interface PalmAnnotationExportSample {
   sample_id: string;
-  sample_fingerprint: string;
+  sample_fingerprint: string | null;
   roi_signature: string | null;
+  roi_pixel_sha256?: string | null;
   roi_width: number | null;
   roi_height: number | null;
   roi_algorithm_version: string | null;
   annotation_status?: string;
   status?: string;
   completeness?: string;
-  polylines?: Array<{ id?: string; points?: PalmExportPoint[] }>;
+  handedness?: string;
+  reference_ids?: string[];
+  annotator_id?: string | null;
+  protocol_version?: string | null;
+  class_states?: Array<{
+    visual_class?: string;
+    label_status?: string;
+    visibility?: string;
+    truncated?: boolean;
+  }>;
+  polylines?: Array<{
+    id?: string;
+    visual_class?: string;
+    label_status?: string;
+    visibility?: string;
+    truncated?: boolean;
+    points?: PalmExportPoint[];
+  }>;
 }
 
 function stableHash(value: string): number {
@@ -149,6 +167,22 @@ function validPolylines(
   ));
 }
 
+function validRekhaMetadata(annotation: PalmAnnotationExportSample): boolean {
+  if (!annotation.protocol_version) return true;
+  const visualClasses = ["life", "head", "heart", "fate", "other", "unknown"];
+  const labelStatuses = ["provisional", "verified", "ambiguous"];
+  const visibilities = ["visible", "obscured"];
+  return annotation.protocol_version === "rekha-visual-v1" &&
+    /^[a-z0-9][a-z0-9_-]{2,63}$/i.test(annotation.annotator_id ?? "") &&
+    ["left", "right", "unknown"].includes(annotation.handedness ?? "") &&
+    Boolean(annotation.reference_ids?.length) &&
+    Boolean(annotation.class_states?.length === 4) &&
+    Boolean(annotation.polylines?.every((polyline) =>
+      visualClasses.includes(polyline.visual_class ?? "") &&
+      labelStatuses.includes(polyline.label_status ?? "") &&
+      visibilities.includes(polyline.visibility ?? "")));
+}
+
 /** Pure validation shared by UI tests; it never repairs or rescales mismatches. */
 export function validatePalmExportPair(input: {
   manifest: PalmBenchmarkManifestSample;
@@ -182,6 +216,9 @@ export function validatePalmExportPair(input: {
     reasons.push("Identitas anonim atau fingerprint anotasi tidak cocok.");
   }
   if (annotation.roi_signature !== manifest.roi_signature) reasons.push("ROI signature tidak cocok.");
+  if (annotation.protocol_version && annotation.roi_pixel_sha256 !== manifest.roi_pixel_sha256) {
+    reasons.push("SHA-256 piksel pada anotasi tidak cocok.");
+  }
   if (annotation.roi_width !== manifest.roi_width || annotation.roi_height !== manifest.roi_height) {
     reasons.push("Dimensi anotasi tidak cocok.");
   }
@@ -195,6 +232,9 @@ export function validatePalmExportPair(input: {
   }
   if (status !== "annotated" || !validPolylines(annotation.polylines, manifest.roi_width, manifest.roi_height)) {
     return { status: "invalid", reasons: ["Polyline manual tidak tersedia atau berada di luar ROI."] };
+  }
+  if (!validRekhaMetadata(annotation)) {
+    return { status: "invalid", reasons: ["Metadata kelas visual Rekha tidak valid."] };
   }
   return { status: "valid", reasons: [] };
 }

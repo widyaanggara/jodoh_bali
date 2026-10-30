@@ -11,7 +11,7 @@ from app.services.detector import PalmLineCandidate, PalmLinePoint
 
 
 ANNOTATION_FORMAT = "metemu-palm-lines"
-ANNOTATION_VERSION = 2
+ANNOTATION_VERSIONS = (2, 3)
 ROI_ALGORITHM_VERSION = "adaptive-roi-v1"
 TOLERANCES = (3, 6, 9)
 
@@ -61,8 +61,8 @@ def load_annotation_document(path: Path) -> dict[str, object]:
         raise ValueError(f"Dokumen anotasi tidak dapat dibaca: {error}") from error
     if not isinstance(document, dict):
         raise ValueError("Dokumen anotasi bukan objek JSON.")
-    if document.get("format") != ANNOTATION_FORMAT or document.get("version") != ANNOTATION_VERSION:
-        raise ValueError("Benchmark hanya menerima metemu-palm-lines versi 2.")
+    if document.get("format") != ANNOTATION_FORMAT or document.get("version") not in ANNOTATION_VERSIONS:
+        raise ValueError("Benchmark hanya menerima metemu-palm-lines versi 2 atau 3.")
     if not isinstance(document.get("samples"), list):
         raise ValueError("Dokumen anotasi tidak memiliki daftar samples.")
     return document

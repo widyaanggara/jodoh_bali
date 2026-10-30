@@ -7,24 +7,57 @@ import {
   PALM_INTERIOR_EXPERIMENT_VERSION,
   PALM_LINE_EXTRACTION_VERSION,
   PALM_LINE_PARAMETER_VERSION,
+  type PalmLineCandidate,
+  type PalmLineExtractionResult,
   type ManualPalmLineAnnotation,
 } from "@/lib/netra-hasta/palm-line-extraction";
 import {
   PALM_GROUND_TRUTH_FORMAT,
-  PALM_GROUND_TRUTH_VERSION,
+  createDefaultPalmClassStates,
   evaluatePalmGroundTruth,
   parsePalmAnnotationDocument,
   resolveAnnotationCompatibility,
   type PalmAnnotationCompleteness,
   type PalmGroundTruthAnnotation,
 } from "@/lib/netra-hasta/palm-ground-truth";
-import type { PalmLineLiveState } from "@/lib/netra-hasta/palm-line-live";
-import type { PalmCapture } from "@/lib/netra-hasta/palm-preprocessing";
+import type { PalmCapture, RgbaImage } from "@/lib/netra-hasta/palm-preprocessing";
 import { PALM_ROI_ALGORITHM_VERSION } from "@/lib/netra-hasta/palm-roi";
+
+interface PalmLineResearchVariant {
+  variant: "baseline" | "palm-interior";
+  version: string;
+  status: PalmLineExtractionResult["status"];
+  maskStatus: PalmLineExtractionResult["maskStatus"];
+  candidateCount: number;
+  candidates: PalmLineCandidate[];
+  totalLengthPixels: number;
+  outsideCandidateCount: number | null;
+  outsideLengthPixels: number | null;
+  overlay: RgbaImage;
+  ridgeResponseMap: RgbaImage;
+  interiorMaskMap: RgbaImage | null;
+  processingMs: number;
+  reason: string | null;
+}
+
+interface PalmLineResearchResult {
+  sampleId: string;
+  sampleFingerprint: string;
+  roiSignature: string;
+  baseline: PalmLineResearchVariant;
+  interior: PalmLineResearchVariant;
+  captureToPreviewMs: number;
+}
+
+type PalmLineResearchState =
+  | { phase: "idle" }
+  | { phase: "processing" }
+  | { phase: "error"; reason: string }
+  | { phase: "ready"; result: PalmLineResearchResult };
 
 interface PalmLineLiveDiagnosticProps {
   capture: PalmCapture;
-  state: PalmLineLiveState;
+  state: PalmLineResearchState;
 }
 
 function formatPercent(value: number | undefined): string {
@@ -87,6 +120,7 @@ export default function PalmLineLiveDiagnostic({
       sampleId: result.sampleId,
       sampleFingerprint: result.sampleFingerprint,
       roiSignature: result.roiSignature,
+      roiPixelSha256: null,
       roiWidth: capture.original.width,
       roiHeight: capture.original.height,
       roiAlgorithmVersion: PALM_ROI_ALGORITHM_VERSION,
@@ -96,6 +130,15 @@ export default function PalmLineLiveDiagnostic({
       completeness,
       compatibility: "exact",
       compatibilityReason: "Anotasi dibuat pada ROI live aktif yang sama.",
+      handedness: capture.handedness?.toLowerCase() === "left"
+        ? "left"
+        : capture.handedness?.toLowerCase() === "right"
+          ? "right"
+          : "unknown",
+      referenceIds: [],
+      annotatorId: null,
+      protocolVersion: null,
+      classStates: createDefaultPalmClassStates(),
       polylines,
     });
     setNotice(polylines.length
@@ -137,7 +180,7 @@ export default function PalmLineLiveDiagnostic({
     if (!annotation?.polylines.length) return;
     downloadJson("metemu-live-palm-annotation.json", {
       format: PALM_GROUND_TRUTH_FORMAT,
-      version: PALM_GROUND_TRUTH_VERSION,
+      version: 2,
       samples: [{
         sample_id: annotation.sampleId,
         sample_fingerprint: annotation.sampleFingerprint,

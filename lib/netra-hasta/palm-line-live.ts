@@ -1,9 +1,9 @@
-import type {
-  PalmLineCandidate,
-  PalmLineExtractionResult,
-} from "./palm-line-extraction";
+import {
+  PALM_LINE_RUNTIME_VERSION,
+  type PalmLineRuntimeCandidate,
+  type PalmLineRuntimeResult,
+} from "./palm-line-runtime";
 import type { RgbaImage } from "./palm-preprocessing";
-import type { PalmInteriorGeometry } from "./palm-roi";
 
 export interface PalmLineWorkerRequest {
   requestId: number;
@@ -11,23 +11,16 @@ export interface PalmLineWorkerRequest {
   width: number;
   height: number;
   data: Uint8ClampedArray;
-  rotationDegrees: number;
-  palmInteriorGeometry: PalmInteriorGeometry;
 }
 
 export interface PalmLineLiveVariant {
-  variant: "baseline" | "palm-interior";
+  variant: "baseline";
   version: string;
-  status: PalmLineExtractionResult["status"];
-  maskStatus: PalmLineExtractionResult["maskStatus"];
+  status: PalmLineRuntimeResult["status"];
   candidateCount: number;
-  candidates: PalmLineCandidate[];
+  candidates: PalmLineRuntimeCandidate[];
   totalLengthPixels: number;
-  outsideCandidateCount: number | null;
-  outsideLengthPixels: number | null;
   overlay: RgbaImage;
-  ridgeResponseMap: RgbaImage;
-  interiorMaskMap: RgbaImage | null;
   processingMs: number;
   reason: string | null;
 }
@@ -35,11 +28,34 @@ export interface PalmLineLiveVariant {
 export interface PalmLineWorkerResponse {
   requestId: number;
   captureId: number;
-  sampleId: string;
-  sampleFingerprint: string;
-  roiSignature: string;
   baseline: PalmLineLiveVariant;
-  interior: PalmLineLiveVariant;
+}
+
+/**
+ * Transfers the user-facing dark-ridge-v1 output without transforming candidate
+ * coordinates or the overlay. Ownership moves to the worker response so the
+ * source container can be wiped safely.
+ */
+export function detachPalmLineBaselineVariant(
+  extraction: PalmLineRuntimeResult,
+): PalmLineLiveVariant {
+  const variant: PalmLineLiveVariant = {
+    variant: "baseline",
+    version: PALM_LINE_RUNTIME_VERSION,
+    status: extraction.status,
+    candidateCount: extraction.candidates.length,
+    candidates: extraction.candidates,
+    totalLengthPixels: extraction.candidates.reduce(
+      (total, candidate) => total + candidate.lengthPixels,
+      0,
+    ),
+    overlay: extraction.overlay,
+    processingMs: extraction.processingMs,
+    reason: extraction.abstainReason,
+  };
+  extraction.candidates = [];
+  extraction.overlay = { width: 0, height: 0, data: new Uint8ClampedArray() };
+  return variant;
 }
 
 export interface PalmLineLiveResult extends PalmLineWorkerResponse {
@@ -104,19 +120,16 @@ export function wipePalmLineWorkerResponse(
   result: PalmLineWorkerResponse | null,
 ): void {
   if (!result) return;
-  [result.baseline, result.interior].forEach((variant) => {
-    variant.overlay.data.fill(0);
-    variant.ridgeResponseMap.data.fill(0);
-    variant.interiorMaskMap?.data.fill(0);
-    variant.candidates.forEach((candidate) => {
-      candidate.points.forEach((point) => {
-        point.x = 0;
-        point.y = 0;
-      });
-      candidate.points = [];
+  const variant = result.baseline;
+  variant.overlay.data.fill(0);
+  variant.candidates.forEach((candidate) => {
+    candidate.points.forEach((point) => {
+      point.x = 0;
+      point.y = 0;
     });
-    variant.candidates = [];
+    candidate.points = [];
   });
+  variant.candidates = [];
 }
 
 export function wipePalmLineLiveResult(result: PalmLineLiveResult | null): void {

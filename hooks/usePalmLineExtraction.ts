@@ -69,10 +69,9 @@ export function usePalmLineExtraction({
 
       const inputData = new Uint8ClampedArray(capture.original.data);
       try {
-        worker = new Worker(
-          new URL("../workers/palm-line.worker.ts", import.meta.url),
-          { type: "module", name: "metemu-palm-line" },
-        );
+        worker = new Worker("/workers/palm-line.worker.js", {
+          name: "metemu-palm-line",
+        });
         worker.onmessage = ({ data }: MessageEvent<PalmLineWorkerResponse>) => {
           clearWorkerTimeout();
           if (
@@ -125,8 +124,6 @@ export function usePalmLineExtraction({
           width: capture.original.width,
           height: capture.original.height,
           data: inputData,
-          rotationDegrees: capture.rotationDegrees,
-          palmInteriorGeometry: capture.palmInteriorGeometry,
         };
         worker.postMessage(request, [inputData.buffer]);
         workerTimeout = window.setTimeout(() => {

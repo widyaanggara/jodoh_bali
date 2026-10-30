@@ -48,3 +48,6 @@ next-env.d.ts
 !/docs/netra-hasta/
 /docs/netra-hasta/*
 !/docs/netra-hasta/DEMO_RELEASE_2026-10-31.md
+!/docs/netra-hasta/REKHA_SOURCE_AUDIT.md
+!/docs/netra-hasta/REKHA_ANNOTATION_PROTOCOL.md
+!/docs/netra-hasta/REKHA_LABEL_SCHEMA.md

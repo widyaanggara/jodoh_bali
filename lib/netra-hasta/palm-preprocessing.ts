@@ -1,5 +1,3 @@
-import type { PalmInteriorGeometry } from "./palm-roi";
-
 export interface RgbaImage {
   width: number;
   height: number;
@@ -30,7 +28,6 @@ export interface PalmCapture extends ProcessedPalmImages {
   rotationDegrees: number;
   qualityMode: "normal" | "manual-override";
   qualityWarnings: string[];
-  palmInteriorGeometry: PalmInteriorGeometry;
 }
 
 export function wipeProcessedPalmImages(images: ProcessedPalmImages | null): void {
@@ -41,11 +38,6 @@ export function wipeProcessedPalmImages(images: ProcessedPalmImages | null): voi
 }
 
 export function wipePalmCapture(capture: PalmCapture | null): void {
-  capture?.palmInteriorGeometry.polygon.forEach((point) => {
-    point.x = 0;
-    point.y = 0;
-  });
-  if (capture) capture.palmInteriorGeometry.polygon = [];
   wipeProcessedPalmImages(capture);
 }
 

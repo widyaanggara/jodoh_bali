@@ -22,7 +22,6 @@ import {
 import type { ScanMode } from "@/lib/netra-hasta/types";
 import {
   calculatePalmRoiGeometry,
-  createPalmInteriorGeometry,
   extractPalmRoi,
 } from "@/lib/netra-hasta/palm-roi";
 import {
@@ -42,7 +41,6 @@ export default function NetraHastaClient() {
   const captureInProgressRef = useRef(false);
   const palmArtifactsRef = useRef<PalmCaptureArtifacts>(palmArtifacts);
   const palmCapture = palmArtifacts.capture;
-  const showDeveloperDiagnostics = process.env.NODE_ENV === "development";
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const camera = useCamera();
@@ -209,12 +207,6 @@ export default function NetraHastaClient() {
             (check) =>
               `${check.label}: ${check.value ?? "gagal"} (target ${check.target ?? "ideal"})`,
           ),
-          palmInteriorGeometry: createPalmInteriorGeometry(
-            observation.landmarks,
-            video.videoWidth,
-            video.videoHeight,
-            geometryResult.geometry,
-          ),
         };
 
         const previousArtifacts = palmArtifactsRef.current;
@@ -367,7 +359,6 @@ export default function NetraHastaClient() {
               key={palmCapture.capturedAt}
               capture={palmCapture}
               quality={palmArtifacts.capturedQualityMetrics}
-              showDeveloperDiagnostics={showDeveloperDiagnostics}
               lineExtraction={palmLineExtraction}
               onRetry={clearPalmCapture}
               onDelete={clearPalmCapture}

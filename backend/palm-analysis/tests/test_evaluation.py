@@ -325,3 +325,41 @@ def test_annotation_loader_rejects_legacy_or_invalid_document(tmp_path) -> None:
     )
     with pytest.raises(ValueError):
         load_annotation_document(path)
+
+
+def test_annotation_loader_accepts_rekha_schema_v3_without_changing_geometry(tmp_path) -> None:
+    path = tmp_path / "rekha-v3.json"
+    document = annotation_document("a" * 64, "roi-v3", 240, 320)
+    document["version"] = 3
+    sample = document["samples"][0]
+    sample.update({
+        "roi_pixel_sha256": "b" * 64,
+        "handedness": "right",
+        "reference_ids": ["prd-metemu-2026-10-26"],
+        "annotator_id": "annotator-01",
+        "protocol_version": "rekha-visual-v1",
+        "class_states": [
+            {"visual_class": name, "label_status": "provisional", "visibility": "undetermined", "truncated": False}
+            for name in ("life", "head", "heart", "fate")
+        ],
+    })
+    sample["polylines"][0].update({
+        "visual_class": "unknown",
+        "label_status": "ambiguous",
+        "visibility": "visible",
+        "truncated": False,
+    })
+    path.write_text(json.dumps(document), encoding="utf-8")
+
+    loaded = load_annotation_document(path)
+    resolution = resolve_annotation(
+        loaded,
+        sample_fingerprint="a" * 64,
+        roi_signature="roi-v3",
+        roi_width=240,
+        roi_height=320,
+    )
+
+    assert resolution.compatibility == "exact"
+    assert resolution.annotation is not None
+    assert resolution.annotation.polylines[0].points[1] == PalmLinePoint(190.0, 100.0)

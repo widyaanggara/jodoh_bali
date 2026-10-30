@@ -58,18 +58,26 @@ import {
 } from "@/lib/netra-hasta/palm-line-extraction";
 import {
   createContentFingerprint,
+  createDefaultPalmClassStates,
   createRoiSignature,
   evaluatePalmGroundTruth,
   fingerprintFile,
   PALM_GROUND_TRUTH_FORMAT,
   PALM_GROUND_TRUTH_VERSION,
+  PALM_REKHA_PROTOCOL_VERSION,
+  PALM_REKHA_REFERENCE_IDS,
+  PALM_CORE_VISUAL_CLASSES,
   parsePalmAnnotationDocument,
   resolveAnnotationCompatibility,
+  serializePalmGroundTruthAnnotation,
   summarizeGroundTruthReports,
+  validatePalmGroundTruthAnnotation,
   type PalmAnnotationCompleteness,
   type PalmAnnotationStatus,
+  type PalmAnnotationHandedness,
   type PalmGroundTruthAnnotation,
   type PalmGroundTruthReport,
+  type PalmVisualClassState,
 } from "@/lib/netra-hasta/palm-ground-truth";
 import {
   assignPalmPilotSplit,
@@ -84,6 +92,13 @@ import type { RgbaImage } from "@/lib/netra-hasta/palm-preprocessing";
 
 const SOURCE_METRIC_MAX_DIMENSION = 512;
 const SUPPORTED_IMAGE = /\.(jpe?g|png|webp)$/i;
+
+function resolveAnnotationHandedness(result: PalmEvaluationResult): PalmAnnotationHandedness {
+  if (result.metadata.handGroup !== "unknown") return result.metadata.handGroup;
+  if (result.detectedHandedness === "Left") return "left";
+  if (result.detectedHandedness === "Right") return "right";
+  return "unknown";
+}
 
 function downloadLocalBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -1007,51 +1022,99 @@ export default function PalmEvaluationClient() {
         : selectedLineComparison.interior
     : null;
 
+  const createSelectedAnnotation = (
+    polylines: ManualPalmLineAnnotation[],
+    status: PalmAnnotationStatus,
+    completeness: PalmAnnotationCompleteness,
+    existing: PalmGroundTruthAnnotation | null = selectedAnnotation,
+  ): PalmGroundTruthAnnotation | null => {
+    if (!selectedResult) return null;
+    return {
+      sourceVersion: 3,
+      sampleId: selectedResult.sampleId,
+      sampleFingerprint: selectedResult.sampleFingerprint,
+      roiSignature: selectedResult.roiSignature,
+      roiPixelSha256: existing?.roiPixelSha256 ?? null,
+      roiWidth: selectedResult.roiWidth,
+      roiHeight: selectedResult.roiHeight,
+      roiAlgorithmVersion: PALM_ROI_ALGORITHM_VERSION,
+      lineExtractionVersion: PALM_LINE_EXTRACTION_VERSION,
+      lineParameterVersion: PALM_LINE_PARAMETER_VERSION,
+      status,
+      completeness: status === "annotated" ? completeness : "unknown",
+      compatibility: "exact",
+      compatibilityReason: "Fingerprint, ROI, dan versi pipeline cocok.",
+      handedness: existing?.handedness ?? resolveAnnotationHandedness(selectedResult),
+      referenceIds: existing?.referenceIds.length
+        ? existing.referenceIds
+        : [...PALM_REKHA_REFERENCE_IDS],
+      annotatorId: existing?.annotatorId ?? "annotator-01",
+      protocolVersion: PALM_REKHA_PROTOCOL_VERSION,
+      classStates: existing?.classStates.length
+        ? existing.classStates
+        : createDefaultPalmClassStates(),
+      polylines,
+    };
+  };
+
   const updateSelectedAnnotations = (
     polylines: ManualPalmLineAnnotation[],
     status: PalmAnnotationStatus = polylines.length ? "annotated" : "unreviewed",
     completeness: PalmAnnotationCompleteness = selectedAnnotation?.completeness ?? "partial",
   ) => {
     if (!selectedResult) return;
+    const nextAnnotation = createSelectedAnnotation(polylines, status, completeness);
+    if (!nextAnnotation) return;
     setAnnotations((current) => ({
       ...current,
-      [selectedResult.sampleFingerprint]: {
-        sourceVersion: 2,
-        sampleId: selectedResult.sampleId,
-        sampleFingerprint: selectedResult.sampleFingerprint,
-        roiSignature: selectedResult.roiSignature,
-        roiWidth: selectedResult.roiWidth,
-        roiHeight: selectedResult.roiHeight,
-        roiAlgorithmVersion: PALM_ROI_ALGORITHM_VERSION,
-        lineExtractionVersion: PALM_LINE_EXTRACTION_VERSION,
-        lineParameterVersion: PALM_LINE_PARAMETER_VERSION,
-        status,
-        completeness: status === "annotated" ? completeness : "unknown",
-        compatibility: "exact",
-        compatibilityReason: "Fingerprint, ROI, dan versi pipeline cocok.",
-        polylines,
-      },
+      [selectedResult.sampleFingerprint]: nextAnnotation,
     }));
   };
 
-  const exportAnnotations = () => {
-    const samples = results.flatMap((result) => {
-      const annotation = annotations[result.sampleFingerprint];
-      if (!annotation || annotation.status === "unreviewed") return [];
-      return [{
-        sample_id: result.sampleId,
-        sample_fingerprint: result.sampleFingerprint,
-        roi_signature: result.roiSignature,
-        roi_width: result.roiWidth,
-        roi_height: result.roiHeight,
-        roi_algorithm_version: PALM_ROI_ALGORITHM_VERSION,
-        line_extraction_version: PALM_LINE_EXTRACTION_VERSION,
-        line_parameter_version: PALM_LINE_PARAMETER_VERSION,
-        annotation_status: annotation.status,
-        completeness: annotation.completeness,
-        polylines: annotation.polylines,
-      }];
+  const updateSelectedAnnotationMetadata = (
+    patch: Partial<Pick<PalmGroundTruthAnnotation, "annotatorId" | "handedness" | "classStates">>,
+  ) => {
+    if (!selectedResult) return;
+    setAnnotations((current) => {
+      const existing = current[selectedResult.sampleFingerprint] ??
+        createSelectedAnnotation([], "unreviewed", "unknown", null);
+      if (!existing) return current;
+      return {
+        ...current,
+        [selectedResult.sampleFingerprint]: { ...existing, ...patch },
+      };
     });
+  };
+
+  const updateVisualClassState = (
+    visualClass: PalmVisualClassState["visualClass"],
+    patch: Partial<Omit<PalmVisualClassState, "visualClass">>,
+  ) => {
+    const states = selectedAnnotation?.classStates.length
+      ? selectedAnnotation.classStates
+      : createDefaultPalmClassStates();
+    updateSelectedAnnotationMetadata({
+      classStates: states.map((state) =>
+        state.visualClass === visualClass ? { ...state, ...patch } : state),
+    });
+  };
+
+  const exportAnnotations = async () => {
+    const samples: ReturnType<typeof serializePalmGroundTruthAnnotation>[] = [];
+    for (const result of results) {
+      const annotation = annotations[result.sampleFingerprint];
+      if (!annotation || annotation.status === "unreviewed" || !result.images) continue;
+      const enriched = {
+        ...annotation,
+        roiPixelSha256: await hashRgbaPixels(result.images.original),
+      };
+      const validation = validatePalmGroundTruthAnnotation(enriched);
+      if (!validation.valid) {
+        setNotice(`Ekspor dibatalkan untuk ${result.sampleId}: ${validation.reasons.join(" ")}`);
+        return;
+      }
+      samples.push(serializePalmGroundTruthAnnotation(enriched));
+    }
     if (!samples.length) return;
     const blob = new Blob([JSON.stringify({
       format: PALM_GROUND_TRUTH_FORMAT,
@@ -1060,12 +1123,8 @@ export default function PalmEvaluationClient() {
     }, null, 2)], {
       type: "application/json",
     });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "metemu-palm-line-annotations.json";
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadLocalBlob(blob, "metemu-palm-line-annotations.json");
+    setNotice(`${samples.length} anotasi v${PALM_GROUND_TRUTH_VERSION} diekspor dengan metadata Rekha visual.`);
   };
 
   const exportSelectedRoiPair = async () => {
@@ -1107,19 +1166,22 @@ export default function PalmEvaluationClient() {
         ? measurePalmInteriorCandidates(baseline.candidates, result.palmInteriorGeometry)
         : null;
       const annotationSample: PalmAnnotationExportSample = {
-        sample_id: result.sampleId,
-        sample_fingerprint: result.sampleFingerprint,
-        roi_signature: result.roiSignature,
-        roi_width: result.images.original.width,
-        roi_height: result.images.original.height,
-        roi_algorithm_version: PALM_ROI_ALGORITHM_VERSION,
-        annotation_status: annotation.status,
-        completeness: annotation.completeness,
-        polylines: annotation.polylines.map((polyline) => ({
-          id: polyline.id,
-          points: polyline.points.map((point) => ({ x: point.x, y: point.y })),
-        })),
+        ...serializePalmGroundTruthAnnotation({
+          ...annotation,
+          roiPixelSha256,
+          roiWidth: result.images.original.width,
+          roiHeight: result.images.original.height,
+        }),
       };
+      const schemaValidation = validatePalmGroundTruthAnnotation({
+        ...annotation,
+        roiPixelSha256,
+        roiWidth: result.images.original.width,
+        roiHeight: result.images.original.height,
+      });
+      if (!schemaValidation.valid) {
+        throw new Error(`Skema anotasi belum valid: ${schemaValidation.reasons.join(" ")}`);
+      }
       const annotationDocument = {
         format: PALM_GROUND_TRUTH_FORMAT,
         version: PALM_GROUND_TRUTH_VERSION,
@@ -1199,7 +1261,7 @@ export default function PalmEvaluationClient() {
         new Uint8Array(archiveBuffer).fill(0);
       }
       setNotice(
-        `ZIP ${archiveFilename} berhasil dibuat dengan ROI PNG, anotasi v2, dan manifest ${validation.status}.`,
+        `ZIP ${archiveFilename} berhasil dibuat dengan ROI PNG, anotasi v${PALM_GROUND_TRUTH_VERSION}, dan manifest ${validation.status}.`,
       );
     } catch (error) {
       setNotice(
@@ -1234,23 +1296,29 @@ export default function PalmEvaluationClient() {
       const imported: Record<string, PalmGroundTruthAnnotation> = {};
       let exactCount = 0;
       let unmatchedCount = 0;
-      parsed.samples.forEach((annotation) => {
+      for (const annotation of parsed.samples) {
         const fingerprint = annotation.sampleFingerprint;
         const result = fingerprint ? knownResults.get(fingerprint) : null;
         if (!fingerprint || !result) {
           unmatchedCount += 1;
-          return;
+          continue;
         }
-        const resolved = resolveAnnotationCompatibility(annotation, result, {
+        const roiPixelSha256 = result.images
+          ? await hashRgbaPixels(result.images.original)
+          : null;
+        const resolvedWithPixel = resolveAnnotationCompatibility(annotation, {
+          ...result,
+          roiPixelSha256,
+        }, {
           roiAlgorithmVersion: PALM_ROI_ALGORITHM_VERSION,
           lineExtractionVersion: PALM_LINE_EXTRACTION_VERSION,
           lineParameterVersion: PALM_LINE_PARAMETER_VERSION,
         });
-        if (resolved.compatibility === "exact") exactCount += 1;
-        imported[fingerprint] = resolved;
-      });
+        if (resolvedWithPixel.compatibility === "exact") exactCount += 1;
+        imported[fingerprint] = resolvedWithPixel;
+      }
       setAnnotations((current) => ({ ...current, ...imported }));
-      setNotice(`${exactCount} anotasi v2 kompatibel; ${Object.keys(imported).length - exactCount} mismatch ditahan tanpa skor; ${unmatchedCount} fingerprint tidak ada pada batch aktif.`);
+      setNotice(`${exactCount} anotasi v${parsed.version} kompatibel; ${Object.keys(imported).length - exactCount} mismatch ditahan tanpa skor; ${unmatchedCount} fingerprint tidak ada pada batch aktif.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "File anotasi tidak valid.");
     } finally {
@@ -1455,7 +1523,7 @@ export default function PalmEvaluationClient() {
                   <label className="flex items-center gap-2 rounded-xl border border-stone-200 px-3 py-2 text-xs font-bold text-stone-700"><input type="checkbox" checked={showManualAnnotations} onChange={(event) => setShowManualAnnotations(event.target.checked)} /> Tampilkan anotasi manual</label>
                   {(["baseline", "evidence-bridge", "palm-interior"] as const).map((variant) => <button key={variant} type="button" onClick={() => setLineVariantView(variant)} className={`rounded-xl px-3 py-2 text-xs font-bold ${lineVariantView === variant ? "bg-violet-700 text-white" : "border border-violet-300 text-violet-800"}`}>{variant === "baseline" ? PALM_LINE_EXTRACTION_VERSION : variant === "evidence-bridge" ? PALM_LINE_REFINEMENT_VERSION : PALM_INTERIOR_EXPERIMENT_VERSION}</button>)}
                   <button type="button" onClick={() => void exportSelectedRoiPair()} disabled={isExportingPair || !selectedResult?.images || !selectedAnnotation || selectedAnnotation.status === "unreviewed"} className="rounded-xl border border-violet-400 px-3 py-2 text-xs font-bold text-violet-900 disabled:opacity-40">{isExportingPair ? "Menyiapkan ZIP…" : "Ekspor paket ZIP"}</button>
-                  <button type="button" onClick={exportAnnotations} disabled={!Object.values(annotations).some((item) => item.status !== "unreviewed")} className="rounded-xl border border-amber-300 px-3 py-2 text-xs font-bold text-amber-900 disabled:opacity-40">Ekspor anotasi JSON</button>
+                  <button type="button" onClick={() => void exportAnnotations()} disabled={!Object.values(annotations).some((item) => item.status !== "unreviewed")} className="rounded-xl border border-amber-300 px-3 py-2 text-xs font-bold text-amber-900 disabled:opacity-40">Ekspor anotasi JSON</button>
                   <label className="cursor-pointer rounded-xl border border-sky-300 px-3 py-2 text-xs font-bold text-sky-900">Impor anotasi JSON<input ref={annotationInputRef} type="file" accept="application/json,.json" className="sr-only" onChange={(event) => void importAnnotations(event.target.files?.[0] ?? null)} /></label>
                   <button type="button" onClick={() => setLineConfig(DEFAULT_PALM_LINE_CONFIG)} className="rounded-xl border border-stone-300 px-3 py-2 text-xs font-bold text-stone-700">Reset parameter</button>
                 </div>
@@ -1762,6 +1830,53 @@ export default function PalmEvaluationClient() {
                           <button type="button" onClick={() => updateSelectedAnnotations([], "undetermined")} className="rounded-xl border border-stone-300 px-3 py-2 text-xs font-bold text-stone-700">Belum dapat ditentukan</button>
                         </div>
                         <p className="mt-3 text-xs text-stone-500">Status: <strong>{selectedAnnotation?.status ?? "unreviewed"}</strong> · kelengkapan <strong>{selectedAnnotation?.completeness ?? "unknown"}</strong> · kompatibilitas <strong>{selectedAnnotation?.compatibility ?? "unmatched"}</strong>. Sistem tidak memberi nama budaya pada polyline.</p>
+                      </div>
+                      <div className="rounded-3xl border border-amber-200 bg-amber-50/60 p-4">
+                        <p className="font-bold text-amber-950">Metadata empat kelas visual</p>
+                        <p className="mt-1 text-xs leading-relaxed text-amber-900">
+                          LIFE/HEAD/HEART/FATE adalah label palmistri umum yang provisional.
+                          Verified berarti diperiksa secara visual, bukan verifikasi budaya Bali.
+                        </p>
+                        <div className="mt-3 grid gap-2">
+                          {PALM_CORE_VISUAL_CLASSES.map((visualClass) => {
+                            const state = selectedAnnotation?.classStates.find((item) => item.visualClass === visualClass)
+                              ?? createDefaultPalmClassStates().find((item) => item.visualClass === visualClass)!;
+                            return (
+                              <div key={visualClass} className="grid gap-2 rounded-2xl border border-amber-100 bg-white p-2 sm:grid-cols-[4rem_1fr_1fr_auto] sm:items-center">
+                                <strong className="text-xs uppercase text-stone-800">{visualClass}</strong>
+                                <select aria-label={`Visibility ${visualClass}`} value={state.visibility} onChange={(event) => updateVisualClassState(visualClass, { visibility: event.target.value as PalmVisualClassState["visibility"] })} className="rounded-lg border border-stone-200 px-2 py-1.5 text-xs">
+                                  <option value="visible">Visible</option>
+                                  <option value="obscured">Obscured</option>
+                                  <option value="absent">Absent</option>
+                                  <option value="undetermined">Undetermined</option>
+                                </select>
+                                <select aria-label={`Status label ${visualClass}`} value={state.labelStatus} onChange={(event) => updateVisualClassState(visualClass, { labelStatus: event.target.value as PalmVisualClassState["labelStatus"] })} className="rounded-lg border border-stone-200 px-2 py-1.5 text-xs">
+                                  <option value="provisional">Provisional</option>
+                                  <option value="verified">Verified visual</option>
+                                  <option value="ambiguous">Ambiguous</option>
+                                </select>
+                                <label className="flex items-center gap-1.5 text-[10px] font-bold text-stone-600">
+                                  <input type="checkbox" checked={state.truncated} onChange={(event) => updateVisualClassState(visualClass, { truncated: event.target.checked })} />
+                                  Truncated
+                                </label>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                          <label className="text-xs font-bold text-stone-600">ID anotator anonim
+                            <input value={selectedAnnotation?.annotatorId ?? "annotator-01"} onChange={(event) => updateSelectedAnnotationMetadata({ annotatorId: event.target.value })} maxLength={64} className="mt-1 block w-full rounded-xl border border-stone-200 bg-white px-3 py-2 font-normal" />
+                          </label>
+                          <label className="text-xs font-bold text-stone-600">Handedness
+                            <select value={selectedAnnotation?.handedness ?? resolveAnnotationHandedness(selectedResult)} onChange={(event) => updateSelectedAnnotationMetadata({ handedness: event.target.value as PalmAnnotationHandedness })} className="mt-1 block w-full rounded-xl border border-stone-200 bg-white px-3 py-2 font-normal">
+                              <option value="left">Left</option><option value="right">Right</option><option value="unknown">Unknown</option>
+                            </select>
+                          </label>
+                        </div>
+                        <p className="mt-3 break-words text-[10px] text-stone-500">
+                          Protokol {PALM_REKHA_PROTOCOL_VERSION} · referensi {PALM_REKHA_REFERENCE_IDS.join(", ")}.
+                          Absent dan undetermined disimpan sebagai status kelas, bukan polyline kosong.
+                        </p>
                       </div>
                       <div className="rounded-3xl border border-stone-200 bg-white p-4">
                         <p className="font-bold text-stone-900">Kesesuaian geometris</p>

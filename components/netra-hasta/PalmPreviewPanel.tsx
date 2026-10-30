@@ -4,14 +4,12 @@ import type { PalmCapture } from "@/lib/netra-hasta/palm-preprocessing";
 import type { PalmQualitySnapshot } from "@/lib/netra-hasta/image-quality";
 import type { PalmLineLiveState } from "@/lib/netra-hasta/palm-line-live";
 import PalmImagePreviewCard from "./PalmImagePreviewCard";
-import PalmLineLiveDiagnostic from "./PalmLineLiveDiagnostic";
 import PalmLineResultPanel from "./PalmLineResultPanel";
 import PalmQualityPanel from "./PalmQualityPanel";
 
 interface PalmPreviewPanelProps {
   capture: PalmCapture;
   quality: PalmQualitySnapshot;
-  showDeveloperDiagnostics: boolean;
   lineExtraction: PalmLineLiveState;
   onRetry: () => void;
   onDelete: () => void;
@@ -20,7 +18,6 @@ interface PalmPreviewPanelProps {
 export default function PalmPreviewPanel({
   capture,
   quality,
-  showDeveloperDiagnostics,
   lineExtraction,
   onRetry,
   onDelete,
@@ -49,10 +46,6 @@ export default function PalmPreviewPanel({
       </div>
 
       <PalmLineResultPanel state={lineExtraction} />
-
-      {showDeveloperDiagnostics && (
-        <PalmLineLiveDiagnostic capture={capture} state={lineExtraction} />
-      )}
 
       <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)]">
         <PalmQualityPanel quality={quality} source="captured" />

@@ -50,6 +50,7 @@ const quality = loadTypeScriptModule("lib/netra-hasta/image-quality.ts");
 const captureState = loadTypeScriptModule("lib/netra-hasta/palm-capture-state.ts");
 const evaluation = loadTypeScriptModule("lib/netra-hasta/palm-evaluation.ts");
 const lineExtraction = loadTypeScriptModule("lib/netra-hasta/palm-line-extraction.ts");
+const lineRuntime = loadTypeScriptModule("lib/netra-hasta/palm-line-runtime.ts");
 const lineLive = loadTypeScriptModule("lib/netra-hasta/palm-line-live.ts");
 const groundTruth = loadTypeScriptModule("lib/netra-hasta/palm-ground-truth.ts");
 const palmExport = loadTypeScriptModule("lib/netra-hasta/palm-export.ts");
@@ -234,49 +235,70 @@ test("pipeline ROI capture menghasilkan overlay kandidat pada koordinat citra ya
   preprocessing.wipeProcessedPalmImages(processed);
 });
 
+test("adapter worker baseline mempertahankan output dark-ridge-v1 identik", () => {
+  const image = makeSyntheticPalm(128, 128, (x, y) => {
+    const lineY = 44 + x * 0.22;
+    return Math.abs(y - lineY) <= 1 ? 68 : 158;
+  });
+  const researchBaseline = lineExtraction.extractPalmLineCandidates(image);
+  const extraction = lineRuntime.extractPalmLineRuntime(image);
+  const expectedCandidates = structuredClone(researchBaseline.candidates);
+  const expectedOverlay = new Uint8ClampedArray(researchBaseline.overlay.data);
+  const expectedStatus = researchBaseline.status;
+  const expectedLength = researchBaseline.candidates.reduce(
+    (total, candidate) => total + candidate.lengthPixels,
+    0,
+  );
+
+  const baseline = lineLive.detachPalmLineBaselineVariant(extraction);
+
+  assert.equal(baseline.version, lineRuntime.PALM_LINE_RUNTIME_VERSION);
+  assert.equal(baseline.status, expectedStatus);
+  assert.equal(baseline.candidateCount, expectedCandidates.length);
+  assert.equal(baseline.totalLengthPixels, expectedLength);
+  assert.equal(baseline.candidateCount, 1);
+  assert.ok(Math.abs(baseline.totalLengthPixels - 110.73238618387278) < 1e-9);
+  assert.deepEqual(baseline.candidates[0].points.slice(0, 3), [
+    { x: 9, y: 46 },
+    { x: 12, y: 46 },
+    { x: 15, y: 47 },
+  ]);
+  assert.deepEqual(baseline.candidates, expectedCandidates);
+  assert.deepEqual(baseline.overlay.data, expectedOverlay);
+  assert.deepEqual(extraction.candidates, []);
+  assert.equal(extraction.overlay.data.length, 0);
+
+  lineLive.wipePalmLineWorkerResponse({ requestId: 1, captureId: 1, baseline });
+  lineRuntime.wipePalmLineRuntime(extraction);
+  lineExtraction.wipePalmLineExtraction(researchBaseline);
+});
+
 function makeLiveLineResult(requestId, captureId, fill = 255) {
-  const makeVariant = (variant) => ({
-    variant,
-    version: variant === "baseline"
-      ? lineExtraction.PALM_LINE_EXTRACTION_VERSION
-      : lineExtraction.PALM_INTERIOR_EXPERIMENT_VERSION,
+  const baseline = {
+    variant: "baseline",
+    version: lineRuntime.PALM_LINE_RUNTIME_VERSION,
     status: "detected",
-    maskStatus: variant === "baseline" ? "not-used" : "applied",
     candidateCount: 1,
     candidates: [{
-      id: `${variant}-1`,
+      id: "baseline-1",
       points: [{ x: 0, y: 0 }, { x: 1, y: 0 }],
       lengthPixels: 1,
       continuity: 1,
       averageResponse: 10,
     }],
     totalLengthPixels: 1,
-    outsideCandidateCount: variant === "baseline" ? 1 : 0,
-    outsideLengthPixels: variant === "baseline" ? 1 : 0,
     overlay: {
       width: 2,
       height: 1,
       data: new Uint8ClampedArray([fill, fill, fill, 255, fill, fill, fill, 255]),
     },
-    ridgeResponseMap: {
-      width: 2,
-      height: 1,
-      data: new Uint8ClampedArray(8).fill(fill),
-    },
-    interiorMaskMap: variant === "palm-interior"
-      ? { width: 2, height: 1, data: new Uint8ClampedArray(8).fill(fill) }
-      : null,
     processingMs: 12,
     reason: null,
-  });
+  };
   return {
     requestId,
     captureId,
-    sampleId: "live-test",
-    sampleFingerprint: "a".repeat(64),
-    roiSignature: "roi-live-test",
-    baseline: makeVariant("baseline"),
-    interior: makeVariant("palm-interior"),
+    baseline,
     captureToPreviewMs: 24,
   };
 }
@@ -330,7 +352,6 @@ test("retake mereset status dan membersihkan buffer overlay lama", () => {
 
   assert.equal(reset.phase, "idle");
   assert.ok(result.baseline.overlay.data.every((value) => value === 0));
-  assert.ok(result.interior.ridgeResponseMap.data.every((value) => value === 0));
   assert.deepEqual(result.baseline.candidates, []);
 });
 
@@ -338,7 +359,7 @@ test("integrasi live tidak memiliki transport atau penyimpanan biometrik", () =>
   const sources = [
     "components/netra-hasta/NetraHastaClient.tsx",
     "components/netra-hasta/PalmCapturePanel.tsx",
-    "components/netra-hasta/PalmLineLiveDiagnostic.tsx",
+    "components/netra-hasta/PalmPreviewPanel.tsx",
     "components/netra-hasta/PalmLineResultPanel.tsx",
     "hooks/useHandLandmarker.ts",
     "hooks/usePalmLineExtraction.ts",
@@ -363,9 +384,23 @@ test("hasil kandidat pengguna jujur dan baseline tetap berjalan di production", 
     path.join(projectRoot, "hooks/usePalmLineExtraction.ts"),
     "utf8",
   );
+  const previewSource = fs.readFileSync(
+    path.join(projectRoot, "components/netra-hasta/PalmPreviewPanel.tsx"),
+    "utf8",
+  );
+  const workerSource = fs.readFileSync(
+    path.join(projectRoot, "workers/palm-line.worker.ts"),
+    "utf8",
+  );
+  const pageSource = fs.readFileSync(
+    path.join(projectRoot, "app/netra-hasta/page.tsx"),
+    "utf8",
+  );
 
   assert.match(clientSource, /enabled:\s*mode\s*===\s*["']hand["']/);
-  assert.match(clientSource, /showDeveloperDiagnostics\s*=\s*process\.env\.NODE_ENV\s*===\s*["']development["']/);
+  assert.doesNotMatch(clientSource, /showDeveloperDiagnostics|createPalmInteriorGeometry/);
+  assert.doesNotMatch(previewSource, /PalmLineLiveDiagnostic|PalmLineAnnotationEditor/);
+  assert.doesNotMatch(workerSource, /palm-interior|palm-ground-truth|createContentFingerprint|createRoiSignature/);
   assert.match(resultSource, /kandidat hasil deteksi otomatis/i);
   assert.match(resultSource, /kontur luar tangan atau bayangan/i);
   assert.match(resultSource, /belum tervalidasi/i);
@@ -373,6 +408,8 @@ test("hasil kandidat pengguna jujur dan baseline tetap berjalan di production", 
   assert.equal(/kepribadian|karier|confidence|Rekha Hayu|Rekha Jnana|Rekha Hredaya|Rekha Bhaga/i.test(resultSource), false);
   assert.match(workerHookSource, /WORKER_TIMEOUT_MS\s*=\s*15_000/);
   assert.match(workerHookSource, /onmessageerror/);
+  assert.match(pageSource, /Beta\s*·\s*Dalam Pengembangan/i);
+  assert.match(pageSource, /belum mengenali empat Rekha/i);
 });
 
 test("ekstraksi garis abstain pada citra polos dan bayangan halus", () => {
@@ -725,7 +762,6 @@ test("snapshot kualitas capture tidak ikut berubah ketika metrik live di-reset",
     rotationDegrees: 2.5,
     qualityMode: "manual-override",
     qualityWarnings: ["Ketajaman: 6.5 (target min. 7.0)"],
-    palmInteriorGeometry: makeInteriorGeometry(2, 1),
     original: { width: 2, height: 1, data: new Uint8ClampedArray(8).fill(10) },
     grayscale: { width: 2, height: 1, data: new Uint8ClampedArray(8).fill(20) },
     enhanced: { width: 2, height: 1, data: new Uint8ClampedArray(8).fill(30) },
@@ -753,7 +789,6 @@ test("cleanup menghapus buffer citra dan snapshot metrik capture", () => {
     rotationDegrees: 0,
     qualityMode: "normal",
     qualityWarnings: [],
-    palmInteriorGeometry: makeInteriorGeometry(1, 1),
     original: { width: 1, height: 1, data: new Uint8ClampedArray([1, 2, 3, 255]) },
     grayscale: { width: 1, height: 1, data: new Uint8ClampedArray([4, 4, 4, 255]) },
     enhanced: { width: 1, height: 1, data: new Uint8ClampedArray([5, 5, 5, 255]) },
@@ -764,7 +799,6 @@ test("cleanup menghapus buffer citra dan snapshot metrik capture", () => {
   assert.deepEqual(Array.from(capture.original.data), [0, 0, 0, 0]);
   assert.deepEqual(Array.from(capture.grayscale.data), [0, 0, 0, 0]);
   assert.deepEqual(Array.from(capture.enhanced.data), [0, 0, 0, 0]);
-  assert.deepEqual(capture.palmInteriorGeometry.polygon, []);
   assert.equal(cleared.capture, null);
   assert.equal(cleared.capturedQualityMetrics, null);
 });
@@ -1094,6 +1128,120 @@ test("import anotasi v1 tidak dipetakan diam-diam berdasarkan sample_id", () => 
   assert.equal(parsed.samples[0].completeness, "unknown");
 });
 
+function makeRekhaAnnotation(overrides = {}) {
+  return {
+    sourceVersion: 3,
+    sampleId: "palm-rekha-v3",
+    sampleFingerprint: "a".repeat(64),
+    roiSignature: "roi-rekha-v3",
+    roiPixelSha256: "b".repeat(64),
+    roiWidth: 200,
+    roiHeight: 120,
+    roiAlgorithmVersion: roi.PALM_ROI_ALGORITHM_VERSION,
+    lineExtractionVersion: lineExtraction.PALM_LINE_EXTRACTION_VERSION,
+    lineParameterVersion: lineExtraction.PALM_LINE_PARAMETER_VERSION,
+    status: "annotated",
+    completeness: "partial",
+    compatibility: "exact",
+    compatibilityReason: "cocok",
+    handedness: "right",
+    referenceIds: [...groundTruth.PALM_REKHA_REFERENCE_IDS],
+    annotatorId: "annotator-01",
+    protocolVersion: groundTruth.PALM_REKHA_PROTOCOL_VERSION,
+    classStates: [
+      { visualClass: "life", labelStatus: "provisional", visibility: "visible", truncated: false },
+      { visualClass: "head", labelStatus: "ambiguous", visibility: "obscured", truncated: true },
+      { visualClass: "heart", labelStatus: "provisional", visibility: "absent", truncated: false },
+      { visualClass: "fate", labelStatus: "provisional", visibility: "undetermined", truncated: false },
+    ],
+    polylines: [
+      { id: "life-1", visualClass: "life", labelStatus: "provisional", visibility: "visible", truncated: false, points: [{ x: 20, y: 20 }, { x: 60, y: 90 }] },
+      { id: "head-1", visualClass: "head", labelStatus: "ambiguous", visibility: "obscured", truncated: true, points: [{ x: 30, y: 50 }, { x: 160, y: 55 }] },
+      { id: "unknown-1", visualClass: "unknown", labelStatus: "ambiguous", visibility: "visible", truncated: false, points: [{ x: 40, y: 70 }, { x: 120, y: 80 }] },
+    ],
+    ...overrides,
+  };
+}
+
+test("round-trip anotasi v3 mempertahankan kelas, status, visibility, dan identitas", () => {
+  const source = makeRekhaAnnotation();
+  const serialized = groundTruth.serializePalmGroundTruthAnnotation(source);
+  const parsed = groundTruth.parsePalmAnnotationDocument({
+    format: groundTruth.PALM_GROUND_TRUTH_FORMAT,
+    version: groundTruth.PALM_GROUND_TRUTH_VERSION,
+    samples: [serialized],
+  }).samples[0];
+
+  assert.equal(parsed.sourceVersion, 3);
+  assert.equal(parsed.roiPixelSha256, "b".repeat(64));
+  assert.equal(parsed.handedness, "right");
+  assert.equal(parsed.annotatorId, "annotator-01");
+  assert.deepEqual(parsed.referenceIds, source.referenceIds);
+  assert.deepEqual(parsed.classStates, source.classStates);
+  assert.deepEqual(parsed.polylines, source.polylines);
+  assert.deepEqual(groundTruth.validatePalmGroundTruthAnnotation(parsed), { valid: true, reasons: [] });
+});
+
+test("JSON v2 tetap dibaca sebagai unknown tanpa memaksakan empat label Rekha", () => {
+  const parsed = groundTruth.parsePalmAnnotationDocument({
+    format: "metemu-palm-lines",
+    version: 2,
+    samples: [{
+      sample_id: "legacy-v2",
+      sample_fingerprint: "c".repeat(64),
+      roi_signature: "roi-v2",
+      roi_width: 100,
+      roi_height: 100,
+      roi_algorithm_version: roi.PALM_ROI_ALGORITHM_VERSION,
+      line_extraction_version: lineExtraction.PALM_LINE_EXTRACTION_VERSION,
+      line_parameter_version: lineExtraction.PALM_LINE_PARAMETER_VERSION,
+      annotation_status: "annotated",
+      polylines: [{ id: "old-line", points: [{ x: 10, y: 10 }, { x: 90, y: 90 }] }],
+    }],
+  }).samples[0];
+
+  assert.equal(parsed.sourceVersion, 2);
+  assert.equal(parsed.polylines[0].visualClass, "unknown");
+  assert.equal(parsed.polylines[0].labelStatus, "ambiguous");
+  assert.equal(parsed.protocolVersion, null);
+  assert.ok(parsed.classStates.every((state) => state.visibility === "undetermined"));
+});
+
+test("skema v3 menolak enum invalid dan konflik absent dengan polyline", () => {
+  const invalidEnum = groundTruth.serializePalmGroundTruthAnnotation(makeRekhaAnnotation());
+  invalidEnum.polylines[0].visual_class = "career";
+  assert.throws(() => groundTruth.parsePalmAnnotationDocument({
+    format: groundTruth.PALM_GROUND_TRUTH_FORMAT,
+    version: 3,
+    samples: [invalidEnum],
+  }), /enum|metadata/i);
+
+  const conflict = makeRekhaAnnotation({
+    classStates: [
+      { visualClass: "life", labelStatus: "provisional", visibility: "absent", truncated: false },
+      { visualClass: "head", labelStatus: "ambiguous", visibility: "obscured", truncated: true },
+      { visualClass: "heart", labelStatus: "provisional", visibility: "absent", truncated: false },
+      { visualClass: "fate", labelStatus: "provisional", visibility: "undetermined", truncated: false },
+    ],
+  });
+  const validation = groundTruth.validatePalmGroundTruthAnnotation(conflict);
+  assert.equal(validation.valid, false);
+  assert.match(validation.reasons.join(" "), /life.*absent/i);
+});
+
+test("handedness kiri dan kanan bertahan tanpa transformasi koordinat anotasi", () => {
+  for (const handedness of ["left", "right"]) {
+    const source = makeRekhaAnnotation({ handedness });
+    const parsed = groundTruth.parsePalmAnnotationDocument({
+      format: groundTruth.PALM_GROUND_TRUTH_FORMAT,
+      version: 3,
+      samples: [groundTruth.serializePalmGroundTruthAnnotation(source)],
+    }).samples[0];
+    assert.equal(parsed.handedness, handedness);
+    assert.deepEqual(parsed.polylines[0].points, source.polylines[0].points);
+  }
+});
+
 test("compatibility menolak ROI atau versi baseline yang berbeda", () => {
   const annotation = makeGroundTruthAnnotation();
   const target = {
@@ -1275,6 +1423,51 @@ test("validasi ekspor menerima identitas file, piksel, ROI, dan anotasi yang tep
   });
 
   assert.deepEqual(validation, { status: "valid", reasons: [] });
+});
+
+test("validasi paket v3 mempertahankan metadata Rekha dan hash piksel", () => {
+  const { manifest, annotation, shaB } = makePalmExportPair();
+  Object.assign(annotation, {
+    roi_pixel_sha256: "c".repeat(64),
+    handedness: "right",
+    reference_ids: [...groundTruth.PALM_REKHA_REFERENCE_IDS],
+    annotator_id: "annotator-01",
+    protocol_version: groundTruth.PALM_REKHA_PROTOCOL_VERSION,
+    class_states: [
+      { visual_class: "life", label_status: "provisional", visibility: "visible", truncated: false },
+      { visual_class: "head", label_status: "provisional", visibility: "absent", truncated: false },
+      { visual_class: "heart", label_status: "provisional", visibility: "absent", truncated: false },
+      { visual_class: "fate", label_status: "provisional", visibility: "undetermined", truncated: false },
+    ],
+  });
+  annotation.polylines[0] = {
+    ...annotation.polylines[0],
+    visual_class: "life",
+    label_status: "provisional",
+    visibility: "visible",
+    truncated: false,
+  };
+  const valid = palmExport.validatePalmExportPair({
+    manifest,
+    annotation,
+    actualRoiSha256: shaB,
+    actualPixelSha256: "c".repeat(64),
+    actualWidth: 200,
+    actualHeight: 120,
+  });
+  assert.deepEqual(valid, { status: "valid", reasons: [] });
+
+  annotation.roi_pixel_sha256 = "d".repeat(64);
+  const mismatch = palmExport.validatePalmExportPair({
+    manifest,
+    annotation,
+    actualRoiSha256: shaB,
+    actualPixelSha256: "c".repeat(64),
+    actualWidth: 200,
+    actualHeight: 120,
+  });
+  assert.equal(mismatch.status, "invalid");
+  assert.match(mismatch.reasons.join(" "), /piksel pada anotasi/i);
 });
 
 test("manifest ekspor mengikat file anotasi dan ROI secara eksplisit", () => {
