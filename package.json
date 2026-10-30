@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build:palm-worker": "node scripts/build-palm-worker.mjs",
+    "predev": "npm run build:palm-worker",
     "dev": "next dev",
+    "prebuild": "npm run build:palm-worker",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:palm:runtime": "node --test tests/netra-hasta-runtime.test.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "1.1.1",
     "cheerio": "^1.2.0",
     "firebase": "^12.8.0",
     "katex": "^0.16.28",
