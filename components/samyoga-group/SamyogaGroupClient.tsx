@@ -58,6 +58,10 @@ export default function SamyogaGroupClient() {
         dispatch({ type: "update-member", memberId, field, value });
     };
 
+    const removeMember = (memberId: string) => {
+        dispatch({ type: "remove-member", memberId });
+    };
+
     const analyze = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isAnalyzing) return;
@@ -142,7 +146,7 @@ export default function SamyogaGroupClient() {
                                 canRemove={state.members.length > 3}
                                 errors={state.errors.fields[member.id]}
                                 onChange={(field, value) => updateMember(member.id, field, value)}
-                                onRemove={() => dispatch({ type: "remove-member", memberId: member.id })}
+                                onRemove={() => removeMember(member.id)}
                             />
                         ))}
                     </div>

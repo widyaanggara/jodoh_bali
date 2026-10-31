@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { SamyogaGroupResult, SamyogaCategory } from "@/lib/samyoga-group";
+import type {
+    SamyogaCategory,
+    SamyogaGroupResult,
+} from "@/lib/samyoga-group";
 import {
     getSamyogaMemberDisplayName,
     type SamyogaGroupDraftMember,
@@ -52,14 +55,72 @@ const CATEGORY_PRESENTATION: Record<SamyogaCategory, {
 
 const CATEGORIES: readonly SamyogaCategory[] = ["Utama", "Madia", "Nista"];
 
-const COMPOSITION_BADGE: Record<SamyogaGroupCompositionLabel, string> = {
-    "Dominan Utama": "border-emerald-200 bg-emerald-100 text-emerald-800",
-    "Dominan Madia": "border-amber-200 bg-amber-100 text-amber-800",
-    "Dominan Nista": "border-rose-200 bg-rose-100 text-rose-800",
-    "Komposisi Campuran": "border-primary/20 bg-primary/10 text-primary",
+const COMPOSITION_RESULT_BADGE: Record<SamyogaGroupCompositionLabel, string> = {
+    "Dominan Utama": "border-emerald-200 bg-emerald-50 text-emerald-800",
+    "Dominan Madia": "border-amber-200 bg-amber-50 text-amber-800",
+    "Dominan Nista": "border-rose-200 bg-rose-50 text-rose-800",
+    "Komposisi Campuran": "border-stone-200 bg-stone-100 text-stone-700",
 };
 
-export default function SamyogaGroupResults({ result, members, onAnalyzeAgain }: SamyogaGroupResultsProps) {
+const COMPOSITION_AURA: Record<SamyogaGroupCompositionLabel, {
+    hero: string;
+    network: string;
+    shadow: string;
+}> = {
+    "Dominan Utama": {
+        hero: "bg-[radial-gradient(circle_at_50%_32%,rgba(16,185,129,0.18),transparent_58%)]",
+        network: "bg-emerald-300/25",
+        shadow: "drop-shadow-[0_12px_28px_rgba(16,185,129,0.3)]",
+    },
+    "Dominan Madia": {
+        hero: "bg-[radial-gradient(circle_at_50%_32%,rgba(245,158,11,0.18),transparent_58%)]",
+        network: "bg-amber-300/25",
+        shadow: "drop-shadow-[0_12px_28px_rgba(245,158,11,0.3)]",
+    },
+    "Dominan Nista": {
+        hero: "bg-[radial-gradient(circle_at_50%_32%,rgba(225,29,72,0.16),transparent_58%)]",
+        network: "bg-rose-300/25",
+        shadow: "drop-shadow-[0_12px_28px_rgba(225,29,72,0.3)]",
+    },
+    "Komposisi Campuran": {
+        hero: "bg-[radial-gradient(circle_at_50%_32%,rgba(168,162,158,0.14),transparent_58%)]",
+        network: "bg-stone-300/20",
+        shadow: "drop-shadow-[0_12px_28px_rgba(120,113,108,0.24)]",
+    },
+};
+
+const COMPOSITION_NETWORK_COLORS: Record<SamyogaGroupCompositionLabel, {
+    start: string;
+    middle: string;
+    end: string;
+}> = {
+    "Dominan Utama": {
+        start: "#6ee7b7",
+        middle: "#10b981",
+        end: "#047857",
+    },
+    "Dominan Madia": {
+        start: "#fcd34d",
+        middle: "#f59e0b",
+        end: "#b45309",
+    },
+    "Dominan Nista": {
+        start: "#fb7185",
+        middle: "#e11d48",
+        end: "#9f1239",
+    },
+    "Komposisi Campuran": {
+        start: "#d6d3d1",
+        middle: "#a8a29e",
+        end: "#57534e",
+    },
+};
+
+export default function SamyogaGroupResults({
+    result,
+    members,
+    onAnalyzeAgain,
+}: SamyogaGroupResultsProps) {
     const [showPairDetails, setShowPairDetails] = useState(SAMYOGA_PAIR_DETAILS_INITIAL_OPEN);
     const summary = summarizeSamyogaGroup(result);
     const displayName = (memberId: string) => getSamyogaMemberDisplayName(members, memberId);
@@ -69,7 +130,7 @@ export default function SamyogaGroupResults({ result, members, onAnalyzeAgain }:
             <article className="relative overflow-hidden rounded-[3rem] border border-accent-gold/10 bg-surface-light p-6 text-center shadow-2xl shadow-stone-200/50 sm:p-8 md:p-14">
                 <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(34,197,94,0.17),transparent_58%)] blur-3xl"
+                    className={`pointer-events-none absolute inset-0 blur-3xl ${COMPOSITION_AURA[summary.compositionLabel].hero}`}
                 />
                 <div aria-hidden="true" className="pointer-events-none absolute -left-20 -top-20 h-52 w-52 rounded-full border border-emerald-200/40" />
                 <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full border border-accent-gold/20" />
@@ -83,19 +144,20 @@ export default function SamyogaGroupResults({ result, members, onAnalyzeAgain }:
                         Berdasarkan komposisi pasangan unik dalam Samyoga kelompok
                     </p>
 
-                    <GroupNetworkSymbol memberCount={summary.memberCount} />
+                    <GroupNetworkSymbol
+                        memberCount={summary.memberCount}
+                        compositionLabel={summary.compositionLabel}
+                    />
 
-                    <div className="space-y-3">
-                        <div>
-                            <span className="inline-flex items-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 px-7 py-3 text-base font-bold text-white shadow-xl shadow-emerald-500/20 sm:px-10 sm:text-lg">
-                                <span aria-hidden="true">✨</span>&nbsp; Komposisi Kelompok &nbsp;<span aria-hidden="true">✨</span>
-                            </span>
-                        </div>
-                        <div>
-                            <span className={`inline-flex rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-widest ${COMPOSITION_BADGE[summary.compositionLabel]}`}>
-                                {summary.compositionLabel}
-                            </span>
-                        </div>
+                    <div className="mx-auto inline-flex min-w-64 flex-col items-center rounded-3xl border border-stone-200 bg-white/90 px-7 py-4 text-stone-800 shadow-xl shadow-stone-200/70 backdrop-blur-sm sm:min-w-80 sm:px-10">
+                        <span className="inline-flex items-center gap-2 text-base font-bold text-stone-800 sm:text-lg">
+                            <span aria-hidden="true" className="material-icons-outlined text-xl">auto_awesome</span>
+                            Komposisi Kelompok
+                            <span aria-hidden="true" className="material-icons-outlined text-xl">auto_awesome</span>
+                        </span>
+                        <span className={`mt-2 inline-flex rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-widest ${COMPOSITION_RESULT_BADGE[summary.compositionLabel]}`}>
+                            {summary.compositionLabel}
+                        </span>
                     </div>
 
                     <p className="mx-auto mt-6 max-w-2xl font-display text-base italic leading-relaxed text-stone-700 sm:text-lg">
@@ -163,6 +225,18 @@ export default function SamyogaGroupResults({ result, members, onAnalyzeAgain }:
                     </div>
                 </div>
             </article>
+
+            <div className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50/80 p-5 text-left shadow-sm" role="status">
+                <div className="flex items-start gap-3">
+                    <span aria-hidden="true" className="material-icons-outlined mt-0.5 text-amber-700">hourglass_top</span>
+                    <div>
+                        <h3 className="font-bold text-amber-950">Rekomendasi posisi belum diaktifkan</h3>
+                        <p className="mt-1 text-sm leading-relaxed text-amber-900">
+                            Analisis rekomendasi posisi sedang disiapkan berdasarkan interpretasi Otonan dan aturan Metemu yang sedang ditinjau.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
                 <button
@@ -282,17 +356,24 @@ export default function SamyogaGroupResults({ result, members, onAnalyzeAgain }:
     );
 }
 
-function GroupNetworkSymbol({ memberCount }: { memberCount: number }) {
+function GroupNetworkSymbol({
+    memberCount,
+    compositionLabel,
+}: {
+    memberCount: number;
+    compositionLabel: SamyogaGroupCompositionLabel;
+}) {
     const geometry = createSamyogaGroupNetworkGeometry(memberCount);
+    const networkColors = COMPOSITION_NETWORK_COLORS[compositionLabel];
 
     return (
         <div className="relative mx-auto my-7 h-44 w-52 sm:my-9 sm:h-52 sm:w-60">
-            <div aria-hidden="true" className="absolute inset-5 rounded-full bg-emerald-300/20 blur-2xl" />
+            <div aria-hidden="true" className={`absolute inset-5 rounded-full blur-2xl ${COMPOSITION_AURA[compositionLabel].network}`} />
             <svg
                 aria-hidden="true"
                 focusable="false"
                 viewBox="0 0 240 200"
-                className="relative h-full w-full text-emerald-600 drop-shadow-[0_12px_28px_rgba(16,185,129,0.28)]"
+                className={`relative h-full w-full ${COMPOSITION_AURA[compositionLabel].shadow}`}
             >
                 <defs>
                     <linearGradient
@@ -303,9 +384,9 @@ function GroupNetworkSymbol({ memberCount }: { memberCount: number }) {
                         x2="196"
                         y2="180"
                     >
-                        <stop offset="0%" stopColor="#6ee7b7" />
-                        <stop offset="50%" stopColor="#10b981" />
-                        <stop offset="100%" stopColor="#047857" />
+                        <stop offset="0%" stopColor={networkColors.start} />
+                        <stop offset="50%" stopColor={networkColors.middle} />
+                        <stop offset="100%" stopColor={networkColors.end} />
                     </linearGradient>
                     <filter id="groupNetworkGlow" x="-40%" y="-40%" width="180%" height="180%">
                         <feGaussianBlur stdDeviation="3" result="networkBlur" />

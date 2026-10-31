@@ -129,6 +129,9 @@ test("source UI memuat disclaimer, responsivitas, navigasi, dan tanpa transport 
     "components/samyoga-group/SamyogaGroupClient.tsx",
     "components/samyoga-group/SamyogaGroupMemberCard.tsx",
     "components/samyoga-group/SamyogaGroupResults.tsx",
+    "lib/samyoga-calendar-snapshot.ts",
+    "lib/samyoga-position-evidence.ts",
+    "lib/samyoga-position-recommendation.ts",
   ];
   const source = files.map((file) => fs.readFileSync(path.resolve(projectRoot, file), "utf8")).join("\n");
   const pairPage = fs.readFileSync(path.resolve(projectRoot, "app/pawongan-sinergi/page.tsx"), "utf8");
@@ -142,9 +145,28 @@ test("source UI memuat disclaimer, responsivitas, navigasi, dan tanpa transport 
   assert.equal(/\bfetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|indexedDB|firebase|useSession/.test(source), false);
 });
 
+test("UI tidak lagi meminta pengguna memilih posisi dan menampilkan status persiapan noninteraktif", () => {
+  const clientSource = fs.readFileSync(
+    path.resolve(projectRoot, "components/samyoga-group/SamyogaGroupClient.tsx"),
+    "utf8",
+  );
+  const resultSource = fs.readFileSync(
+    path.resolve(projectRoot, "components/samyoga-group/SamyogaGroupResults.tsx"),
+    "utf8",
+  );
+  assert.doesNotMatch(resultSource, /Lanjut ke Preferensi Posisi|<select|Posisi yang diminati/);
+  assert.doesNotMatch(clientSource, /preferredPosition|SamyogaGroupPreferences|activeStage/);
+  assert.match(resultSource, /Rekomendasi posisi belum diaktifkan/);
+  assert.match(resultSource, /Analisis rekomendasi posisi sedang disiapkan berdasarkan interpretasi Otonan/);
+  assert.match(resultSource, /role="status"/);
+});
+
 test("source UI tidak membuat skor, persentase, ranking, atau formula 40\/60", () => {
   const source = [
     "lib/samyoga-group-form.ts",
+    "lib/samyoga-calendar-snapshot.ts",
+    "lib/samyoga-position-evidence.ts",
+    "lib/samyoga-position-recommendation.ts",
     "components/samyoga-group/SamyogaGroupClient.tsx",
     "components/samyoga-group/SamyogaGroupResults.tsx",
   ].map((file) => fs.readFileSync(path.resolve(projectRoot, file), "utf8")).join("\n");
@@ -188,7 +210,7 @@ test("hero hasil memakai gaya card pasangan dengan simbol jaringan dekoratif tan
   assert.match(source, /rounded-\[3rem\]/);
   assert.match(source, /radial-gradient/);
   assert.match(source, /function GroupNetworkSymbol/);
-  assert.match(source, /GroupNetworkSymbol memberCount=\{summary\.memberCount\}/);
+  assert.match(source, /memberCount=\{summary\.memberCount\}/);
   assert.match(source, /geometry\.connections\.map/);
   assert.match(source, /geometry\.nodes\.map/);
   assert.match(source, /data-member-profile-icon="true"/);
@@ -197,6 +219,32 @@ test("hero hasil memakai gaya card pasangan dengan simbol jaringan dekoratif tan
   assert.match(source, /<svg[\s\S]*?aria-hidden="true"[\s\S]*?focusable="false"/);
   assert.equal(/favorite|heart/i.test(source), false);
   assert.ok(source.indexOf("Analisis Dinamika Kelompok") < source.indexOf("Lihat Detail Per Pasangan"));
+});
+
+test("seluruh logo, garis, aura, dan badge mengikuti kategori komposisi", () => {
+  const source = fs.readFileSync(
+    path.resolve(projectRoot, "components/samyoga-group/SamyogaGroupResults.tsx"),
+    "utf8",
+  );
+
+  assert.match(source, /COMPOSITION_NETWORK_COLORS\[compositionLabel\]/);
+  assert.match(source, /stopColor=\{networkColors\.start\}/);
+  assert.match(source, /stopColor=\{networkColors\.middle\}/);
+  assert.match(source, /stopColor=\{networkColors\.end\}/);
+  assert.match(source, /<g fill="none" stroke="url\(#groupNetworkGradient\)"/);
+  assert.equal(/groupNistaGradient|data-pair-category|connection\.category/.test(source), false);
+  assert.match(source, /COMPOSITION_AURA\[summary\.compositionLabel\]\.hero/);
+  assert.match(source, /COMPOSITION_AURA\[compositionLabel\]\.network/);
+  assert.match(source, /COMPOSITION_AURA\[compositionLabel\]\.shadow/);
+  assert.match(source, /compositionLabel=\{summary\.compositionLabel\}/);
+  assert.match(source, /COMPOSITION_RESULT_BADGE\[summary\.compositionLabel\]/);
+  assert.match(source, /"Dominan Utama"[\s\S]*bg-emerald-50/);
+  assert.match(source, /"Dominan Madia"[\s\S]*bg-amber-50/);
+  assert.match(source, /"Dominan Nista"[\s\S]*bg-rose-50/);
+  assert.match(source, /border-stone-200 bg-white\/90/);
+  assert.match(source, /Komposisi Kelompok[\s\S]*summary\.compositionLabel/);
+  assert.equal(/COMPOSITION_BADGE/.test(source), false);
+  assert.equal(/COMPOSITION_CARD/.test(source), false);
 });
 
 test("submit valid menampilkan splash dan memakai label Analisis Samyoga Group", () => {
