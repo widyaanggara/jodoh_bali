@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SplashScreen from '@/components/SplashScreen';
@@ -14,7 +15,7 @@ export default function Samyoga() {
     const [time2, setTime2] = useState('12:00');
     const [result, setResult] = useState<LeadershipSynergyResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { sessionID, logActivity } = useSession();
+    const { logActivity } = useSession();
 
     const handleReset = () => {
         setDate1('');
@@ -59,8 +60,15 @@ export default function Samyoga() {
                             Samyoga
                         </h1>
                         <p className="text-stone-600 text-lg leading-relaxed max-w-2xl mx-auto">
-                            Samyoga adalah fitur analisis kecocokan strategis yang dirancang untuk memetakan potensi sinergi antara dua individu dalam struktur organisasi atau pemerintahan. Diambil dari istilah Kawi/Sanskerta yang berarti "Penyatuan" atau "Pertautan yang Harmonis", fitur ini melampaui sekadar perjodohan kerja biasa.
+                            Samyoga adalah fitur analisis kecocokan strategis yang dirancang untuk memetakan potensi sinergi antara dua individu dalam struktur organisasi atau pemerintahan. Diambil dari istilah Kawi/Sanskerta yang berarti &quot;Penyatuan&quot; atau &quot;Pertautan yang Harmonis&quot;, fitur ini melampaui sekadar perjodohan kerja biasa.
                         </p>
+                        <Link
+                            href="/pawongan-sinergi/kelompok"
+                            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-primary/20 bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/[0.04] hover:shadow-md"
+                        >
+                            <span className="material-icons-outlined text-base" aria-hidden="true">groups</span>
+                            Coba Samyoga Kelompok
+                        </Link>
                     </div>
                 </section>
 
@@ -202,7 +210,7 @@ export default function Samyoga() {
                                     <div className="mt-6 pt-6 border-t border-stone-100">
                                         <p className="text-[10px] text-stone-400 uppercase font-bold mb-2 tracking-wider">Atribut Kompetensi</p>
                                         <p className="text-stone-600 italic leading-relaxed text-sm bg-stone-50 p-3 rounded-xl border border-stone-100">
-                                            "{result.person1.lintang?.label}"
+                                            &quot;{result.person1.lintang?.label}&quot;
                                         </p>
                                     </div>
                                 </div>
@@ -233,7 +241,7 @@ export default function Samyoga() {
                                     <div className="mt-6 pt-6 border-t border-stone-100">
                                         <p className="text-[10px] text-stone-400 uppercase font-bold mb-2 tracking-wider">Atribut Kompetensi</p>
                                         <p className="text-stone-600 italic leading-relaxed text-sm bg-stone-50 p-3 rounded-xl border border-stone-100">
-                                            "{result.person2.lintang?.label}"
+                                            &quot;{result.person2.lintang?.label}&quot;
                                         </p>
                                     </div>
                                 </div>
@@ -261,7 +269,7 @@ export default function Samyoga() {
                                 <div>
                                     <h4 className="text-[10px] font-bold uppercase tracking-widest text-white/50 mb-3">Analisis Strategis</h4>
                                     <p className="text-xl font-medium leading-relaxed text-white">
-                                        "{result.synergyTier.analisis}"
+                                        &quot;{result.synergyTier.analisis}&quot;
                                     </p>
                                 </div>
 
@@ -302,7 +310,7 @@ export default function Samyoga() {
                                     <div className="relative">
                                         <div className="pl-4 border-l-2 border-stone-200">
                                             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-2">Penjelasan Klasik</p>
-                                            <p className="text-stone-600 italic leading-relaxed text-sm">"{result.sodasaRsi.deskripsi}"</p>
+                                            <p className="text-stone-600 italic leading-relaxed text-sm">&quot;{result.sodasaRsi.deskripsi}&quot;</p>
                                         </div>
                                     </div>
                                 </div>
