@@ -1,0 +1,506 @@
+{
+  "schemaVersion": "g6a5-offline-simulation-v1",
+  "inputCatalogCheckpoint": "e41bd993e0e22a4ffab68f5ed1b7ccc314fee336",
+  "notice": "Calendar/test combination counts only: not population data, job suitability, accuracy, or human compatibility percentages. No production recommendations.",
+  "inputArtifacts": {
+    "catalogSha256": "ff87e2b4f5af983ea6450655f10b8c19b607e7db9c61c370396d21eeaefc4658",
+    "rulesetSha256": "a58fe3678d8e2ad441f20aec2c0847566ebfc55d34cecfb1b76900a22445497d"
+  },
+  "syntheticMechanism": {
+    "interpretation": "64 artificial support-presence combinations, not calendar or population data",
+    "supportOnly": {
+      "samples": 64,
+      "supportMatches": {
+        "Leader": 8,
+        "Management": 16,
+        "Operasional": 32
+      },
+      "unblockedCandidates": {
+        "Leader": 8,
+        "Management": 16,
+        "Operasional": 32
+      },
+      "multipleSupportMatches": 12,
+      "multipleUnblockedCandidates": 12,
+      "noSupportMatches": 21,
+      "noUnblockedCandidates": 21,
+      "globalStatuses": {
+        "recommended": 31,
+        "multiple_candidates": 12,
+        "conflicting_indicators": 0,
+        "insufficient_basis": 21
+      },
+      "perRuleStatuses": {
+        "recommended": 31,
+        "multiple_candidates": 12,
+        "conflicting_indicators": 0,
+        "insufficient_basis": 21
+      },
+      "casesWithRuleConflict": 0,
+      "cleanCandidatesWithheldByGlobalConflict": 0,
+      "policyDifferences": 0
+    },
+    "withDirectingCaution": {
+      "samples": 64,
+      "supportMatches": {
+        "Leader": 8,
+        "Management": 16,
+        "Operasional": 32
+      },
+      "unblockedCandidates": {
+        "Leader": 0,
+        "Management": 16,
+        "Operasional": 32
+      },
+      "multipleSupportMatches": 12,
+      "multipleUnblockedCandidates": 8,
+      "noSupportMatches": 21,
+      "noUnblockedCandidates": 24,
+      "globalStatuses": {
+        "recommended": 28,
+        "multiple_candidates": 7,
+        "conflicting_indicators": 8,
+        "insufficient_basis": 21
+      },
+      "perRuleStatuses": {
+        "recommended": 32,
+        "multiple_candidates": 8,
+        "conflicting_indicators": 3,
+        "insufficient_basis": 21
+      },
+      "casesWithRuleConflict": 8,
+      "cleanCandidatesWithheldByGlobalConflict": 5,
+      "policyDifferences": 5
+    },
+    "ruleOrderChecks": 128
+  },
+  "candidateHypothesis": {
+    "interpretation": "Hypothetical projection of pending G6A.4 tags into synthetic proxies; no cultural or product approval is granted",
+    "cycle": {
+      "anchorCivilDate": "2005-07-27",
+      "birthTime": "06:00",
+      "days": 210
+    },
+    "candidateCount": 22,
+    "matchingCandidateCount": 22,
+    "variants": {
+      "catalog_support_only": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 3,
+        "multipleUnblockedCandidates": 3,
+        "noSupportMatches": 133,
+        "noUnblockedCandidates": 133,
+        "globalStatuses": {
+          "recommended": 74,
+          "multiple_candidates": 3,
+          "conflicting_indicators": 0,
+          "insufficient_basis": 133
+        },
+        "perRuleStatuses": {
+          "recommended": 74,
+          "multiple_candidates": 3,
+          "conflicting_indicators": 0,
+          "insufficient_basis": 133
+        },
+        "casesWithRuleConflict": 0,
+        "cleanCandidatesWithheldByGlobalConflict": 0,
+        "policyDifferences": 0
+      },
+      "catalog_cautions": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 3,
+        "multipleUnblockedCandidates": 2,
+        "noSupportMatches": 133,
+        "noUnblockedCandidates": 134,
+        "globalStatuses": {
+          "recommended": 73,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 133
+        },
+        "perRuleStatuses": {
+          "recommended": 74,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 133
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "leader_without_directing": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 43,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 41,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 14,
+        "multipleUnblockedCandidates": 13,
+        "noSupportMatches": 108,
+        "noUnblockedCandidates": 109,
+        "globalStatuses": {
+          "recommended": 87,
+          "multiple_candidates": 13,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 108
+        },
+        "perRuleStatuses": {
+          "recommended": 88,
+          "multiple_candidates": 13,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 108
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "leader_without_collaborating": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 24,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 21,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 11,
+        "multipleUnblockedCandidates": 9,
+        "noSupportMatches": 123,
+        "noUnblockedCandidates": 124,
+        "globalStatuses": {
+          "recommended": 75,
+          "multiple_candidates": 9,
+          "conflicting_indicators": 3,
+          "insufficient_basis": 123
+        },
+        "perRuleStatuses": {
+          "recommended": 77,
+          "multiple_candidates": 9,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 123
+        },
+        "casesWithRuleConflict": 3,
+        "cleanCandidatesWithheldByGlobalConflict": 2,
+        "policyDifferences": 2
+      },
+      "leader_without_communicating": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 8,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 3,
+        "multipleUnblockedCandidates": 2,
+        "noSupportMatches": 131,
+        "noUnblockedCandidates": 132,
+        "globalStatuses": {
+          "recommended": 75,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 131
+        },
+        "perRuleStatuses": {
+          "recommended": 76,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 131
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "leader_plus_planning": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 0,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 0,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 2,
+        "multipleUnblockedCandidates": 2,
+        "noSupportMatches": 138,
+        "noUnblockedCandidates": 138,
+        "globalStatuses": {
+          "recommended": 70,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 0,
+          "insufficient_basis": 138
+        },
+        "perRuleStatuses": {
+          "recommended": 70,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 0,
+          "insufficient_basis": 138
+        },
+        "casesWithRuleConflict": 0,
+        "cleanCandidatesWithheldByGlobalConflict": 0,
+        "policyDifferences": 0
+      },
+      "management_without_planning": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 91,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 91,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 25,
+        "multipleUnblockedCandidates": 25,
+        "noSupportMatches": 77,
+        "noUnblockedCandidates": 78,
+        "globalStatuses": {
+          "recommended": 107,
+          "multiple_candidates": 24,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 77
+        },
+        "perRuleStatuses": {
+          "recommended": 107,
+          "multiple_candidates": 25,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 77
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "management_without_managing": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 46,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 45,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 11,
+        "multipleUnblockedCandidates": 10,
+        "noSupportMatches": 107,
+        "noUnblockedCandidates": 109,
+        "globalStatuses": {
+          "recommended": 90,
+          "multiple_candidates": 10,
+          "conflicting_indicators": 3,
+          "insufficient_basis": 107
+        },
+        "perRuleStatuses": {
+          "recommended": 91,
+          "multiple_candidates": 10,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 107
+        },
+        "casesWithRuleConflict": 3,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "operational_consistency_and_precision": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 6
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 12,
+          "Operasional": 6
+        },
+        "multipleSupportMatches": 0,
+        "multipleUnblockedCandidates": 0,
+        "noSupportMatches": 186,
+        "noUnblockedCandidates": 188,
+        "globalStatuses": {
+          "recommended": 22,
+          "multiple_candidates": 0,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 186
+        },
+        "perRuleStatuses": {
+          "recommended": 22,
+          "multiple_candidates": 0,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 186
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 0,
+        "policyDifferences": 0
+      },
+      "operational_consistency_only": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 26
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 12,
+          "Operasional": 26
+        },
+        "multipleSupportMatches": 2,
+        "multipleUnblockedCandidates": 1,
+        "noSupportMatches": 168,
+        "noUnblockedCandidates": 169,
+        "globalStatuses": {
+          "recommended": 39,
+          "multiple_candidates": 1,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 168
+        },
+        "perRuleStatuses": {
+          "recommended": 40,
+          "multiple_candidates": 1,
+          "conflicting_indicators": 1,
+          "insufficient_basis": 168
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      },
+      "operational_precision_only": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 42
+        },
+        "unblockedCandidates": {
+          "Leader": 4,
+          "Management": 12,
+          "Operasional": 42
+        },
+        "multipleSupportMatches": 1,
+        "multipleUnblockedCandidates": 1,
+        "noSupportMatches": 151,
+        "noUnblockedCandidates": 153,
+        "globalStatuses": {
+          "recommended": 56,
+          "multiple_candidates": 1,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 151
+        },
+        "perRuleStatuses": {
+          "recommended": 56,
+          "multiple_candidates": 1,
+          "conflicting_indicators": 2,
+          "insufficient_basis": 151
+        },
+        "casesWithRuleConflict": 2,
+        "cleanCandidatesWithheldByGlobalConflict": 0,
+        "policyDifferences": 0
+      },
+      "synthetic_directing_caution_added": {
+        "samples": 210,
+        "supportMatches": {
+          "Leader": 6,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "unblockedCandidates": {
+          "Leader": 0,
+          "Management": 12,
+          "Operasional": 62
+        },
+        "multipleSupportMatches": 3,
+        "multipleUnblockedCandidates": 2,
+        "noSupportMatches": 133,
+        "noUnblockedCandidates": 138,
+        "globalStatuses": {
+          "recommended": 69,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 6,
+          "insufficient_basis": 133
+        },
+        "perRuleStatuses": {
+          "recommended": 70,
+          "multiple_candidates": 2,
+          "conflicting_indicators": 5,
+          "insufficient_basis": 133
+        },
+        "casesWithRuleConflict": 6,
+        "cleanCandidatesWithheldByGlobalConflict": 1,
+        "policyDifferences": 1
+      }
+    },
+    "policyDifferenceExamples": [
+      {
+        "dayIndex": 207,
+        "matchingCandidateIds": [
+          "C-COLL-01",
+          "C-COMM-01",
+          "C-DIR-01",
+          "C-DIR-03",
+          "C-DIR-04",
+          "C-EXEC-02",
+          "C-MAN-02"
+        ],
+        "globalStatus": "conflicting_indicators",
+        "globalPrimary": null,
+        "perRule": {
+          "status": "recommended",
+          "recommendedPosition": "Operasional",
+          "eligiblePositions": [
+            "Operasional"
+          ],
+          "blockedPositions": [
+            "Leader"
+          ]
+        }
+      }
+    ],
+    "invariantChecks": {
+      "productionAbstentions": 210,
+      "ruleOrderChecks": 2520,
+      "equalIndicatorChecks": 210,
+      "memberOrderChecks": 210,
+      "originalCatalogUnchanged": true
+    }
+  }
+}

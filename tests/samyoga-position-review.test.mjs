@@ -44,7 +44,8 @@ function rule(overrides = {}) {
   return {
     ruleId: "test-only-rule", ruleVersion: "synthetic-test-only-v1",
     position: "Leader", requiredDimensions: ["directing"],
-    domainReviewStatus: "approved", rationale: "Unit test saja.", ...overrides,
+    domainReviewStatus: "approved", productApprovalStatus: "approved",
+    rationale: "Unit test saja.", ...overrides,
   };
 }
 

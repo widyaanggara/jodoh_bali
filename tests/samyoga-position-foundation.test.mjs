@@ -66,6 +66,7 @@ function syntheticRule(id, position, requiredDimensions, status = "approved") {
     position,
     requiredDimensions,
     domainReviewStatus: status,
+    productApprovalStatus: "approved",
     rationale: "Fixture sintetis yang hanya disetujui di unit test.",
   };
 }

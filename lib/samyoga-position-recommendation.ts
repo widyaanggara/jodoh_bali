@@ -37,12 +37,15 @@ export type SamyogaRecommendationStatus =
     | "conflicting_indicators"
     | "insufficient_basis";
 
+export type SamyogaProductApprovalStatus = "pending" | "approved" | "rejected";
+
 export interface SamyogaPositionRule {
     ruleId: string;
     ruleVersion: string;
     position: SamyogaPosition;
     requiredDimensions: readonly SamyogaSymbolicDimension[];
     domainReviewStatus: SamyogaDomainReviewStatus;
+    productApprovalStatus: SamyogaProductApprovalStatus;
     rationale: string;
 }
 
@@ -104,6 +107,7 @@ export function evaluateSamyogaPositionRecommendation(
     const approvedRules = rules
         .filter((rule) =>
             rule.domainReviewStatus === "approved" &&
+            rule.productApprovalStatus === "approved" &&
             ruleIdCounts.get(rule.ruleId) === 1 &&
             SAMYOGA_POSITION_TAXONOMY.includes(rule.position) &&
             rule.position !== "Anggota" &&
