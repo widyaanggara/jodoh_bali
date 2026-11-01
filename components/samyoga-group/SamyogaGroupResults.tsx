@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SamyogaGroupPairCard from "./SamyogaGroupPairCard";
 import type {
     SamyogaCategory,
     SamyogaGroupResult,
@@ -272,41 +273,13 @@ export default function SamyogaGroupResults({
                             {result.pairs.map((pair) => {
                                 const presentation = CATEGORY_PRESENTATION[pair.category];
                                 return (
-                                    <article key={pair.pairKey} className={`rounded-3xl border bg-white p-5 shadow-sm ${presentation.panel}`}>
-                                        <div className="flex flex-wrap items-start justify-between gap-3">
-                                            <div>
-                                                <p className="text-xs font-bold uppercase tracking-wider text-stone-400">Pasangan</p>
-                                                <h4 className="mt-1 font-display text-lg font-bold text-stone-900">
-                                                    {displayName(pair.memberAId)} <span aria-hidden="true" className="text-stone-300">dan</span> {displayName(pair.memberBId)}
-                                                </h4>
-                                            </div>
-                                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${presentation.badge}`}>
-                                                <span aria-hidden="true" className="material-icons-outlined text-sm">{presentation.icon}</span>
-                                                {pair.category}
-                                            </span>
-                                        </div>
-
-                                        <p className="mt-4 text-sm leading-relaxed text-stone-600">{presentation.explanation}</p>
-                                        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                                            <div className="rounded-2xl bg-stone-50 p-3">
-                                                <dt className="text-xs text-stone-400">Remainder Mod5</dt>
-                                                <dd className="mt-1 font-bold text-stone-800">{pair.modulo5}</dd>
-                                            </div>
-                                            <div className="rounded-2xl bg-stone-50 p-3">
-                                                <dt className="text-xs text-stone-400">Remainder Mod16</dt>
-                                                <dd className="mt-1 font-bold text-stone-800">{pair.modulo16}</dd>
-                                            </div>
-                                        </dl>
-                                        <div className="mt-3 rounded-2xl border border-stone-100 p-3 text-sm">
-                                            <p className="font-bold text-stone-800">{pair.sodasaRsi.label}</p>
-                                            <p className="mt-1 text-stone-500">{pair.sodasaRsi.makna}</p>
-                                        </div>
-                                        {pair.symbolicAttention && (
-                                            <p className="mt-3 rounded-2xl border border-rose-100 bg-rose-50/70 p-3 text-xs leading-relaxed text-rose-900">
-                                                <strong>Perhatian simbolis:</strong> {pair.symbolicAttentionNote}
-                                            </p>
-                                        )}
-                                    </article>
+                                    <SamyogaGroupPairCard
+                                        key={pair.pairKey}
+                                        pair={pair}
+                                        memberAName={displayName(pair.memberAId)}
+                                        memberBName={displayName(pair.memberBId)}
+                                        presentation={presentation}
+                                    />
                                 );
                             })}
                         </div>
@@ -319,8 +292,8 @@ export default function SamyogaGroupResults({
                         </div>
                         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                             {result.memberSummaries.map((memberSummary) => (
-                                <article key={memberSummary.memberId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
-                                    <h4 className="font-display text-lg font-bold text-stone-900">{displayName(memberSummary.memberId)}</h4>
+                                <article key={memberSummary.memberId} className="min-w-0 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                                    <h4 className="break-words font-display text-lg font-bold text-stone-900">{displayName(memberSummary.memberId)}</h4>
                                     <p className="mt-1 text-xs text-stone-400">Terlibat dalam {memberSummary.pairCount} pasangan unik</p>
                                     <dl className="mt-4 grid grid-cols-3 gap-2 text-center">
                                         {CATEGORIES.map((category) => (
@@ -367,7 +340,7 @@ function GroupNetworkSymbol({
     const networkColors = COMPOSITION_NETWORK_COLORS[compositionLabel];
 
     return (
-        <div className="relative mx-auto my-7 h-44 w-52 sm:my-9 sm:h-52 sm:w-60">
+        <div className="relative mx-auto my-7 aspect-[6/5] w-64 max-w-full sm:my-9 sm:w-80 md:w-96">
             <div aria-hidden="true" className={`absolute inset-5 rounded-full blur-2xl ${COMPOSITION_AURA[compositionLabel].network}`} />
             <svg
                 aria-hidden="true"
