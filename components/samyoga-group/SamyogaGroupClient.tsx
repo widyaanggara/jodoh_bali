@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState, type ReactNode } from "react";
+import type { SamyogaGroupResult } from "@/lib/samyoga-group";
 import SplashScreen from "@/components/SplashScreen";
 import {
     analyzeSamyogaGroupDraft,
@@ -10,13 +10,16 @@ import {
     isSamyogaGroupDraftReady,
     reduceSamyogaGroupFormState,
     type SamyogaGroupDraftField,
+    type SamyogaGroupDraftMember,
 } from "@/lib/samyoga-group-form";
 import SamyogaGroupMemberCard from "./SamyogaGroupMemberCard";
 import SamyogaGroupResults from "./SamyogaGroupResults";
 
 const SAMYOGA_GROUP_SPLASH_DURATION_MS = 2000;
 
-export default function SamyogaGroupClient() {
+export default function SamyogaGroupClient({ renderPositions }: {
+    renderPositions?: (members: readonly SamyogaGroupDraftMember[], result: SamyogaGroupResult) => ReactNode;
+}) {
     const [state, dispatch] = useReducer(
         reduceSamyogaGroupFormState,
         undefined,
@@ -85,14 +88,7 @@ export default function SamyogaGroupClient() {
             <section className="relative overflow-hidden px-4 pb-10 pt-14 sm:px-6 md:pb-14 md:pt-20">
                 <div aria-hidden="true" className="absolute inset-x-0 top-0 mx-auto h-72 max-w-5xl rounded-full bg-primary/[0.04] blur-3xl" />
                 <div className="relative mx-auto max-w-4xl text-center">
-                    <Link
-                        href="/pawongan-sinergi"
-                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-bold text-stone-600 transition hover:border-primary/30 hover:text-primary"
-                    >
-                        <span aria-hidden="true" className="material-icons-outlined text-base">arrow_back</span>
-                        Samyoga pasangan
-                    </Link>
-                    <p className="mt-8 text-xs font-bold uppercase tracking-[0.24em] text-primary">Eksperimen kategorikal 3–6 anggota</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Eksperimen kategorikal 3–6 anggota</p>
                     <h1 className="mt-3 font-display text-4xl font-bold text-primary md:text-5xl">Samyoga Kelompok</h1>
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">
                         Lihat kategori tradisional untuk seluruh pasangan unik di dalam kelompok tanpa skor, persentase, atau pemeringkatan anggota.
@@ -186,6 +182,7 @@ export default function SamyogaGroupClient() {
                         result={state.result}
                         members={state.members}
                         onAnalyzeAgain={analyzeAgain}
+                        positionExperiment={renderPositions?.(state.members, state.result)}
                     />
                 ) : !isAnalyzing ? (
                     <section className="rounded-3xl border border-dashed border-stone-300 bg-white px-5 py-10 text-center" aria-label="Hasil belum tersedia">

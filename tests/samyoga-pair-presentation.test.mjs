@@ -49,20 +49,23 @@ test("UI-R1: primary pair information is category dynamics, not a repurposed rel
             assert.ok(main.includes("Dinamika Relasi Kelompok"));
             assert.ok(main.includes(helper.SAMYOGA_PAIR_CATEGORY_NARRATIVES[category]));
             assert.ok(!main.includes(label));
-            assert.ok(!html.includes(label));
-            assert.ok(!html.includes("Lihat Tafsir Tradisional"));
+            assert.ok(html.includes(label));
+            assert.ok(html.includes("Lihat Tafsir Tradisional"));
             assert.ok(!html.includes("Sulit Koordinasi"));
         }
     }
 });
-test("UI-R1: traditional readings remain intact in result data but are absent from cards", () => {
+test("G6B7: original traditional readings remain intact inside a closed optional disclosure", () => {
     for (const reading of data.dataSodasaRsi) {
         const pair = { ...sample, sodasaRsi: { sisa: reading.sisa, label: reading.label, makna: reading.makna } };
         const before = structuredClone(pair), html = render(pair);
         assert.ok(!html.includes("Sodasa Rsi · Mod16"));
-        assert.ok(!html.includes(escapedText(reading.label)));
-        assert.ok(!html.includes(escapedText(reading.makna)));
-        assert.doesNotMatch(html, /<details\b|<summary\b|Lihat Tafsir Tradisional/);
+        const main = html.split("<details")[0];
+        assert.ok(!main.includes(escapedText(reading.label)));
+        assert.ok(html.includes(escapedText(reading.label)));
+        assert.ok(html.includes(escapedText(reading.makna)));
+        assert.match(html, /<details[^>]*data-traditional-reading/);
+        assert.doesNotMatch(html, /<details[^>]*\sopen(?:[\s=>])/);
         assert.deepEqual(pair, before);
     }
 });
@@ -87,7 +90,7 @@ test("UI-R1: Mod5/Mod16 remain exact for every group pair, without input/output 
         assert.deepEqual(result, before);
     }
 });
-test("UI-R1: Nista attention remains visible after removing traditional interpretation", () => {
+test("UI-R1: Nista attention remains visible independently of traditional interpretation", () => {
     const main = render().split("<details")[0];
     assert.ok(main.includes("bukan bukti adanya masalah pribadi"));
     const full = render();
@@ -97,7 +100,9 @@ test("UI-R1: Nista attention remains visible after removing traditional interpre
 test("UI-R1: card remains local presentation and preserves responsive/accessibility primitives", () => {
     assert.match(source, /min-w-0/);
     assert.match(source, /break-words/);
-    assert.doesNotMatch(source, /<details\b|<summary\b|Lihat Tafsir Tradisional|useId/);
+    assert.match(source, /<summary aria-controls=\{readingId\}/);
+    assert.match(source, /focus:ring-2/);
+    assert.match(source, /useId\(\)/);
     assert.doesNotMatch(source, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|indexedDB|firebase|analytics|samyoga-chair|synthetic/i);
     const parent = fs.readFileSync(path.join(projectRoot, "components/samyoga-group/SamyogaGroupResults.tsx"), "utf8");
     assert.ok(parent.includes("showPairDetails &&"));
@@ -108,5 +113,22 @@ test("UI-R1: card remains local presentation and preserves responsive/accessibil
     assert.ok(!parent.includes("pair.sodasaRsi.makna"));
     assert.match(parent, /key=\{memberSummary\.memberId\} className="min-w-0/);
     assert.match(parent, /className="break-words[^"]*">\{displayName\(memberSummary\.memberId\)\}/);
+});
+
+test("G6B7: partial readings show only available original fields without fallback text", () => {
+    assert.deepEqual(helper.getSamyogaTraditionalReading({label:"Original",makna:"Unknown"}),{label:"Original",meaning:null});
+    assert.deepEqual(helper.getSamyogaTraditionalReading({label:"",makna:"Original meaning"}),{label:null,meaning:"Original meaning"});
+    assert.equal(helper.getSamyogaTraditionalReading({label:" UNKNOWN ",makna:" "}),null);
+    const html=render({...sample,sodasaRsi:{label:"",makna:"Original meaning"}});
+    assert(html.includes("data-traditional-meaning"));assert(!html.includes("data-traditional-label"));
+});
+
+test("G6B7: independent disclosures have unique linked IDs when rendered together", () => {
+    const html=renderToStaticMarkup(React.createElement("div",null,
+        ...[0,1,2].map(i=>React.createElement(PairCard,{key:i,pair:sample,memberAName:"A",memberBName:"B",presentation:style}))));
+    const ids=[...html.matchAll(/aria-controls="([^"]+)"/g)].map(m=>m[1]);
+    assert.equal(ids.length,3);assert.equal(new Set(ids).size,3);
+    for(const id of ids)assert(html.includes('id="'+id+'"'));
+    assert(!html.includes("<details name="));assert(!html.includes("<details open"));
 });
 

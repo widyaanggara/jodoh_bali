@@ -1,7 +1,9 @@
 "use client";
 
+import { useId } from "react";
 import type { SamyogaGroupPairResult } from "@/lib/samyoga-group";
 import {
+    getSamyogaTraditionalReading,
     SAMYOGA_PAIR_CATEGORY_NARRATIVES,
     SAMYOGA_PAIR_DYNAMICS_TITLE,
 } from "./samyoga-pair-presentation";
@@ -19,6 +21,8 @@ export default function SamyogaGroupPairCard({
     memberBName,
     presentation,
 }: SamyogaGroupPairCardProps) {
+    const reading = getSamyogaTraditionalReading(pair.sodasaRsi);
+    const readingId = useId();
     return (
         <article
             data-samyoga-pair={pair.pairKey}
@@ -58,6 +62,20 @@ export default function SamyogaGroupPairCard({
                 <p className="mt-3 break-words rounded-2xl border border-rose-100 bg-rose-50/70 p-3 text-xs leading-relaxed text-rose-900">
                     <strong>Perhatian simbolis:</strong> {pair.symbolicAttentionNote}
                 </p>
+            )}
+            {reading && (
+                <details data-traditional-reading className="mt-4 rounded-2xl border border-stone-200">
+                    <summary aria-controls={readingId} className="min-h-11 cursor-pointer rounded-2xl p-3 text-sm font-bold text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                        Lihat Tafsir Tradisional
+                    </summary>
+                    <div id={readingId} className="space-y-3 break-words border-t border-stone-100 p-3 text-sm leading-relaxed text-stone-600">
+                        <p className="text-xs text-stone-500">Tafsir ini berasal dari konteks pembacaan pasangan tradisional dan tidak digunakan sebagai penilaian kemampuan organisasi.</p>
+                        <dl className="space-y-3">
+                            {reading.label && <div><dt className="text-xs font-bold text-stone-500">Label Sodasa Rsi</dt><dd data-traditional-label className="mt-1 font-semibold text-stone-800">{reading.label}</dd></div>}
+                            {reading.meaning && <div><dt className="text-xs font-bold text-stone-500">Makna tradisional</dt><dd data-traditional-meaning className="mt-1">{reading.meaning}</dd></div>}
+                        </dl>
+                    </div>
+                </details>
             )}
         </article>
     );

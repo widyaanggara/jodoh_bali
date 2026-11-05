@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import SamyogaGroupPairCard from "./SamyogaGroupPairCard";
 import type {
     SamyogaCategory,
@@ -22,6 +22,7 @@ interface SamyogaGroupResultsProps {
     result: SamyogaGroupResult;
     members: readonly SamyogaGroupDraftMember[];
     onAnalyzeAgain: () => void;
+    positionExperiment?: ReactNode;
 }
 
 const CATEGORY_PRESENTATION: Record<SamyogaCategory, {
@@ -121,6 +122,7 @@ export default function SamyogaGroupResults({
     result,
     members,
     onAnalyzeAgain,
+    positionExperiment,
 }: SamyogaGroupResultsProps) {
     const [showPairDetails, setShowPairDetails] = useState(SAMYOGA_PAIR_DETAILS_INITIAL_OPEN);
     const summary = summarizeSamyogaGroup(result);
@@ -227,7 +229,7 @@ export default function SamyogaGroupResults({
                 </div>
             </article>
 
-            <div className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50/80 p-5 text-left shadow-sm" role="status">
+            {positionExperiment ?? <div className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50/80 p-5 text-left shadow-sm" role="status">
                 <div className="flex items-start gap-3">
                     <span aria-hidden="true" className="material-icons-outlined mt-0.5 text-amber-700">hourglass_top</span>
                     <div>
@@ -237,7 +239,7 @@ export default function SamyogaGroupResults({
                         </p>
                     </div>
                 </div>
-            </div>
+            </div>}
 
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
                 <button

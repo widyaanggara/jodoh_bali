@@ -1,0 +1,2490 @@
+{
+  "schemaVersion": "metemu-palintangan-mapping-audit-v1",
+  "catalogueVersion": "g6b4-draft-1",
+  "scope": "offline-audit-only",
+  "source": "lib/data.ts#dataLintang.penjelasan",
+  "dimensions": [
+    "directing",
+    "planning",
+    "managing",
+    "communicating",
+    "executing",
+    "collaborating"
+  ],
+  "decisions": [
+    "DIDUKUNG TEKSTUAL",
+    "PERLU INTERPRETASI",
+    "AMBIGU",
+    "TIDAK DIDUKUNG"
+  ],
+  "activation": false,
+  "records": [
+    {
+      "lintangId": "lintang:Redite:Paing",
+      "name": "Gajah",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pandai bergaul dan banyak kawan"
+      ],
+      "cautionPhrases": [
+        "memiliki pendirian yang sangat kuat dan terkadang sulit dikendalikan nafsunya"
+      ],
+      "ambiguousPhrases": [
+        "Pandai bergaul dan banyak kawan",
+        "memiliki pendirian yang sangat kuat"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Pandai bergaul dan banyak kawan",
+          "rationale": "Pergaulan menunjukkan relasi sosial, belum tindakan berbagi tugas.",
+          "limitations": "Tidak membuktikan kolaborasi tim.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L01-COLL-01",
+          "lintangId": "lintang:Redite:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L01-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "memiliki pendirian yang sangat kuat",
+          "rationale": "Keteguhan pendapat bukan aktivitas mengarahkan orang.",
+          "limitations": "Tidak diterima sebagai support Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L01-DIR-02",
+          "lintangId": "lintang:Redite:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L01-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Soma:Pon",
+      "name": "Kiriman",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "sangat berhati-hati dan suka mengalah",
+        "baik budi, ramah tamah, dan sangat menjunjung tata susila"
+      ],
+      "cautionPhrases": [
+        "Meskipun terlihat suka pamer, aslinya sangat berhati-hati dan suka mengalah.",
+        "Bicaranya mungkin terdengar keras, namun sebenarnya baik budi, ramah tamah, dan sangat menjunjung tata susila."
+      ],
+      "ambiguousPhrases": [
+        "suka mengalah",
+        "ramah tamah"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Bicaranya mungkin terdengar keras, namun sebenarnya baik budi, ramah tamah, dan sangat menjunjung tata susila.",
+          "rationale": "Konteks mengoreksi kesan keras; tidak menyatakan keterampilan menyampaikan pesan.",
+          "limitations": "Tidak memperlakukan kata keras sebagai penalti.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L02-COMM-01",
+          "lintangId": "lintang:Soma:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L02-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "sangat berhati-hati dan suka mengalah",
+          "rationale": "Mengalah dapat menjaga relasi atau justru menghindari pembahasan.",
+          "limitations": "Bukan bukti kerja bersama atau pembagian tanggung jawab.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L02-COLL-02",
+          "lintangId": "lintang:Soma:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L02-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Anggara:Wage",
+      "name": "Jongsarat",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "gemar menolong orang yang sedang kesulitan",
+        "Sangat mantap dalam menyelidiki hal-hal penting"
+      ],
+      "cautionPhrases": [
+        "namun cenderung pencemburu dan mudah tersinggung"
+      ],
+      "ambiguousPhrases": [
+        "Sangat mantap dalam menyelidiki hal-hal penting"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "gemar menolong orang yang sedang kesulitan",
+          "rationale": "Menolong memberi tafsir simbolis saling membantu.",
+          "limitations": "Prososial belum menunjukkan kerja tim timbal balik.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L03-COLL-01",
+          "lintangId": "lintang:Anggara:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L03-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "planning",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Sangat mantap dalam menyelidiki hal-hal penting",
+          "rationale": "Penyelidikan bukan penyusunan langkah atau rencana.",
+          "limitations": "Tidak dipakai untuk melengkapi Manajemen.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L03-PLAN-02",
+          "lintangId": "lintang:Anggara:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L03-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Buda:Kliwon",
+      "name": "Tiwa-tiwa",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "ahli dalam merangkai kata atau mengarang"
+      ],
+      "cautionPhrases": [
+        "namun hatinya sensitif dan mudah tersinggung"
+      ],
+      "ambiguousPhrases": [
+        "Pandai menimbang sesuatu",
+        "ramah"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "ahli dalam merangkai kata atau mengarang",
+          "rationale": "Penyusunan kata secara eksplisit mendukung ekspresi verbal/tulis.",
+          "limitations": "Bisa khusus sastra; tidak membuktikan komunikasi organisasi. Sensitivitas tetap konteks.",
+          "existingEvidenceId": "C-COMM-03",
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L04-COMM-01",
+          "lintangId": "lintang:Buda:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L04-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "planning",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Pandai menimbang sesuatu",
+          "rationale": "Pertimbangan umum tidak menyatakan rencana organisasi.",
+          "limitations": "Tidak dipakai untuk Manajemen.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L04-PLAN-02",
+          "lintangId": "lintang:Buda:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L04-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "ramah",
+          "rationale": "Keramahan sendiri tidak menyatakan kolaborasi.",
+          "limitations": "Tidak dipakai untuk melengkapi Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L04-COLL-03",
+          "lintangId": "lintang:Buda:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L04-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Wraspati:Umanis",
+      "name": "Sangka Tikel",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Memiliki cita-cita setinggi langit, bijaksana, dan pandai bergaul",
+        "Bicaranya tegas dan keras"
+      ],
+      "cautionPhrases": [
+        "namun terkadang suka mencampuri urusan orang lain dan butuh dorongan agar tidak lekas patah hati"
+      ],
+      "ambiguousPhrases": [
+        "Memiliki cita-cita setinggi langit",
+        "Bicaranya tegas dan keras"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Memiliki cita-cita setinggi langit, bijaksana, dan pandai bergaul",
+          "rationale": "Cita-cita dan kebijaksanaan tidak menjelaskan tindakan mengarahkan.",
+          "limitations": "Tidak menjadi support Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L05-DIR-01",
+          "lintangId": "lintang:Wraspati:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L05-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Bicaranya tegas dan keras",
+          "rationale": "Ketegasan bisa jelas atau keras bergantung konteks.",
+          "limitations": "Tidak dinilai otomatis sebagai kelebihan atau kekurangan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L05-COMM-02",
+          "lintangId": "lintang:Wraspati:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L05-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Sukra:Paing",
+      "name": "Bubu Bolong",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pribadi yang ramah, jujur, dan memiliki angan-angan mulia sehingga disukai banyak orang"
+      ],
+      "cautionPhrases": [
+        "Namun, perlu waspada terhadap sifat pemboros dan kemauan yang terlalu keras."
+      ],
+      "ambiguousPhrases": [
+        "ramah",
+        "angan-angan mulia"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "ramah",
+          "rationale": "Keramahan bukan bukti kerja sama.",
+          "limitations": "Tidak mengaktifkan kolaborasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L06-COLL-01",
+          "lintangId": "lintang:Sukra:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L06-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "managing",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "sifat pemboros",
+          "rationale": "Pemborosan bisa membatasi tafsir pengelolaan sumber daya.",
+          "limitations": "Konteks ekonomi pribadi; tidak otomatis mengurangi kelayakan jabatan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L06-MAN-02",
+          "lintangId": "lintang:Sukra:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L06-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Saniscara:Pon",
+      "name": "Sungenge",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Disegani oleh orang banyak"
+      ],
+      "cautionPhrases": [
+        "senang menunjukkan kepandaian atau kekayaan"
+      ],
+      "ambiguousPhrases": [
+        "Disegani oleh orang banyak",
+        "Bercita-cita mulia"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Disegani oleh orang banyak",
+          "rationale": "Wibawa sosial mungkin terkait pengaruh, tetapi bukan pengarahan.",
+          "limitations": "Tidak menjadi indikator kepemimpinan yang disahkan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L07-DIR-01",
+          "lintangId": "lintang:Saniscara:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L07-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Redite:Wage",
+      "name": "Uluku",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat suka bekerja"
+      ],
+      "cautionPhrases": [
+        "sangat teguh pada pendapatnya jika ditentang",
+        "sering memiliki sifat mudah kaget"
+      ],
+      "ambiguousPhrases": [
+        "pandai menjaga rahasia penting"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Sangat suka bekerja",
+          "rationale": "Teks eksplisit mengenai kecenderungan bekerja.",
+          "limitations": "Kesukaan bukan bukti ketuntasan atau kualitas kerja.",
+          "existingEvidenceId": null,
+          "facets": [
+            "work_inclination"
+          ],
+          "mappingId": "DRAFT-G6B4-L08-EXEC-01",
+          "lintangId": "lintang:Redite:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L08-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "sangat teguh pada pendapatnya jika ditentang",
+          "rationale": "Keteguhan bisa prinsip atau hambatan kompromi.",
+          "limitations": "Tidak otomatis menjadi caution pemblokir.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L08-COLL-02",
+          "lintangId": "lintang:Redite:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L08-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Soma:Kliwon",
+      "name": "Pedati",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "sangat cepat memaafkan dan melupakan dendam",
+        "Rela berkorban demi keadilan bagi orang lain"
+      ],
+      "cautionPhrases": [
+        "Meskipun mudah sakit hati, mereka sangat cepat memaafkan dan melupakan dendam."
+      ],
+      "ambiguousPhrases": [
+        "Rela berkorban demi keadilan bagi orang lain"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Rela berkorban demi keadilan bagi orang lain",
+          "rationale": "Kepedulian untuk orang lain memberi hipotesis tindakan prososial.",
+          "limitations": "Pengorbanan bukan otomatis kolaborasi tim; menjaga batas diri tetap relevan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L09-COLL-01",
+          "lintangId": "lintang:Soma:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L09-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Anggara:Umanis",
+      "name": "Kuda",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat tangkas dalam bekerja"
+      ],
+      "cautionPhrases": [
+        "namun sering kali cemburu dan jengkel jika ada yang menentang pendiriannya"
+      ],
+      "ambiguousPhrases": [
+        "selalu mengejar kemajuan",
+        "Memiliki cita-cita besar"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Sangat tangkas dalam bekerja",
+          "rationale": "Ketangkasan secara eksplisit dikaitkan dengan bekerja.",
+          "limitations": "Tidak menyatakan konsistensi atau kemampuan memimpin.",
+          "existingEvidenceId": null,
+          "facets": [
+            "task_agility"
+          ],
+          "mappingId": "DRAFT-G6B4-L10-EXEC-01",
+          "lintangId": "lintang:Anggara:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L10-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Memiliki cita-cita besar",
+          "rationale": "Aspirasi bukan bukti mengarahkan kelompok.",
+          "limitations": "Tidak ada support Leader dari kebercita-citaan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L10-DIR-02",
+          "lintangId": "lintang:Anggara:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L10-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Buda:Paing",
+      "name": "Gajahmina",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat berhati-hati dan selalu mempertimbangkan segala hal sebelum bertindak"
+      ],
+      "cautionPhrases": [
+        "namun jika marah bisa sangat hebat"
+      ],
+      "ambiguousPhrases": [
+        "Sangat berhati-hati dan selalu mempertimbangkan segala hal sebelum bertindak"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "planning",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Sangat berhati-hati dan selalu mempertimbangkan segala hal sebelum bertindak",
+          "rationale": "Pertimbangan sebelum tindakan dapat ditafsir sebagai praperencanaan.",
+          "limitations": "Tidak menyebut urutan kegiatan, waktu, atau rencana organisasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L11-PLAN-01",
+          "lintangId": "lintang:Buda:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L11-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Wraspati:Pon",
+      "name": "Bade",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Selalu ingin menambah pengalaman dan mencari kemajuan lahir batin"
+      ],
+      "cautionPhrases": [
+        "Namun, perlu berhati-hati dengan sifat pamer kepandaian agar tidak mendatangkan bahaya bagi diri sendiri."
+      ],
+      "ambiguousPhrases": [
+        "Selalu ingin menambah pengalaman dan mencari kemajuan lahir batin"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Selalu ingin menambah pengalaman dan mencari kemajuan lahir batin",
+          "rationale": "Motivasi belajar tidak sama dengan pelaksanaan kerja.",
+          "limitations": "Belum ada aktivitas atau ketuntasan tugas.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L12-EXEC-01",
+          "lintangId": "lintang:Wraspati:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L12-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Sukra:Wage",
+      "name": "Maglut",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat jujur, setia, dan murah hati",
+        "Sering menjadi korban demi kepentingan keluarga atau saudaranya"
+      ],
+      "cautionPhrases": [
+        "Sering menjadi korban demi kepentingan keluarga atau saudaranya, namun tetap teguh dengan pendiriannya meskipun harus menderita."
+      ],
+      "ambiguousPhrases": [
+        "setia",
+        "Sering menjadi korban demi kepentingan keluarga atau saudaranya"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Sering menjadi korban demi kepentingan keluarga atau saudaranya",
+          "rationale": "Pengorbanan keluarga belum menunjukkan tindakan saling membantu yang setara.",
+          "limitations": "Tidak menganggap menjadi korban sebagai kompetensi tim.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L13-COLL-01",
+          "lintangId": "lintang:Sukra:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L13-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Saniscara:Kliwon",
+      "name": "Pagelangan",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pandai menyusun kata-kata"
+      ],
+      "cautionPhrases": [
+        "namun terkadang kurang percaya diri dan mudah putus asa saat menghadapi kesulitan besar"
+      ],
+      "ambiguousPhrases": [
+        "sangat hati-hati dalam bertindak"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Pandai menyusun kata-kata",
+          "rationale": "Teks eksplisit tentang penyusunan pesan.",
+          "limitations": "Tidak membuktikan kemampuan mendengar atau koordinasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L14-COMM-01",
+          "lintangId": "lintang:Saniscara:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L14-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "executing",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "mudah putus asa saat menghadapi kesulitan besar",
+          "rationale": "Konteks kesulitan dapat membatasi tafsir kontinuitas tindakan.",
+          "limitations": "Tidak menyebut kegagalan kerja aktual; bukan penalti otomatis.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L14-EXEC-02",
+          "lintangId": "lintang:Saniscara:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L14-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Redite:Umanis",
+      "name": "Kala Sungsang",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "tetap tenang meski sedang marah",
+        "Suka berdebat"
+      ],
+      "cautionPhrases": [
+        "Suka berdebat dan terkadang mencampuri urusan orang lain, namun aslinya berhati kaku."
+      ],
+      "ambiguousPhrases": [
+        "Suka berdebat"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Suka berdebat",
+          "rationale": "Debat bisa pertukaran gagasan atau pertengkaran.",
+          "limitations": "Tidak langsung dijadikan support/caution kompetensi komunikasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L15-COMM-01",
+          "lintangId": "lintang:Redite:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L15-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "namun aslinya berhati kaku",
+          "rationale": "Kekakuan bisa batas pribadi atau sulit kompromi.",
+          "limitations": "Konteks tidak cukup untuk konflik profil otomatis.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L15-COLL-02",
+          "lintangId": "lintang:Redite:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L15-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Soma:Paing",
+      "name": "Kukus",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "rajin bekerja",
+        "sangat setia pada janjinya",
+        "Hidupnya cenderung hemat, cermat, dan tertata"
+      ],
+      "cautionPhrases": [],
+      "ambiguousPhrases": [
+        "Memiliki cita-cita tinggi",
+        "Hidupnya cenderung hemat, cermat, dan tertata"
+      ],
+      "cautionNote": "Tidak ada caution eksplisit yang dicatat dari teks ini; bukan jaminan bebas risiko.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "rajin bekerja",
+          "rationale": "Kecenderungan bekerja eksplisit; janji dan kecermatan tetap dibaca sebagai konteks.",
+          "limitations": "Bukan asesmen produktivitas profesional.",
+          "existingEvidenceId": "C-EXEC-04",
+          "facets": [
+            "work_diligence"
+          ],
+          "mappingId": "DRAFT-G6B4-L16-EXEC-01",
+          "lintangId": "lintang:Soma:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L16-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "sangat setia pada janjinya",
+          "rationale": "Janji memberi hipotesis tindak lanjut yang konsisten.",
+          "limitations": "Kesetiaan pada janji tidak menyebut tugas organisasi.",
+          "existingEvidenceId": null,
+          "facets": [
+            "promise_follow_through"
+          ],
+          "mappingId": "DRAFT-G6B4-L16-EXEC-02",
+          "lintangId": "lintang:Soma:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L16-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "managing",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Hidupnya cenderung hemat, cermat, dan tertata",
+          "rationale": "Keteraturan hidup bisa ditafsirkan sebagai pengelolaan sumber daya pribadi.",
+          "limitations": "Tidak otomatis berlaku pada organisasi; berbeda dari planning.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L16-MAN-03",
+          "lintangId": "lintang:Soma:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L16-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Anggara:Pon",
+      "name": "Asu",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "pandai berbahasa"
+      ],
+      "cautionPhrases": [
+        "namun sulit percaya pada orang baru dan suka berdebat"
+      ],
+      "ambiguousPhrases": [
+        "Sangat baik terhadap kawan yang loyal"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "pandai berbahasa",
+          "rationale": "Kecakapan bahasa secara eksplisit disebut.",
+          "limitations": "Tidak membuktikan transparansi atau kemampuan mediasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L17-COMM-01",
+          "lintangId": "lintang:Anggara:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L17-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "sulit percaya pada orang baru",
+          "rationale": "Keterbatasan kepercayaan pada pihak baru adalah konteks kerja bersama.",
+          "limitations": "Kewaspadaan dapat wajar; bukan diskualifikasi otomatis.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L17-COLL-02",
+          "lintangId": "lintang:Anggara:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L17-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Buda:Wage",
+      "name": "Kartika",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "mengerti nilai uang (ekonomis)",
+        "Suka menimbang segala hal dengan adil"
+      ],
+      "cautionPhrases": [
+        "bicaranya tegas meskipun terkadang terdengar janggal"
+      ],
+      "ambiguousPhrases": [
+        "Suka menimbang segala hal dengan adil"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "managing",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "mengerti nilai uang (ekonomis)",
+          "rationale": "Pemahaman ekonomis memberi hipotesis pengelolaan uang pribadi.",
+          "limitations": "Tidak menyatakan aktivitas mengelola anggaran atau sumber daya.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L18-MAN-01",
+          "lintangId": "lintang:Buda:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L18-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "planning",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Suka menimbang segala hal dengan adil",
+          "rationale": "Menimbang keadilan bukan penyusunan rencana.",
+          "limitations": "Tidak melengkapi profil Manajemen.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L18-PLAN-02",
+          "lintangId": "lintang:Buda:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L18-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "bicaranya tegas meskipun terkadang terdengar janggal",
+          "rationale": "Kejelasan/ketegasan dan kejanggalan memerlukan konteks.",
+          "limitations": "Tidak menilai kata janggal sebagai kelemahan terukur.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L18-COMM-03",
+          "lintangId": "lintang:Buda:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L18-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Wraspati:Kliwon",
+      "name": "Naga",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Memiliki pikiran yang ulet"
+      ],
+      "cautionPhrases": [
+        "Bicaranya tajam",
+        "namun hatinya sangat sensitif sehingga mudah tersinggung dan jatuh dalam kesedihan"
+      ],
+      "ambiguousPhrases": [
+        "Memiliki pikiran yang ulet",
+        "ramah"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Memiliki pikiran yang ulet",
+          "rationale": "Keuletan pikiran tidak secara eksplisit dikaitkan dengan pekerjaan.",
+          "limitations": "Tidak otomatis mendukung pelaksanaan tugas.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L19-EXEC-01",
+          "lintangId": "lintang:Wraspati:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L19-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Bicaranya tajam",
+          "rationale": "Ketajaman bicara mungkin memerlukan kehati-hatian konteks.",
+          "limitations": "Bisa berarti kritis/tepat; bukan penalti atau ukuran komunikasi buruk.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L19-COMM-02",
+          "lintangId": "lintang:Wraspati:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L19-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Sukra:Umanis",
+      "name": "Banyak Angrem",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "suka berterus terang",
+        "Sangat suka menolong"
+      ],
+      "cautionPhrases": [
+        "namun jika sudah tidak cocok dengan seseorang, mereka bisa memutus hubungan secara total"
+      ],
+      "ambiguousPhrases": [
+        "Sangat suka menolong"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "suka berterus terang",
+          "rationale": "Gaya penyampaian terbuka disebut langsung.",
+          "limitations": "Keterusterangan bukan bukti ketepatan atau efektivitas pesan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L20-COMM-01",
+          "lintangId": "lintang:Sukra:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L20-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Sangat suka menolong",
+          "rationale": "Menolong adalah dasar tafsir prososial terbatas.",
+          "limitations": "Belum ada konteks tugas bersama.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L20-COLL-02",
+          "lintangId": "lintang:Sukra:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L20-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "mereka bisa memutus hubungan secara total",
+          "rationale": "Pemutusan relasi adalah konteks kontinuitas kerja sama.",
+          "limitations": "Bisa batas relasi yang sah; tidak otomatis menggugurkan orang.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L20-COLL-03",
+          "lintangId": "lintang:Sukra:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L20-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Saniscara:Paing",
+      "name": "Ru",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pintar mengurus rumah tangga dan sangat teliti dalam urusan keuangan"
+      ],
+      "cautionPhrases": [
+        "Memiliki nafsu yang besar dan lekas marah, namun sangat mudah sabar dan menyesal."
+      ],
+      "ambiguousPhrases": [
+        "Pintar mengurus rumah tangga dan sangat teliti dalam urusan keuangan"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "managing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Pintar mengurus rumah tangga dan sangat teliti dalam urusan keuangan",
+          "rationale": "Aktivitas pengurusan dan urusan keuangan disebut langsung.",
+          "limitations": "Scope rumah tangga/keuangan pribadi; bukan kompetensi manajemen organisasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L21-MAN-01",
+          "lintangId": "lintang:Saniscara:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L21-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "planning",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Pintar mengurus rumah tangga dan sangat teliti dalam urusan keuangan",
+          "rationale": "Pengurusan dan ketelitian tidak menyebut penyusunan rencana.",
+          "limitations": "Satu frasa tidak boleh digandakan menjadi dua bukti independen.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L21-PLAN-02",
+          "lintangId": "lintang:Saniscara:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L21-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Redite:Pon",
+      "name": "Patrem",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "pandai berdiplomasi"
+      ],
+      "cautionPhrases": [
+        "Sangat licin",
+        "Suka memperlihatkan kekayaan dan kepandaiannya di hadapan orang lain"
+      ],
+      "ambiguousPhrases": [
+        "Sangat licin",
+        "pandai menyimpan perasaan yang sesungguhnya"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "pandai berdiplomasi",
+          "rationale": "Diplomasi adalah aktivitas komunikasi yang disebut eksplisit.",
+          "limitations": "Konteks licin/pamer tetap terlihat; bukan bukti ketulusan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L22-COMM-01",
+          "lintangId": "lintang:Redite:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L22-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "pandai berdiplomasi",
+          "rationale": "Diplomasi bisa menyelesaikan relasi, tetapi kerja bersama tidak disebut.",
+          "limitations": "Frasa sama dengan komunikasi; tidak menjadi bukti independen.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L22-COLL-02",
+          "lintangId": "lintang:Redite:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L22-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Soma:Wage",
+      "name": "Lembu",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Segala urusan ditimbang dengan baik dan tidak terburu nafsu",
+        "Memiliki empati yang tinggi terhadap kesulitan orang lain"
+      ],
+      "cautionPhrases": [
+        "namun jika marah sangat sulit diredakan"
+      ],
+      "ambiguousPhrases": [
+        "Segala urusan ditimbang dengan baik dan tidak terburu nafsu",
+        "Memiliki empati yang tinggi terhadap kesulitan orang lain"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "planning",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Segala urusan ditimbang dengan baik dan tidak terburu nafsu",
+          "rationale": "Pertimbangan sebelum keputusan memberi hipotesis praperencanaan.",
+          "limitations": "Tidak menyatakan rencana kegiatan atau organisasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L23-PLAN-01",
+          "lintangId": "lintang:Soma:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L23-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Memiliki empati yang tinggi terhadap kesulitan orang lain",
+          "rationale": "Empati belum menyatakan tindakan membantu atau berbagi tugas.",
+          "limitations": "Tidak otomatis menjadi dukungan kolaborasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L23-COLL-02",
+          "lintangId": "lintang:Soma:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L23-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Anggara:Kliwon",
+      "name": "Depat",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pintar menyusun kata-kata sehingga bicaranya menyenangkan pendengar"
+      ],
+      "cautionPhrases": [
+        "namun terkadang memiliki pikiran yang keruh dan sulit percaya pada orang lain"
+      ],
+      "ambiguousPhrases": [
+        "Murah hati"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Pintar menyusun kata-kata sehingga bicaranya menyenangkan pendengar",
+          "rationale": "Penyusunan pesan dan respons pendengar disebut langsung.",
+          "limitations": "Tidak menyimpulkan kemampuan koordinasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L24-COMM-01",
+          "lintangId": "lintang:Anggara:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L24-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "sulit percaya pada orang lain",
+          "rationale": "Kepercayaan adalah konteks relasi dan kerja bersama.",
+          "limitations": "Tidak berarti orang tidak layak menjadi anggota.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L24-COLL-02",
+          "lintangId": "lintang:Anggara:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L24-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Buda:Umanis",
+      "name": "Tangis",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Suka menolong kawan setia"
+      ],
+      "cautionPhrases": [
+        "namun sering dilingkupi rasa bimbang dan kesedihan yang mendalam"
+      ],
+      "ambiguousPhrases": [
+        "Suka menolong kawan setia"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Suka menolong kawan setia",
+          "rationale": "Menolong memberi tafsir prososial dengan lingkup kawan dekat.",
+          "limitations": "Tidak digeneralisasi ke semua rekan atau kolaborasi organisasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L25-COLL-01",
+          "lintangId": "lintang:Buda:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L25-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Wraspati:Paing",
+      "name": "Salah Ukur",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Memiliki kemauan yang tangkas dan giat mencari kemajuan lahir batin",
+        "Sangat rukun dengan keluarga"
+      ],
+      "cautionPhrases": [
+        "namun bicaranya terkadang menyinggung atau salah terka terhadap orang lain"
+      ],
+      "ambiguousPhrases": [
+        "giat mencari kemajuan lahir batin",
+        "Sangat rukun dengan keluarga"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "giat mencari kemajuan lahir batin",
+          "rationale": "Kemauan maju tidak menyebut bekerja atau tugas.",
+          "limitations": "Tidak dijadikan support hanya karena label Giat.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L26-EXEC-01",
+          "lintangId": "lintang:Wraspati:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L26-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Sangat rukun dengan keluarga",
+          "rationale": "Kerukunan keluarga mungkin relevan dengan hubungan saling menjaga.",
+          "limitations": "Tidak menyatakan kolaborasi tugas atau berlaku di luar keluarga.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L26-COLL-02",
+          "lintangId": "lintang:Wraspati:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L26-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "caution",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "bicaranya terkadang menyinggung atau salah terka terhadap orang lain",
+          "rationale": "Dampak ucapan pada orang lain dinyatakan eksplisit.",
+          "limitations": "Kata terkadang membatasi generalisasi; tidak menjadi penalti otomatis.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L26-COMM-03",
+          "lintangId": "lintang:Wraspati:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L26-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Sukra:Pon",
+      "name": "Prahu Pegat",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Suka bergaul, jujur, dan memiliki perikemanusiaan yang tinggi"
+      ],
+      "cautionPhrases": [
+        "Namun, sering merasa bimbang dan sedih hati yang membuat kemauannya mudah terputus di tengah jalan."
+      ],
+      "ambiguousPhrases": [
+        "Suka bergaul",
+        "memiliki perikemanusiaan yang tinggi"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Suka bergaul, jujur, dan memiliki perikemanusiaan yang tinggi",
+          "rationale": "Relasi dan sikap moral belum menyebut tindakan kolaborasi.",
+          "limitations": "Tidak otomatis menjadi support Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L27-COLL-01",
+          "lintangId": "lintang:Sukra:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L27-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "executing",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "kemauannya mudah terputus di tengah jalan",
+          "rationale": "Kontinuitas kemauan memberi konteks tindak lanjut.",
+          "limitations": "Tidak secara eksplisit menyebut pekerjaan; tidak boleh menjadi penalti otomatis.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L27-EXEC-02",
+          "lintangId": "lintang:Sukra:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L27-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Saniscara:Wage",
+      "name": "Puwuh Atarung",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Pintar mengatur rumah tangga"
+      ],
+      "cautionPhrases": [
+        "sangat murah hati kepada mereka yang memuji dirinya",
+        "namun cenderung pencemburu"
+      ],
+      "ambiguousPhrases": [
+        "Bicaranya tegas"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "managing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Pintar mengatur rumah tangga",
+          "rationale": "Pengaturan disebut sebagai tindakan langsung.",
+          "limitations": "Hanya konteks rumah tangga; tidak otomatis ke organisasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L28-MAN-01",
+          "lintangId": "lintang:Saniscara:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L28-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Bicaranya tegas",
+          "rationale": "Ketegasan ucapan tidak menjelaskan pengarahan aktivitas.",
+          "limitations": "Tidak cukup untuk Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L28-DIR-02",
+          "lintangId": "lintang:Saniscara:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L28-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Redite:Kliwon",
+      "name": "Lawean",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "pandai berdiplomasi"
+      ],
+      "cautionPhrases": [
+        "namun sulit diubah jika sudah memiliki pendapat sendiri"
+      ],
+      "ambiguousPhrases": [
+        "Memiliki derajat yang tinggi"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "pandai berdiplomasi",
+          "rationale": "Kecenderungan diplomasi disebut langsung.",
+          "limitations": "Bukan bukti kompromi atau kerja tim.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L29-COMM-01",
+          "lintangId": "lintang:Redite:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L29-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Memiliki derajat yang tinggi",
+          "rationale": "Kedudukan bukan tindakan kepemimpinan.",
+          "limitations": "Tidak menggunakan status sosial sebagai kompetensi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L29-DIR-02",
+          "lintangId": "lintang:Redite:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L29-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "sulit diubah jika sudah memiliki pendapat sendiri",
+          "rationale": "Bisa pendirian kuat atau hambatan kompromi.",
+          "limitations": "Konteks tidak cukup untuk caution pemblokir.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L29-COLL-03",
+          "lintangId": "lintang:Redite:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L29-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Soma:Umanis",
+      "name": "Kelapa",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Suka membantu orang yang disetujuinya"
+      ],
+      "cautionPhrases": [
+        "namun memiliki kegemaran mengembara dan berdebat"
+      ],
+      "ambiguousPhrases": [
+        "Suka membantu orang yang disetujuinya"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Suka membantu orang yang disetujuinya",
+          "rationale": "Membantu adalah tindakan prososial dengan syarat persetujuan.",
+          "limitations": "Tidak menganggap dukungan berlaku untuk semua orang.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L30-COLL-01",
+          "lintangId": "lintang:Soma:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L30-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "berdebat",
+          "rationale": "Debat bisa pertukaran gagasan atau perselisihan.",
+          "limitations": "Tidak cukup untuk support/caution komunikasi.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L30-COMM-02",
+          "lintangId": "lintang:Soma:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L30-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Anggara:Paing",
+      "name": "Yuyu",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "suka menolong orang yang disukai"
+      ],
+      "cautionPhrases": [
+        "namun cenderung serakah terhadap apa yang dilihat dan mudah menyesal setelah bertindak emosional"
+      ],
+      "ambiguousPhrases": [
+        "Rezekinya lancar"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "collaborating",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "suka menolong orang yang disukai",
+          "rationale": "Menolong mendukung hipotesis saling membantu yang selektif.",
+          "limitations": "Tidak mengekstrapolasi ke semua rekan.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L31-COLL-01",
+          "lintangId": "lintang:Anggara:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L31-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "managing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Rezekinya lancar",
+          "rationale": "Keberuntungan material bukan kemampuan mengelola sumber daya.",
+          "limitations": "Tidak membuat prediksi keberhasilan finansial.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L31-MAN-02",
+          "lintangId": "lintang:Anggara:Paing",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L31-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Buda:Pon",
+      "name": "Lumbung",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat rajin dalam bekerja"
+      ],
+      "cautionPhrases": [
+        "namun mudah tersinggung jika merasa tidak dihargai"
+      ],
+      "ambiguousPhrases": [
+        "memiliki rezeki yang baik",
+        "dicintai banyak orang"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Sangat rajin dalam bekerja",
+          "rationale": "Aktivitas bekerja disebut eksplisit.",
+          "limitations": "Bukan bukti ketuntasan/kualitas atau konsistensi yang terukur.",
+          "existingEvidenceId": null,
+          "facets": [
+            "work_diligence"
+          ],
+          "mappingId": "DRAFT-G6B4-L32-EXEC-01",
+          "lintangId": "lintang:Buda:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L32-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "dicintai banyak orang",
+          "rationale": "Disukai orang lain belum menunjukkan kerja bersama.",
+          "limitations": "Tidak dipakai untuk Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L32-COLL-02",
+          "lintangId": "lintang:Buda:Pon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L32-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Wraspati:Wage",
+      "name": "Kumba",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat cerdas dalam memikirkan solusi masalah"
+      ],
+      "cautionPhrases": [
+        "namun cenderung pendendam jika merasa disalahi"
+      ],
+      "ambiguousPhrases": [
+        "Memiliki angan-angan tinggi",
+        "Sangat cerdas dalam memikirkan solusi masalah"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "planning",
+          "kind": "support",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "Sangat cerdas dalam memikirkan solusi masalah",
+          "rationale": "Perumusan solusi memberi hipotesis perencanaan pemecahan masalah.",
+          "limitations": "Tidak menyebut langkah, jadwal, atau organisasi; bisa kecakapan analitis saja.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L33-PLAN-01",
+          "lintangId": "lintang:Wraspati:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L33-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Memiliki angan-angan tinggi",
+          "rationale": "Aspirasi bukan kegiatan mengarahkan orang.",
+          "limitations": "Tidak menjadi support Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L33-DIR-02",
+          "lintangId": "lintang:Wraspati:Wage",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L33-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Sukra:Kliwon",
+      "name": "Udang",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "sangat ahli dalam mengarang atau berdiplomasi",
+        "Memiliki pengaruh besar dan dicintai orang"
+      ],
+      "cautionPhrases": [],
+      "ambiguousPhrases": [
+        "Memiliki pengaruh besar dan dicintai orang",
+        "sukses biasanya datang saat usia dewasa"
+      ],
+      "cautionNote": "Tidak ada caution eksplisit yang dicatat dari teks ini; bukan jaminan bebas risiko.",
+      "mappings": [
+        {
+          "dimension": "communicating",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "sangat ahli dalam mengarang atau berdiplomasi",
+          "rationale": "Mengarang/diplomasi menyebut ekspresi pesan secara eksplisit.",
+          "limitations": "Tidak mengubah tafsir kesuksesan menjadi klaim kemampuan aktual.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L34-COMM-01",
+          "lintangId": "lintang:Sukra:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L34-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Memiliki pengaruh besar dan dicintai orang",
+          "rationale": "Pengaruh tidak menjelaskan tindakan mengarahkan aktivitas.",
+          "limitations": "Tidak menaikkan popularitas menjadi Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L34-DIR-02",
+          "lintangId": "lintang:Sukra:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L34-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "collaborating",
+          "kind": "ambiguous",
+          "decision": "AMBIGU",
+          "phrase": "Memiliki pengaruh besar dan dicintai orang",
+          "rationale": "Dicintai tidak menyebut kontribusi tim.",
+          "limitations": "Frasa sama dengan usulan directing; saling bergantung.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L34-COLL-03",
+          "lintangId": "lintang:Sukra:Kliwon",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L34-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    },
+    {
+      "lintangId": "lintang:Saniscara:Umanis",
+      "name": "Begoong",
+      "sourceReference": {
+        "file": "lib/data.ts",
+        "exportName": "dataLintang",
+        "field": "penjelasan"
+      },
+      "relevantPhrases": [
+        "Sangat terampil dalam segala pekerjaan dan berwawasan luas"
+      ],
+      "cautionPhrases": [
+        "namun bicaranya tajam dan sering mencampuri urusan orang lain"
+      ],
+      "ambiguousPhrases": [
+        "Berani dalam bertindak"
+      ],
+      "cautionNote": "Konteks dipertahankan utuh; tidak dinilai sebagai penalti atau konflik otomatis.",
+      "mappings": [
+        {
+          "dimension": "executing",
+          "kind": "support",
+          "decision": "DIDUKUNG TEKSTUAL",
+          "phrase": "Sangat terampil dalam segala pekerjaan dan berwawasan luas",
+          "rationale": "Teks eksplisit mengaitkan keterampilan dengan pekerjaan.",
+          "limitations": "Ungkapan segala pekerjaan bersifat luas, tidak bukti semua kompetensi.",
+          "existingEvidenceId": null,
+          "facets": [
+            "task_skill"
+          ],
+          "mappingId": "DRAFT-G6B4-L35-EXEC-01",
+          "lintangId": "lintang:Saniscara:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L35-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "communicating",
+          "kind": "caution",
+          "decision": "PERLU INTERPRETASI",
+          "phrase": "bicaranya tajam dan sering mencampuri urusan orang lain",
+          "rationale": "Konteks ucapan dan intervensi relasi relevan untuk komunikasi.",
+          "limitations": "Tajam dapat berarti kritis; bukan diskualifikasi atau nilai minus otomatis.",
+          "existingEvidenceId": "C-COMM-04",
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L35-COMM-02",
+          "lintangId": "lintang:Saniscara:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L35-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        },
+        {
+          "dimension": "directing",
+          "kind": "ambiguous",
+          "decision": "TIDAK DIDUKUNG",
+          "phrase": "Berani dalam bertindak",
+          "rationale": "Keberanian tidak menyebut kemampuan memimpin.",
+          "limitations": "Tidak dipakai sebagai support Leader.",
+          "existingEvidenceId": null,
+          "facets": [],
+          "mappingId": "DRAFT-G6B4-L35-DIR-03",
+          "lintangId": "lintang:Saniscara:Umanis",
+          "sourceReference": {
+            "file": "lib/data.ts",
+            "exportName": "dataLintang",
+            "field": "penjelasan"
+          },
+          "dependencyGroup": "DRAFT-G6B4-L35-SOURCE",
+          "provenanceStatus": "missing",
+          "culturalReviewStatus": "pending",
+          "experimentalApprovalStatus": "draft_pending",
+          "active": false
+        }
+      ],
+      "provenanceStatus": "missing",
+      "culturalReviewStatus": "pending",
+      "experimentalApprovalStatus": "draft_pending"
+    }
+  ]
+}
