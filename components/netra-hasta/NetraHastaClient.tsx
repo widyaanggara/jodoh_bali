@@ -20,6 +20,7 @@ import {
   type PalmCaptureArtifacts,
 } from "@/lib/netra-hasta/palm-capture-state";
 import type { ScanMode } from "@/lib/netra-hasta/types";
+import { createPalmProductSnapshot, type PalmProductSnapshot } from "@/lib/netra-hasta/product-flow";
 import {
   calculatePalmRoiGeometry,
   extractPalmRoi,
@@ -29,7 +30,12 @@ import {
   type PalmCapture,
 } from "@/lib/netra-hasta/palm-preprocessing";
 
-export default function NetraHastaClient() {
+interface NetraHastaClientProps {
+  productMode?: boolean;
+  onPalmSummaryChange?: (snapshot: PalmProductSnapshot | null) => void;
+}
+
+export default function NetraHastaClient({ productMode = false, onPalmSummaryChange }: NetraHastaClientProps = {}) {
   const [hasConsented, setHasConsented] = useState(false);
   const [mode, setMode] = useState<ScanMode>("hand");
   const [palmArtifacts, setPalmArtifacts] = useState(
@@ -59,7 +65,12 @@ export default function NetraHastaClient() {
     capture: palmCapture,
   });
 
+  useEffect(() => {
+    if (palmCapture) onPalmSummaryChange?.(createPalmProductSnapshot(palmCapture, palmLineExtraction));
+  }, [palmCapture, palmLineExtraction, onPalmSummaryChange]);
+
   const handleConsent = () => {
+    onPalmSummaryChange?.(null);
     setHasConsented(true);
     void camera.startCamera();
   };
@@ -77,7 +88,8 @@ export default function NetraHastaClient() {
     setPalmArtifacts(clearedArtifacts);
     setCaptureError(null);
     setHasCaptureConsent(false);
-  }, []);
+    onPalmSummaryChange?.(null);
+  }, [onPalmSummaryChange]);
 
   useEffect(() => {
     const clearWhenPageLeaves = () => {
@@ -95,6 +107,11 @@ export default function NetraHastaClient() {
       );
     };
   }, [clearPalmCapture]);
+
+  const handlePalmRetry = () => {
+    clearPalmCapture();
+    if (productMode && hasConsented) void camera.startCamera();
+  };
 
   const handleModeChange = (nextMode: ScanMode) => {
     clearPalmCapture();
@@ -217,6 +234,7 @@ export default function NetraHastaClient() {
         );
         palmArtifactsRef.current = nextArtifacts;
         setPalmArtifacts(nextArtifacts);
+        if (productMode) camera.stopCamera();
       } catch {
         setCaptureError("Gambar telapak gagal diproses. Silakan coba lagi.");
       } finally {
@@ -268,6 +286,7 @@ export default function NetraHastaClient() {
             </section>
           )}
 
+          {(!productMode || !palmCapture) && (
           <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
             <div className="min-w-0 space-y-4">
               <CameraStage
@@ -353,6 +372,7 @@ export default function NetraHastaClient() {
               )}
             </aside>
           </div>
+          )}
 
           {mode === "hand" && palmCapture && palmArtifacts.capturedQualityMetrics && (
             <PalmPreviewPanel
@@ -360,7 +380,7 @@ export default function NetraHastaClient() {
               capture={palmCapture}
               quality={palmArtifacts.capturedQualityMetrics}
               lineExtraction={palmLineExtraction}
-              onRetry={clearPalmCapture}
+              onRetry={handlePalmRetry}
               onDelete={clearPalmCapture}
             />
           )}

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import NetraHastaClient from "@/components/netra-hasta/NetraHastaClient";
+import NetraHastaFlow from "@/components/netra-hasta/NetraHastaFlow";
 
 export const metadata: Metadata = {
   title: "Netra-Hasta AI | Metemu",
-  description: "Prototipe pemindaian landmark tangan dan wajah secara lokal di browser dengan MediaPipe.",
+  description: "Isi data kelahiran, pindai telapak, dan lihat hasil dasar kalender Bali serta kandidat lipatan secara lokal tanpa login.",
 };
 
 export default function NetraHastaPage() {
@@ -25,13 +25,13 @@ export default function NetraHastaPage() {
               Metemu <span className="italic font-normal text-[#9f3e2f]">Netra-Hasta AI</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">
-              Pilih Hasta Rekha untuk melihat 21 titik tangan atau Rupa Lakshana untuk memetakan 478 landmark dan geometri wajah secara real-time. Kandidat garis telapak masih eksperimental dan belum mengenali empat Rekha.
+              Isi data kelahiran, pindai telapak, lalu lihat hasil dasar tanpa login. Kalender Bali menggunakan engine existing; kandidat lipatan masih eksperimental dan belum mengenali empat Rekha.
             </p>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-8 md:px-6 md:py-12">
-          <NetraHastaClient />
+          <NetraHastaFlow />
         </section>
 
         <section className="border-t border-[#c59b3d]/15 bg-white px-5 py-10">
