@@ -1,6 +1,8 @@
 // Explicit integration test. Creates only temporary synthetic accounts and optional records.
 // No credentials or tokens are written to disk or printed. Never runs in npm build.
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import { randomBytes, randomUUID } from "node:crypto";
 import { loadNetraModule } from "../tests/helpers/load-netra-typescript.mjs";
 
@@ -11,11 +13,14 @@ const base = process.env.METEMU_LIVE_BASE_URL ?? "http://127.0.0.1:3027";
 if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) throw new Error("Only a local test application is allowed.");
 const useDatabase = process.argv.includes("--database");
 const useBrowser = process.argv.includes("--browser");
+const useDetail = process.argv.includes("--detail");
+const screenshots = process.argv.includes("--screenshots") ? path.resolve("coverage/r7.2") : null;
+if (screenshots) fs.mkdirSync(screenshots, { recursive: true });
 const accounts = [];
 const records = [];
 const checks = [];
 const report = { project: firebaseConfig.projectId, syntheticAccountsOnly: true, databaseRequested: useDatabase, checks, cleanup: [], browser: null };
-const sample = { birthDate: "2005-07-27", birthTime: "06:00", rekhaStatus: "uncertain", consentAccepted: true, consentVersion: history.HISTORY_CONSENT };
+const sample = { birthDate: "2005-07-27", birthTime: "06:00", rekhaStatus: "uncertain", consentAccepted: true, consentVersion: history.HISTORY_CONSENT, ...(useDetail ? { matchStartYear: 2000, matchEndYear: 2005 } : {}) };
 const db = "https://firestore.googleapis.com/v1/projects/" + firebaseConfig.projectId + "/databases/(default)/documents";
 async function google(action, body) {
   const r = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:" + action + "?key=" + firebaseConfig.apiKey, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
@@ -83,11 +88,24 @@ async function browserTest(account) {
     check("browser_login_success_httpOnly_cookie_and_synthetic_result_handoff");
     assert.equal(await evaluate('Array.from(document.querySelectorAll("button")).find(b=>b.textContent==="Simpan hasil").disabled'), true);
     check("browser_save_requires_explicit_consent");
+    if (useDetail) {
+      await until('document.querySelector("#netra-match-startYear")');
+      await fill("netra-match-startYear", "2000"); await fill("netra-match-endYear", "2005");
+      await evaluate('Array.from(document.querySelectorAll("button")).find(b=>b.textContent==="Terapkan rentang").click()');
+      await until('document.body.innerText.includes("2000-02-07")');
+      assert(await evaluate('document.body.innerText.includes("Pal Sri Sedana") && document.body.innerText.includes("Zodiak") && document.body.innerText.includes("3 hasil teratas")'));
+      check("browser_full_otonan_top_three_and_range");
+    }
     const widths = [];
     for (const width of [320, 390, 1440]) {
       await send("Emulation.setDeviceMetricsOverride", { width, height: 1000, deviceScaleFactor: 1, mobile: width !== 1440 }); await pause(150);
       const size = await evaluate("({width:innerWidth,scroll:document.documentElement.scrollWidth})");
       assert(size.scroll <= size.width, "Detail layout overflow"); widths.push(size);
+      if (screenshots) {
+        await evaluate("window.scrollTo(0,0)"); await pause(150);
+        const shot = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true });
+        fs.writeFileSync(path.join(screenshots, "detail-" + width + ".png"), Buffer.from(shot.data, "base64"));
+      }
     }
     if (useDatabase) {
       await evaluate('document.querySelector("input[type=checkbox]").click()');
@@ -182,6 +200,15 @@ try {
     assert.equal(savedResponse.status, 201, "API save with consent must succeed");
     const saved = (await savedResponse.json()).record; records.push({ account: a, id: saved.id });
     assert.equal(saved.ownerUid, a.uid); assert.equal(saved.wuku, "Sinta");
+    if (useDetail) {
+      assert.equal(saved.schemaVersion, "netra-history-v2");
+      const frozen = JSON.parse(saved.detailSnapshot);
+      assert.deepEqual(frozen.matches.range, { startYear: 2000, endYear: 2005 });
+      assert.equal(frozen.matches.top.length, 3);
+      const reopened = await api("/api/netra-hasta/history/" + saved.id, { cookie: a.cookie });
+      assert.equal((await reopened.json()).record.detailSnapshot, saved.detailSnapshot);
+      check("live_detail_v2_exact_snapshot_readback_and_top_three");
+    }
     const own = await api("/api/netra-hasta/history/" + saved.id, { cookie: a.cookie }); assert.equal(own.status, 200);
     const foreign = await api("/api/netra-hasta/history/" + saved.id, { cookie: b.cookie }); assert.equal(foreign.status, 404);
     const foreignDelete = await api("/api/netra-hasta/history/" + saved.id, { method: "DELETE", cookie: b.cookie }); assert.equal(foreignDelete.status, 404);

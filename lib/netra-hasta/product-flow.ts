@@ -1,4 +1,5 @@
 import { getBalineseDate } from "../balinese-calendar";
+import type { DetailSnapshot } from "./detail-result";
 import type { BalineseDate } from "../types";
 import { PALM_LINE_RUNTIME_VERSION } from "./palm-line-runtime";
 import { PALM_ROI_ALGORITHM_VERSION } from "./palm-roi";
@@ -69,6 +70,8 @@ export interface RekhaClassResult {
 }
 export interface CombinedNetraResult {
   schemaVersion: typeof NETRA_RESULT_VERSION;
+  /** Optional full-detail view/snapshot contract; never contains camera pixels. */
+  detail?: DetailSnapshot;
   birth: BirthInput & { timeBasis: "birth-local-civil" | "unknown-birth-time"; dayBoundary: "06:00" };
   otonan: {
     origin: "existing-balinese-calendar";

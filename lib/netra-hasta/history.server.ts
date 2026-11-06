@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
+import { decodeDetailSnapshot, encodeDetailSnapshot } from "./detail-result";
 import { firebaseConfig } from "../../firebase/config";
 import { AccountError, type VerifiedIdentity } from "./firebase-identity.server";
-import { HISTORY_CONSENT, HISTORY_SCHEMA, HISTORY_FIELDS, historyFields, validateHistoryInput, type HistoryRecord } from "./history";
+import { HISTORY_CONSENT, HISTORY_SCHEMA, DETAIL_HISTORY_SCHEMA, HISTORY_FIELDS, historyFields, validateHistoryInput, type HistoryRecord } from "./history";
 
 type FirestoreDocument = { name?: string; fields?: Record<string, { stringValue?: string; timestampValue?: string }> };
 const database = "projects/" + firebaseConfig.projectId + "/databases/(default)";
@@ -37,10 +38,12 @@ function decode(document: FirestoreDocument, identity: VerifiedIdentity): Histor
   const id = document.name.slice(prefix.length);
   assertRecordId(id);
   const keys = Object.keys(document.fields ?? {});
-  if (keys.length !== HISTORY_FIELDS.length || keys.some((key) => !(HISTORY_FIELDS as readonly string[]).includes(key))) throw new AccountError(400, "invalid_record", "Field riwayat tidak diizinkan.");
+  const isDetail = document.fields?.schemaVersion?.stringValue === DETAIL_HISTORY_SCHEMA;
+  const allowed: readonly string[] = isDetail ? [...HISTORY_FIELDS, "detailSnapshot"] : HISTORY_FIELDS;
+  if (keys.length !== allowed.length || keys.some((key) => !allowed.includes(key))) throw new AccountError(400, "invalid_record", "Field riwayat tidak diizinkan.");
   const fields: Record<string, string> = {};
   for (const [key, value] of Object.entries(document.fields ?? {})) fields[key] = value.stringValue ?? value.timestampValue ?? "";
-  if (fields.ownerUid !== identity.uid || fields.schemaVersion !== HISTORY_SCHEMA || fields.consentVersion !== HISTORY_CONSENT ||
+  if (fields.ownerUid !== identity.uid || ![HISTORY_SCHEMA, DETAIL_HISTORY_SCHEMA].includes(fields.schemaVersion) || fields.consentVersion !== HISTORY_CONSENT ||
       fields.rekhaClasses !== "unsupported" || fields.algorithmVersion !== "dark-ridge-v1" || fields.calendarVersion !== "calendar-web-8d154cb" || fields.rekhaSource !== "browser-automatic-unvalidated" || !Number.isFinite(Date.parse(fields.savedAt))) {
     throw new AccountError(403, "invalid_record", "Format atau pemilik riwayat tidak valid.");
   }
@@ -48,7 +51,12 @@ function decode(document: FirestoreDocument, identity: VerifiedIdentity): Histor
   try { input = validateHistoryInput({ birthDate: fields.birthDate, birthTime: fields.birthTime, rekhaStatus: fields.rekhaStatus, consentAccepted: true, consentVersion: fields.consentVersion }); }
   catch { throw new AccountError(400, "invalid_record", "Data riwayat tidak valid."); }
   // Recompute culture/calendar labels from the unchanged engine, not a user-supplied narrative.
-  return { ...historyFields(input, identity.uid), id, savedAt: fields.savedAt };
+  let detailSnapshot: string | undefined;
+  if (isDetail) {
+    try { detailSnapshot = encodeDetailSnapshot(decodeDetailSnapshot(fields.detailSnapshot, { date: fields.birthDate, time: fields.birthTime })); }
+    catch { throw new AccountError(400, "invalid_record", "Snapshot detail riwayat tidak valid atau versi engine tidak didukung."); }
+  }
+  return { ...historyFields(input, identity.uid), schemaVersion: isDetail ? DETAIL_HISTORY_SCHEMA : HISTORY_SCHEMA, id, savedAt: fields.savedAt, ...(detailSnapshot ? { detailSnapshot } : {}) };
 }
 export async function getHistory(identity: VerifiedIdentity, id: string, fetcher: typeof fetch = fetch) {
   requireEnabled(); assertRecordId(id);
