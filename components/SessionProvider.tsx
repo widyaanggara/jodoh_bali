@@ -39,7 +39,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
 
     // Initial load
     useEffect(() => {
-        startNewSession();
+        const initialize = setTimeout(startNewSession, 0);
         resetInactivityTimer();
 
         // Event listeners for activity tracking
@@ -51,6 +51,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
         window.addEventListener('touchstart', handleActivity);
 
         return () => {
+            clearTimeout(initialize);
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
             window.removeEventListener('mousedown', handleActivity);
             window.removeEventListener('keydown', handleActivity);
@@ -63,7 +64,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
         // Append to local Quick Pick list (keep last 3 unique)
         if (inputDate || inputDate2) {
             setRecentDates(prev => {
-                let newRecent = [...prev];
+                const newRecent = [...prev];
                 if (inputDate && !newRecent.includes(inputDate)) newRecent.unshift(inputDate);
                 if (inputDate2 && !newRecent.includes(inputDate2)) newRecent.unshift(inputDate2);
                 return newRecent.slice(0, 3);

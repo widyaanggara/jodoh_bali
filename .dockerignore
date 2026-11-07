@@ -2,3 +2,13 @@ node_modules
 .next
 .git
 .env*
+coverage
+dataset
+backend
+security-audit
+app/dev
+components/netra-hasta/experiments
+lib/netra-hasta/experiments
+*.onnx
+*.pem
+*service-account*.json
