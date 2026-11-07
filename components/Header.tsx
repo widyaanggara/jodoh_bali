@@ -43,6 +43,7 @@ export default function Header() {
             ]
         },
         { name: 'Samyoga', href: '/pawongan-sinergi' },
+        { name: 'Netra Hasta', href: '/netra-hasta' },
         { name: 'Tentang', href: '/about' },
     ];
 
@@ -62,7 +63,7 @@ export default function Header() {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <div className="hidden lg:flex items-center gap-5 xl:gap-8 text-sm font-medium">
                     {navLinks.map((link) => (
                         link.children ? (
                             <div key={link.name} className="relative group" onMouseLeave={() => setActiveDropdown(null)}>
@@ -120,8 +121,10 @@ export default function Header() {
                     {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="cursor-pointer md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+                        className="cursor-pointer lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
                         aria-label="Toggle menu"
+                        aria-expanded={isMenuOpen}
+                        aria-controls="metemu-mobile-navigation"
                     >
                         <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
                         <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
@@ -131,7 +134,7 @@ export default function Header() {
             </nav>
 
             {/* Mobile Navigation */}
-            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+            <div id="metemu-mobile-navigation" inert={!isMenuOpen} className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[800px] opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
                 <div className="px-6 flex flex-col gap-2 pt-4 border-t border-accent-gold/10 bg-white/95 backdrop-blur-sm">
                     {navLinks.map((link) => (
                         link.children ? (
