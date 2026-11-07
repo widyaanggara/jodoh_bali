@@ -1,6 +1,8 @@
 "use client";
 
 import NetraIcon from "./NetraIcon";
+import RekhaCaptureEditor from "./RekhaCaptureEditor";
+import type { RekhaClassResult } from "@/lib/netra-hasta/product-flow";
 
 import type { PalmCapture } from "@/lib/netra-hasta/palm-preprocessing";
 import type { PalmQualitySnapshot } from "@/lib/netra-hasta/image-quality";
@@ -13,6 +15,7 @@ interface PalmPreviewPanelProps {
   capture: PalmCapture;
   quality: PalmQualitySnapshot;
   lineExtraction: PalmLineLiveState;
+  onRekhaReview?: (captureId: number, classes: RekhaClassResult[]) => void;
   onRetry: () => void;
   onDelete: () => void;
 }
@@ -21,6 +24,7 @@ export default function PalmPreviewPanel({
   capture,
   quality,
   lineExtraction,
+  onRekhaReview,
   onRetry,
   onDelete,
 }: PalmPreviewPanelProps) {
@@ -48,6 +52,7 @@ export default function PalmPreviewPanel({
       </div>
 
       <PalmLineResultPanel state={lineExtraction} />
+      {onRekhaReview && <RekhaCaptureEditor key={capture.capturedAt} capture={capture} extraction={lineExtraction} onReview={onRekhaReview} />}
 
       <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)]">
         <PalmQualityPanel quality={quality} source="captured" />

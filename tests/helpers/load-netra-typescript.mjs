@@ -15,9 +15,13 @@ export function loadNetraModule(relativePath) {
   }).outputText;
   const loaded = { exports: {} };
   cache.set(filename, loaded);
-  const localRequire = (name) => name.startsWith("@/") ? loadNetraModule(name.slice(2) + ".ts") : name.startsWith(".")
-    ? loadNetraModule(path.relative(projectRoot, path.resolve(path.dirname(filename), name + ".ts")))
-    : runtimeRequire(name);
+  const localRequire = (name) => {
+    if (!name.startsWith("@/") && !name.startsWith(".")) return runtimeRequire(name);
+    const base = name.startsWith("@/") ? path.resolve(projectRoot, name.slice(2)) : path.resolve(path.dirname(filename), name);
+    const resolved = [base + ".ts", base + ".tsx"].find((file) => fs.existsSync(file));
+    if (!resolved) throw new Error("Local TypeScript module not found: " + name);
+    return loadNetraModule(path.relative(projectRoot, resolved));
+  };
   new Function("exports", "require", "module", compiled)(loaded.exports, localRequire, loaded);
   return loaded.exports;
 }

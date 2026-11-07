@@ -6,13 +6,16 @@ import { useCallback, useState } from "react";
 import NetraHastaClient from "./NetraHastaClient";
 import NetraHastaBasicResult from "./NetraHastaBasicResult";
 import { useNetraHastaProduct } from "./NetraHastaProductProvider";
-import { getWitaToday, validateBirthInput, type BirthErrors, type PalmProductSnapshot } from "@/lib/netra-hasta/product-flow";
+import { getWitaToday, validateBirthInput, type BirthErrors, type PalmProductSnapshot, type RekhaClassResult } from "@/lib/netra-hasta/product-flow";
 
 export default function NetraHastaFlow() {
   const { state, dispatch } = useNetraHastaProduct();
   const [errors, setErrors] = useState<BirthErrors>({});
   const onPalmSummaryChange = useCallback((snapshot: PalmProductSnapshot | null) => {
     dispatch({ type: "capture", snapshot });
+  }, [dispatch]);
+  const onRekhaReview = useCallback((captureId: number, classes: RekhaClassResult[]) => {
+    dispatch({ type: "review-rekha", captureId, classes });
   }, [dispatch]);
   const reset = () => { dispatch({ type: "reset" }); setErrors({}); };
 
@@ -75,7 +78,7 @@ export default function NetraHastaFlow() {
             <button type="button" onClick={reset} className="cursor-pointer rounded-full border border-stone-300 px-4 py-2 text-sm font-bold">Ubah data / mulai ulang</button>
           </div>
           {state.result && <NetraHastaBasicResult result={state.result} onReset={reset} />}
-          <NetraHastaClient productMode onPalmSummaryChange={onPalmSummaryChange} />
+          <NetraHastaClient productMode onPalmSummaryChange={onPalmSummaryChange} onRekhaReview={onRekhaReview} />
         </>
       )}
       <p className="netra-footnote">Interpretasi kalender bersifat simbolis berdasarkan data tradisional existing, bukan asesmen ilmiah tentang kesehatan, nasib, atau karakter. Foto dan hasil sementara dibersihkan saat tab ditinggalkan atau halaman ditutup.</p>

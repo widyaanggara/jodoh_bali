@@ -181,3 +181,33 @@
 }
 
 .netra-camera :where(button, select):focus-visible { outline-color: #f3c969; }
+
+/* Four Rekha review: same original ROI, no additional image transform. */
+.netra-rekha-editor { margin-top: 24px; padding: 24px; border: 1px solid #ded7cf; border-radius: 18px; background: #fff; }
+.netra-rekha-editor header > p { max-width: 80ch; margin-top: 12px; font-size: 13px; line-height: 1.85; color: var(--netra-muted); }
+.netra-rekha-workbench { display: grid; grid-template-columns: minmax(0,1fr) minmax(240px,.8fr); gap: 24px; margin-top: 24px; align-items: start; }
+.netra-rekha-photo { position: relative; width: 100%; max-width: 480px; margin: auto; background: #292522; }
+.netra-rekha-photo > canvas { display: block; width: 100%; height: 100%; object-fit: contain; }
+.netra-rekha-photo > svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.netra-rekha-photo svg.is-drawing { cursor: crosshair; }
+.netra-rekha-photo svg :where(polyline, circle) { pointer-events: none; }
+.netra-rekha-controls { display: grid; gap: 12px; min-width: 0; }
+.netra-rekha-controls label { font-size: 12px; font-weight: 600; }
+.netra-rekha-controls :where(select,input,button) { width: 100%; min-width: 0; min-height: 44px; border: 1px solid #d8d3cc; border-radius: 10px; padding: 10px 12px; background: #fff; font-size: 12px; line-height: 1.6; }
+.netra-rekha-controls button { font-weight: 600; color: var(--netra-red); }
+.netra-rekha-controls button:disabled { color: #78716c; background: #f5f5f4; opacity: .65; }
+.netra-rekha-controls button[aria-pressed=true] { border-color: var(--netra-red); background: #fdf4f2; }
+.netra-rekha-drawing { display: grid; gap: 12px; border-block: 1px solid #eee7df; padding-block: 16px; }
+.netra-rekha-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 11px; }
+.netra-rekha-legend li { display: inline-flex; gap: 5px; align-items: center; }
+.netra-rekha-legend span { width: 12px; height: 3px; }
+.netra-rekha-status { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-top: 20px; }
+.netra-rekha-status > li { padding: 16px; background: #f8f7f4; border: 1px solid #e9e4dd; border-radius: 12px; min-width: 0; }
+.netra-rekha-status strong { font-size: 15px; display: block; }
+.netra-rekha-status span { display: block; font-size: 12px; font-weight: 600; color: var(--netra-red); margin-top: 6px; }
+.netra-rekha-status p { font-size: 11px; line-height: 1.8; color: var(--netra-muted); margin-top: 8px; }
+@media(max-width:767px) {
+  .netra-rekha-editor { padding: 16px; }
+  .netra-rekha-workbench { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  .netra-rekha-status { grid-template-columns: minmax(0,1fr); }
+}

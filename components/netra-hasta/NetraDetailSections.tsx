@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import RekhaStatusList from "./RekhaStatusList";
+import type { RekhaClassResult } from "@/lib/netra-hasta/product-flow";
 import type { DetailSnapshot } from "@/lib/netra-hasta/detail-result";
 import { getLabelRezeki } from "@/lib/pal-sri-sedana";
 import { UNKNOWN_BIRTH_TIME_NOTICE } from "@/lib/netra-hasta/product-flow";
@@ -9,8 +11,8 @@ function Section({ title, children, open = false }: { title: string; children: R
 function Info({ label, value }: { label: string; value: ReactNode }) {
   return <div className="netra-info min-w-0"><dt className="text-xs text-stone-500">{label}</dt><dd className="mt-1 break-words font-medium">{value}</dd></div>;
 }
-export default function NetraDetailSections({ detail, candidateStatus, candidateCount, saved = false }: {
-  detail: DetailSnapshot; candidateStatus: "automatic_candidate" | "uncertain"; candidateCount?: number; saved?: boolean;
+export default function NetraDetailSections({ detail, candidateStatus, candidateCount, rekhaClasses, saved = false }: {
+  detail: DetailSnapshot; candidateStatus: "automatic_candidate" | "uncertain"; candidateCount?: number; rekhaClasses?: RekhaClassResult[]; saved?: boolean;
 }) {
   const { calendar: c, zodiac: z, matches, pal, birth } = detail;
   return <div className="netra-details">
@@ -69,7 +71,7 @@ export default function NetraDetailSections({ detail, candidateStatus, candidate
     </Section>
     <Section title="Analisis Rekha dan statusnya" open>
       <p>{candidateStatus === "automatic_candidate" ? (candidateCount === undefined ? "Kandidat lipatan otomatis tercatat saat scan." : candidateCount + " segmen kandidat otomatis tersedia.") : "Kandidat lipatan belum dapat dipastikan atau detektor memilih abstain."} Sumber: browser, dark-ridge-v1; belum tervalidasi.</p>
-      <ul className="netra-rekha-grid grid gap-3 sm:grid-cols-2">{["Heart", "Head", "Life", "Fate"].map((name) => <li key={name} className="rounded-xl bg-stone-50 p-3"><strong>{name}</strong> · belum didukung{ name === "Fate" ? ". Model riset existing juga belum memiliki kelas Fate." : ". Browser belum mengklasifikasikan kelas ini dan belum ada hasil pengguna yang tervalidasi."}</li>)}</ul>
+      {rekhaClasses ? <><RekhaStatusList classes={rekhaClasses} /><p className="text-xs text-stone-600">Status pengguna hanya tersedia untuk sesi ini, tidak disimpan ke riwayat. Belum ada tafsir empat Rekha.</p></> : <ul className="netra-rekha-grid grid gap-3 sm:grid-cols-2">{["Heart", "Head", "Life", "Fate"].map((name) => <li key={name} className="rounded-xl bg-stone-50 p-3"><strong>{name}</strong> · belum didukung{ name === "Fate" ? ". Model riset existing juga belum memiliki kelas Fate." : ". Browser belum mengklasifikasikan kelas ini dan belum ada hasil pengguna yang tervalidasi."}</li>)}</ul>}
       <p className="text-xs text-stone-600">Tidak ada garis manual yang diklaim otomatis, gambar atau koordinat yang disimpan, maupun tafsir empat Rekha yang dibuat.</p>
     </Section>
   </div>;

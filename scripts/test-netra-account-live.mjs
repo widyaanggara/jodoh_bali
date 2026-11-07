@@ -14,6 +14,7 @@ if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) throw new Error("Only
 const useDatabase = process.argv.includes("--database");
 const useBrowser = process.argv.includes("--browser");
 const useDetail = process.argv.includes("--detail");
+const useRekha = process.argv.includes("--rekha");
 const screenshots = process.argv.includes("--screenshots") ? path.resolve("coverage/r7.2") : null;
 if (screenshots) fs.mkdirSync(screenshots, { recursive: true });
 const accounts = [];
@@ -74,6 +75,16 @@ async function browserTest(account) {
     // Synthetic metadata fixture exercises login handoff only. No camera inference is claimed.
     await evaluate("(()=>{const el=document.querySelector('main');let f=el[Object.keys(el).find(k=>k.startsWith('__reactFiber'))];while(f){const v=f.memoizedProps?.value;if(v?.state?.birth&&typeof v.dispatch==='function'){v.dispatch({type:'capture',snapshot:{captureId:111,width:241,height:338,qualityMode:'normal',qualityWarnings:[],phase:'ready',candidateStatus:'uncertain',candidateCount:0,reason:'Synthetic integration fixture'}});return;}f=f.return;}throw new Error('Product context not found');})()");
     await until('document.querySelector("#netra-basic-heading")');
+    if (useRekha) {
+      const review = loadNetraModule("lib/netra-hasta/rekha-review.ts");
+      const classes = review.summarizeRekha({
+        heart: { name: "heart", status: "user_confirmed", points: [] },
+        head: { name: "head", status: "uncertain", points: [] },
+        fate: { name: "fate", status: "user_drawn", points: [] },
+      });
+      await evaluate("(()=>{let f=document.querySelector('main')[Object.keys(document.querySelector('main')).find(k=>k.startsWith('__reactFiber'))];while(f){const v=f.memoizedProps?.value;if(v?.state?.birth&&typeof v.dispatch==='function'){v.dispatch({type:'review-rekha',captureId:111,classes:" + JSON.stringify(classes) + "});return;}f=f.return;}throw new Error('Product context not found');})()");
+      await until('document.body.innerText.includes("Ditandai pengguna")');
+    }
     await evaluate('document.querySelector("a[href=\\"/netra-hasta/detail\\"]").click()');
     await until('location.pathname==="/netra-hasta/akses-detail" && document.querySelector("#netra-email") && !document.querySelector("button[type=submit]").disabled');
     await fill("netra-email", account.email); await fill("netra-password", "wrong-password-for-live-test");
@@ -86,6 +97,10 @@ async function browserTest(account) {
     assert.equal(await evaluate('document.cookie.includes("metemu_netra_session")'), false);
     assert.equal(await evaluate('Object.keys(localStorage).concat(Object.keys(sessionStorage)).some(k=>k.startsWith("firebase:authUser"))'), false);
     check("browser_login_success_httpOnly_cookie_and_synthetic_result_handoff");
+    if (useRekha) {
+      assert(await evaluate('document.body.innerText.includes("Label dikonfirmasi pengguna") && document.body.innerText.includes("Ditandai pengguna") && document.body.innerText.includes("Belum dapat dipastikan")'));
+      check("browser_rekha_user_sources_survive_login_and_detail");
+    }
     assert.equal(await evaluate('Array.from(document.querySelectorAll("button")).find(b=>b.textContent==="Simpan hasil").disabled'), true);
     check("browser_save_requires_explicit_consent");
     if (useDetail) {
@@ -115,6 +130,10 @@ async function browserTest(account) {
       const browserRecordId = href.split("/").at(-1); records.push({ account, id: browserRecordId });
       await evaluate('Array.from(document.querySelectorAll("a")).find(a=>a.textContent==="Buka hasil tersimpan").click()');
       await until('location.pathname.includes("/riwayat/") && document.body.innerText.includes("Wuku Sinta")');
+      if (useRekha) {
+        assert(await evaluate('!document.body.innerText.includes("Ditandai pengguna") && !document.body.innerText.includes("Label dikonfirmasi pengguna")'));
+        check("browser_saved_history_does_not_persist_user_rekha_or_coordinates");
+      }
       await evaluate('Array.from(document.querySelectorAll("a")).find(a=>a.textContent.includes("Kembali ke riwayat")).click()');
       await until('document.querySelector("article")');
       await evaluate('document.querySelector("article button").click()');

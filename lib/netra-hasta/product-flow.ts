@@ -1,4 +1,5 @@
 import { getBalineseDate } from "../balinese-calendar";
+import { validateRekhaSummary } from "./rekha-review";
 import type { DetailSnapshot } from "./detail-result";
 import type { BalineseDate } from "../types";
 import { PALM_LINE_RUNTIME_VERSION } from "./palm-line-runtime";
@@ -120,6 +121,7 @@ export type ProductAction =
   | { type: "edit"; field: keyof BirthInput; value: string }
   | { type: "start"; birth: BirthInput }
   | { type: "capture"; snapshot: PalmProductSnapshot | null }
+  | { type: "review-rekha"; captureId: number; classes: RekhaClassResult[] }
   | { type: "reset" };
 
 export function reduceProductState(state: ProductState, action: ProductAction): ProductState {
@@ -129,5 +131,16 @@ export function reduceProductState(state: ProductState, action: ProductAction): 
     if (!validateBirthInput(action.birth).valid) return state;
     return { draft: { ...action.birth }, birth: { ...action.birth }, result: null };
   }
-  return { ...state, result: state.birth && action.snapshot ? buildCombinedResult(state.birth, action.snapshot) : null };
+  if (action.type === "review-rekha") {
+    if (!state.result || state.result.rekha.snapshot.captureId !== action.captureId) return state;
+    const classes = validateRekhaSummary(action.classes);
+    if (!classes) return state;
+    return { ...state, result: { ...state.result, rekha: { ...state.result.rekha, classes } } };
+  }
+  const result = state.birth && action.snapshot ? buildCombinedResult(state.birth, action.snapshot) : null;
+  if (result && state.result && result.rekha.snapshot.captureId === state.result.rekha.snapshot.captureId &&
+      result.rekha.snapshot.width === state.result.rekha.snapshot.width && result.rekha.snapshot.height === state.result.rekha.snapshot.height) {
+    result.rekha.classes = state.result.rekha.classes.map((row) => ({ ...row }));
+  }
+  return { ...state, result };
 }

@@ -20,7 +20,7 @@ import {
   type PalmCaptureArtifacts,
 } from "@/lib/netra-hasta/palm-capture-state";
 import type { ScanMode } from "@/lib/netra-hasta/types";
-import { createPalmProductSnapshot, type PalmProductSnapshot } from "@/lib/netra-hasta/product-flow";
+import { createPalmProductSnapshot, type PalmProductSnapshot, type RekhaClassResult } from "@/lib/netra-hasta/product-flow";
 import {
   calculatePalmRoiGeometry,
   extractPalmRoi,
@@ -33,9 +33,10 @@ import {
 interface NetraHastaClientProps {
   productMode?: boolean;
   onPalmSummaryChange?: (snapshot: PalmProductSnapshot | null) => void;
+  onRekhaReview?: (captureId: number, classes: RekhaClassResult[]) => void;
 }
 
-export default function NetraHastaClient({ productMode = false, onPalmSummaryChange }: NetraHastaClientProps = {}) {
+export default function NetraHastaClient({ productMode = false, onPalmSummaryChange, onRekhaReview }: NetraHastaClientProps = {}) {
   const [hasConsented, setHasConsented] = useState(false);
   const [mode, setMode] = useState<ScanMode>("hand");
   const [palmArtifacts, setPalmArtifacts] = useState(
@@ -380,6 +381,7 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
               capture={palmCapture}
               quality={palmArtifacts.capturedQualityMetrics}
               lineExtraction={palmLineExtraction}
+              onRekhaReview={onRekhaReview}
               onRetry={handlePalmRetry}
               onDelete={clearPalmCapture}
             />

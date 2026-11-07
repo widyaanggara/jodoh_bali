@@ -21,7 +21,7 @@ function AvailableDetail({ result }: { result: CombinedNetraResult }) {
       <div className="grid grid-cols-2 gap-3">{(["startYear", "endYear"] as const).map((key) => <div key={key}><label htmlFor={"netra-match-" + key} className="text-xs font-bold">{key === "startYear" ? "Tahun mulai" : "Tahun akhir"}</label><input id={"netra-match-" + key} type="number" min="1900" max="2100" required value={draft[key]} onChange={(event) => setDraft((old) => ({ ...old, [key]: event.target.value }))} className="mt-1 block w-full min-w-0 rounded-xl border border-stone-300 p-2" /></div>)}</div>
       <button type="submit" className="rounded-full border border-[#9f3e2f] px-4 py-2 text-sm font-bold text-[#9f3e2f]">Terapkan rentang</button>{error && <p role="alert" className="text-sm text-red-800">{error}</p>}
     </form>
-    <NetraDetailSections detail={detail} candidateStatus={result.rekha.snapshot.candidateStatus} candidateCount={result.rekha.snapshot.candidateCount} />
+    <NetraDetailSections detail={detail} candidateStatus={result.rekha.snapshot.candidateStatus} candidateCount={result.rekha.snapshot.candidateCount} rekhaClasses={result.rekha.classes} />
     <NetraSavePanel key={result.rekha.snapshot.captureId + ":" + range.startYear + ":" + range.endYear} result={result} matchRange={range} />
     <Link href="/netra-hasta" className="inline-block underline">Kembali ke hasil dasar</Link>
   </section>;

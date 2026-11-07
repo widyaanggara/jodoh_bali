@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import RekhaStatusList from "./RekhaStatusList";
 import { UNKNOWN_BIRTH_TIME_NOTICE, type CombinedNetraResult } from "@/lib/netra-hasta/product-flow";
 
 export default function NetraHastaBasicResult({ result, onReset }: { result: CombinedNetraResult; onReset: () => void }) {
@@ -22,6 +23,7 @@ export default function NetraHastaBasicResult({ result, onReset }: { result: Com
         <p className="mt-2 text-stone-600">Heart, Head, Life, dan Fate belum diklasifikasikan oleh detektor browser. Belum tersedia tafsir Rekha.</p>
         {snapshot.qualityMode === "manual-override" && <p className="mt-2 font-medium text-amber-900">Capture manual dengan peringatan kualitas; kandidat tidak dianggap tervalidasi.</p>}
       </div>
+      <div className="mt-5"><RekhaStatusList classes={result.rekha.classes} /></div>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         <Link href="/netra-hasta/detail" prefetch={false} className="inline-flex justify-center rounded-full bg-[#9f3e2f] px-5 py-3 text-center font-bold text-white hover:bg-[#7f2f24]">Buka Ramalan Detail</Link>
         <button type="button" onClick={onReset} className="cursor-pointer rounded-full border border-stone-300 px-5 py-3 font-bold">Mulai ulang</button>
