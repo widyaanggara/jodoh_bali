@@ -232,6 +232,8 @@ export function useHandLandmarker({
       landmarkerRef.current?.close();
       landmarkerRef.current = null;
       connectionsRef.current = [];
+      // External MediaPipe resource was closed; clear its visible state in the same lifecycle.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setModelStatus("idle");
       setModelError(null);
       setDelegate(null);

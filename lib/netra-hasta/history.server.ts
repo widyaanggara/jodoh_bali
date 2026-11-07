@@ -68,7 +68,7 @@ export async function listHistory(identity: VerifiedIdentity, cursor = "", fetch
   if (cursor.length > 2048 || /[\u0000-\u001f]/.test(cursor)) throw new AccountError(400, "invalid_cursor", "Cursor riwayat tidak valid.");
   const query = new URLSearchParams({ pageSize: "20", orderBy: "savedAt desc" });
   if (cursor) query.set("pageToken", cursor);
-  const response = await firestore(identity, base + "/" + identityPath(identity) + "?" + query, {}, fetcher);
+  const response = await firestore(identity, base + "/" + identityPath(identity) + "?" + query.toString().replace(/\+/g, "%20"), {}, fetcher);
   if (!response) throw new AccountError(503, "database_unavailable", "Database riwayat belum tersedia.");
   const data = await response.json();
   return { records: (data.documents ?? []).map((doc: FirestoreDocument) => decode(doc, identity)), nextCursor: data.nextPageToken ?? null };

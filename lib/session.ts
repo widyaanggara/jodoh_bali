@@ -1,6 +1,4 @@
 
-import { db } from "@/firebase/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 /**
  * Generate a short unique ID (9-10 chars)
@@ -22,14 +20,6 @@ export interface VisitorActivity {
  * Append-only activity log to Firestore
  */
 export async function saveToDatabase(activity: VisitorActivity) {
-    try {
-        const activityRef = collection(db, "daily_logs");
-        await addDoc(activityRef, {
-            ...activity,
-            created_at: serverTimestamp()
-        });
-        console.log(`[Session] Activity logged for ${activity.session_id} in ${activity.feature_type}`);
-    } catch (error) {
-        console.error("[Session] Error saving to database:", error);
-    }
+    // Release gate: legacy activity collection is deferred; calculations remain local.
+    void activity;
 }
