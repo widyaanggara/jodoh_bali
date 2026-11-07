@@ -158,8 +158,10 @@ Halaman [Tentang](app/about/page.tsx) sudah mencantumkan daftar pustaka dan taut
 
 Identitas dan pembagian peran tim belum tersedia sebagai informasi terverifikasi untuk README ini. Lengkapi sebelum submission:
 
-| Nama | Peran / kontribusi |
+| Nama | Peran / Kontribusi |
 | --- | --- |
-| **[BELUM DIISI ? nama anggota tim]** | **[BELUM DIISI ? kontribusi aktual]** |
+| I Made Widya Anggara | Project Leader |
+| I Wayan Pande Uliyantara | UI/UX Designer |
+| I Wayan Wisnu Ari Putra Pawitra | Programmer |
 
 Tambahkan anggota sesuai komposisi tim sebenarnya; jangan menganggap nama akun Git sebagai bukti identitas atau peran.
