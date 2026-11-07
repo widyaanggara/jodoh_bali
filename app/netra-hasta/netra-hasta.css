@@ -90,8 +90,8 @@
 .netra-capture > button { background: var(--netra-red); border-radius: 12px; }
 .netra-capture > button:disabled { background: #d6d3d1; color: #57534e; }
 .netra-preview { border-color: #ded7cf; border-radius: 22px; box-shadow: none; }
-.netra-subpage { background: var(--netra-paper); }
-.netra-subpage-main { max-width: 1040px; margin: auto; padding: 44px 28px 64px; }
+.netra-subpage { display: flex; flex-direction: column; background: var(--netra-paper); }
+.netra-subpage-main { flex: 1; width: 100%; min-width: 0; max-width: 1040px; margin: 0 auto; padding: 44px 28px 64px; }
 .netra-subpage-main.netra-auth-main { max-width: 1000px; }
 .netra-login { border: 1px solid #ded7cf; border-radius: 22px; background: #fff; overflow: hidden; padding: 0; display: grid; grid-template-columns: .85fr 1.15fr; }
 .netra-login-intro { background: #f3eeea; padding: 36px; }
