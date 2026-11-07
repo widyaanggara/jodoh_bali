@@ -7,8 +7,8 @@ export default function NetraHastaBasicResult({ result, onReset }: { result: Com
   const { data } = result.otonan;
   const snapshot = result.rekha.snapshot;
   return (
-    <section aria-labelledby="netra-basic-heading" className="rounded-3xl border border-[#c59b3d]/30 bg-white p-5 shadow-lg shadow-stone-900/5 sm:p-7">
-      <p className="text-xs font-extrabold uppercase tracking-widest text-[#9f3e2f]">Hasil dasar · Tanpa login</p>
+    <section aria-labelledby="netra-basic-heading" className="netra-basic">
+      <p className="netra-section-kicker">Hasil dasar · Tanpa login</p>
       <h2 id="netra-basic-heading" className="mt-2 font-display text-2xl font-bold">Kalender kelahiran dan pindai telapak</h2>
       {!result.birth.time && <p className="mt-4 rounded-2xl bg-amber-50 p-3 text-sm leading-relaxed text-amber-950">{UNKNOWN_BIRTH_TIME_NOTICE}</p>}
       <dl className="mt-5 grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 lg:grid-cols-4">

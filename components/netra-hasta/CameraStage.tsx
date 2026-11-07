@@ -1,5 +1,7 @@
 "use client";
 
+import NetraIcon from "./NetraIcon";
+
 import type { RefObject } from "react";
 import { useEffect, useState } from "react";
 import type { CameraStatus } from "@/hooks/useCamera";
@@ -51,7 +53,7 @@ export default function CameraStage({
   };
 
   return (
-    <section className="overflow-hidden rounded-[2rem] border border-[#c59b3d]/25 bg-[#211815] shadow-2xl shadow-black/15">
+    <section className="netra-camera overflow-hidden border bg-[#211815]">
       <div className="flex flex-col gap-3 border-b border-white/10 px-4 py-3 text-white sm:flex-row sm:items-center sm:justify-between md:px-6">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span className={`h-2.5 w-2.5 rounded-full ${status === "active" ? "bg-emerald-400 animate-pulse" : "bg-stone-500"}`} />
@@ -81,7 +83,7 @@ export default function CameraStage({
               onClick={onStop}
               className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 text-xs font-bold transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3c969]"
             >
-              <span className="material-symbols-outlined text-base" aria-hidden="true">videocam_off</span>
+              <NetraIcon name="stop" className="!h-4 !w-4" />
               Hentikan
             </button>
           )}
@@ -105,9 +107,7 @@ export default function CameraStage({
 
         {status !== "active" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#211815] px-6 text-center text-white">
-            <span className="material-symbols-outlined text-5xl text-[#e0b85d]" aria-hidden="true">
-              {status === "requesting" ? "hourglass_top" : mode === "hand" ? "back_hand" : "face"}
-            </span>
+            <NetraIcon name={status === "requesting" ? "camera" : mode === "hand" ? "hand" : "face"} className="!h-12 !w-12 text-[#e0b85d]" />
             <p className="font-display text-xl font-semibold">
               {status === "requesting" ? "Menunggu izin kamera" : "Kamera belum aktif"}
             </p>

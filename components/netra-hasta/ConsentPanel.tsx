@@ -1,3 +1,5 @@
+import NetraIcon from "./NetraIcon";
+
 interface ConsentPanelProps {
   isRequesting: boolean;
   onConsent: () => void;
@@ -5,13 +7,13 @@ interface ConsentPanelProps {
 
 export default function ConsentPanel({ isRequesting, onConsent }: ConsentPanelProps) {
   return (
-    <section className="rounded-[2rem] border border-[#c59b3d]/25 bg-white p-6 shadow-xl shadow-[#6f2f24]/5 md:p-9">
+    <section className="netra-consent bg-white p-6 md:p-9">
       <div className="flex items-start gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#9f3e2f]/10 text-[#9f3e2f]">
-          <span className="material-symbols-outlined" aria-hidden="true">privacy_tip</span>
+          <NetraIcon name="shield" />
         </div>
         <div>
-          <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.22em] text-[#a87922]">
+          <p className="netra-section-kicker mb-2">
             Privasi sebelum memulai
           </p>
           <h2 className="font-display text-2xl font-bold text-stone-900 md:text-3xl">
@@ -41,7 +43,7 @@ export default function ConsentPanel({ isRequesting, onConsent }: ConsentPanelPr
         disabled={isRequesting}
         className="mt-6 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#9f3e2f] px-6 py-3.5 font-bold text-white shadow-lg shadow-[#9f3e2f]/20 transition hover:bg-[#7f2f24] disabled:cursor-wait disabled:opacity-60 sm:w-auto"
       >
-        <span className="material-symbols-outlined text-xl" aria-hidden="true">photo_camera</span>
+        <NetraIcon name="camera" />
         {isRequesting ? "Meminta izin kamera..." : "Saya Setuju & Aktifkan Kamera"}
       </button>
     </section>

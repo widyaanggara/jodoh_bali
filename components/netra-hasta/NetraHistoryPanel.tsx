@@ -23,12 +23,12 @@ export default function NetraHistoryPanel() {
     return () => controller.abort();
   }, [account.uid]);
   return (
-    <section className="space-y-5 rounded-3xl bg-white p-5 sm:p-8">
+    <section className="netra-history space-y-5">
       <h1 className="font-display text-3xl font-bold">Riwayat Netra Hasta</h1>
       <NetraAccountActions />
       <p className="text-sm text-stone-600">Hanya data yang Anda simpan dengan persetujuan. Data tersimpan hingga Anda menghapusnya. Tidak ada citra telapak atau koordinat biometrik.</p>
-      {!records.length && !error && <p className="text-sm">Belum ada hasil tersimpan atau riwayat sedang dimuat.</p>}
-      {records.filter((record) => record.ownerUid === account.uid).map((record) => <article key={record.id} className="space-y-2 rounded-2xl border border-stone-200 p-4">
+      {!records.length && !error && <p className="netra-empty" role="status">Belum ada hasil tersimpan atau riwayat sedang dimuat. Hasil yang Anda simpan dengan persetujuan akan muncul di sini.</p>}
+      {records.filter((record) => record.ownerUid === account.uid).map((record) => <article key={record.id} className="netra-history-record space-y-2 border">
         <h2 className="font-bold">Wuku {record.wuku} · {record.birthDate}</h2>
         <p className="text-sm">{record.saptawara} · {record.pancawara} · {record.birthTime || "Jam lahir tidak diketahui"}</p>
         <p className="break-words text-xs text-stone-500">Disimpan {new Date(record.savedAt).toLocaleString("id-ID")}</p>

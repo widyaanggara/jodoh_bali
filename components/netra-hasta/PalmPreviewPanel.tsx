@@ -1,5 +1,7 @@
 "use client";
 
+import NetraIcon from "./NetraIcon";
+
 import type { PalmCapture } from "@/lib/netra-hasta/palm-preprocessing";
 import type { PalmQualitySnapshot } from "@/lib/netra-hasta/image-quality";
 import type { PalmLineLiveState } from "@/lib/netra-hasta/palm-line-live";
@@ -23,10 +25,10 @@ export default function PalmPreviewPanel({
   onDelete,
 }: PalmPreviewPanelProps) {
   return (
-    <section className="rounded-[2rem] border border-[#c59b3d]/25 bg-white p-5 shadow-lg shadow-stone-900/5 md:p-7">
+    <section className="netra-preview border bg-white p-5 md:p-7">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#9f3e2f]">
+          <p className="netra-section-kicker">
             Pratinjau lokal
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold text-stone-900">
@@ -100,7 +102,7 @@ export default function PalmPreviewPanel({
           onClick={onRetry}
           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#9f3e2f] px-5 py-3 font-bold text-white transition hover:bg-[#7f2f24]"
         >
-          <span className="material-symbols-outlined" aria-hidden="true">replay</span>
+          <NetraIcon name="replay" />
           Ambil Ulang
         </button>
         <button
@@ -108,7 +110,7 @@ export default function PalmPreviewPanel({
           onClick={onDelete}
           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-stone-300 px-5 py-3 font-bold text-stone-700 transition hover:bg-stone-50"
         >
-          <span className="material-symbols-outlined" aria-hidden="true">delete</span>
+          <NetraIcon name="trash" />
           Hapus hasil
         </button>
       </div>

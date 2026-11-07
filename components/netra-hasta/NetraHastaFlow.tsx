@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import NetraIcon from "./NetraIcon";
 import { useCallback, useState } from "react";
 import NetraHastaClient from "./NetraHastaClient";
 import NetraHastaBasicResult from "./NetraHastaBasicResult";
@@ -17,18 +18,28 @@ export default function NetraHastaFlow() {
 
   return (
     <div className="space-y-6">
-      <ol aria-label="Tahapan Netra Hasta" className="grid grid-cols-3 gap-2 text-center text-xs font-bold sm:text-sm">
+      <ol aria-label="Tahapan Netra Hasta" className="netra-progress">
         {["Data kelahiran", "Pindai telapak", "Hasil dasar"].map((label, index) => (
-          <li key={label} aria-current={index === (state.result ? 2 : state.birth ? 1 : 0) ? "step" : undefined} className="rounded-2xl border border-[#c59b3d]/25 bg-white px-2 py-3 text-stone-700">
-            <span className="block text-[#9f3e2f]">{index + 1}</span>{label}
+          <li key={label} aria-current={index === (state.result ? 2 : state.birth ? 1 : 0) ? "step" : undefined} className="min-w-0">
+            <span className="netra-step-number">{index + 1}</span>{label}
           </li>
         ))}
       </ol>
 
       {!state.birth ? (
-        <section className="mx-auto max-w-xl rounded-3xl border border-[#c59b3d]/25 bg-white p-5 shadow-lg shadow-stone-900/5 sm:p-8">
-          <h2 className="font-display text-2xl font-bold">Mulai dengan data kelahiran</h2>
-          <p className="mt-3 text-sm leading-relaxed text-stone-600">Tanpa login. Data ini dipakai untuk menghitung kalender Bali di perangkat Anda dan tidak disimpan ke akun.</p>
+        <section className="netra-birth-panel" aria-labelledby="netra-birth-heading">
+          <div className="netra-birth-intro">
+            <NetraIcon name="calendar" className="netra-section-symbol" />
+            <h2 id="netra-birth-heading">Setiap perjalanan dimulai dari hari kelahiran.</h2>
+            <p>Data kelahiran menjadi dasar perhitungan kalender Bali Anda. Setelah ini, siapkan telapak untuk dipindai.</p>
+            <ul className="netra-birth-hints">
+              <li><NetraIcon name="check" />Hasil dasar bisa dilihat tanpa akun.</li>
+              <li><NetraIcon name="check" />Jam lahir boleh dikosongkan.</li>
+              <li><NetraIcon name="shield" />Data dihitung lokal, belum disimpan.</li>
+            </ul>
+          </div>
+          <div className="netra-birth-form">
+          <h3>Data kelahiran Anda</h3>
           <form noValidate autoComplete="off" className="mt-6 space-y-5" onSubmit={(event) => {
             event.preventDefault();
             const validation = validateBirthInput(state.draft);
@@ -55,10 +66,11 @@ export default function NetraHastaFlow() {
             </div>
             <button type="submit" className="w-full cursor-pointer rounded-full bg-[#9f3e2f] px-5 py-3 font-bold text-white hover:bg-[#7f2f24] focus-visible:outline-2 focus-visible:outline-offset-4">Lanjut Pindai Telapak</button>
           </form>
+          </div>
         </section>
       ) : (
         <>
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-white p-4">
+          <div className="netra-birth-summary">
             <p className="text-sm text-stone-700">Kelahiran: <strong>{state.birth.date}</strong> · {state.birth.time ? state.birth.time + " waktu setempat" : "Jam lahir tidak diketahui"}</p>
             <button type="button" onClick={reset} className="cursor-pointer rounded-full border border-stone-300 px-4 py-2 text-sm font-bold">Ubah data / mulai ulang</button>
           </div>
@@ -66,7 +78,7 @@ export default function NetraHastaFlow() {
           <NetraHastaClient productMode onPalmSummaryChange={onPalmSummaryChange} />
         </>
       )}
-      <p className="mx-auto max-w-3xl text-center text-xs leading-relaxed text-stone-600">Interpretasi kalender bersifat simbolis berdasarkan data tradisional existing, bukan asesmen ilmiah tentang kesehatan, nasib, atau karakter. Foto dan hasil sementara dibersihkan saat tab ditinggalkan atau halaman ditutup.</p>
+      <p className="netra-footnote">Interpretasi kalender bersifat simbolis berdasarkan data tradisional existing, bukan asesmen ilmiah tentang kesehatan, nasib, atau karakter. Foto dan hasil sementara dibersihkan saat tab ditinggalkan atau halaman ditutup.</p>
       <p className="text-center text-xs text-stone-500"><Link href="/netra-hasta/akses-detail" className="underline underline-offset-4">Informasi akses detail dan penyimpanan akun</Link></p>
     </div>
   );

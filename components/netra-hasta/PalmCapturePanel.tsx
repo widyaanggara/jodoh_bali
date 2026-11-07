@@ -1,5 +1,7 @@
 "use client";
 
+import NetraIcon from "./NetraIcon";
+
 import type { CameraStatus } from "@/hooks/useCamera";
 import {
   getPalmCaptureDecision,
@@ -35,10 +37,10 @@ export default function PalmCapturePanel({
   );
 
   return (
-    <section className="space-y-4 rounded-[2rem] border border-[#c59b3d]/25 bg-white p-4 shadow-lg shadow-stone-900/5 sm:p-5">
+    <section className="netra-capture space-y-4 border bg-white p-4 sm:p-5">
       <div className="space-y-4">
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#9f3e2f]">
+          <p className="netra-section-kicker">
             Capture telapak
           </p>
           <h3 className="mt-1 font-display text-xl font-bold text-stone-900">
@@ -96,7 +98,7 @@ export default function PalmCapturePanel({
         aria-busy={isCapturing}
         className="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-[#9f3e2f] px-5 py-3 font-bold text-white transition hover:bg-[#7f2f24] disabled:cursor-not-allowed disabled:bg-stone-300"
       >
-        <span className="material-symbols-outlined" aria-hidden="true">photo_camera</span>
+        <NetraIcon name="camera" />
         {isCapturing
           ? "Memproses frame…"
           : decision.mode === "manual"

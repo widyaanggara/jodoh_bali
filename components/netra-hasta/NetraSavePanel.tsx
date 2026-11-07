@@ -14,7 +14,7 @@ export default function NetraSavePanel({ result, matchRange }: { result: Combine
   const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError] = useState("");
   return (
-    <section className="space-y-3 rounded-2xl border border-stone-200 p-4">
+    <section className="netra-save space-y-4 rounded-2xl border border-stone-200 p-4">
       <h2 className="font-bold">Simpan ke riwayat akun</h2>
       <p className="text-sm leading-relaxed text-stone-600">Yang disimpan: tanggal/jam lahir, hasil Otonan lengkap, parameter dan tiga hasil Mencari Jodoh, status/sumber Rekha, versi metode, dan waktu simpan. Snapshot dibekukan oleh server saat Anda menyimpan. Data hanya untuk akun Anda dan tersimpan hingga Anda menghapusnya melalui riwayat. Foto, video, ROI, koordinat, dan template biometrik tidak disimpan.</p>
       {!account.historyEnabled && <p role="status" className="text-sm text-amber-900">Penyimpanan belum diaktifkan. Security rules database perlu dipublikasikan dan diuji terlebih dahulu.</p>}

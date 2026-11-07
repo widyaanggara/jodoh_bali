@@ -4,23 +4,23 @@ import { getLabelRezeki } from "@/lib/pal-sri-sedana";
 import { UNKNOWN_BIRTH_TIME_NOTICE } from "@/lib/netra-hasta/product-flow";
 
 function Section({ title, children, open = false }: { title: string; children: ReactNode; open?: boolean }) {
-  return <details open={open} className="min-w-0 rounded-2xl border border-stone-200 bg-white"><summary className="cursor-pointer break-words p-4 font-display text-xl font-bold focus-visible:outline-2 focus-visible:outline-[#9f3e2f]">{title}</summary><div className="space-y-4 border-t border-stone-100 p-4 text-sm leading-relaxed sm:p-5">{children}</div></details>;
+  return <details open={open} className="netra-disclosure min-w-0 border bg-white"><summary className="cursor-pointer break-words p-4 font-display text-xl font-bold focus-visible:outline-2 focus-visible:outline-[#9f3e2f]">{title}</summary><div className="netra-disclosure-body space-y-4 border-t border-stone-100 text-sm">{children}</div></details>;
 }
 function Info({ label, value }: { label: string; value: ReactNode }) {
-  return <div className="min-w-0 rounded-xl bg-stone-50 p-3"><dt className="text-xs text-stone-500">{label}</dt><dd className="mt-1 break-words font-medium">{value}</dd></div>;
+  return <div className="netra-info min-w-0"><dt className="text-xs text-stone-500">{label}</dt><dd className="mt-1 break-words font-medium">{value}</dd></div>;
 }
 export default function NetraDetailSections({ detail, candidateStatus, candidateCount, saved = false }: {
   detail: DetailSnapshot; candidateStatus: "automatic_candidate" | "uncertain"; candidateCount?: number; saved?: boolean;
 }) {
   const { calendar: c, zodiac: z, matches, pal, birth } = detail;
-  return <div className="space-y-5">
-    <section aria-label="Identitas hasil" className="rounded-2xl bg-[#fffaf0] p-4">
+  return <div className="netra-details">
+    <section aria-label="Identitas hasil" className="netra-result-identity">
       <h2 className="font-display text-2xl font-bold">Kelahiran {birth.date}</h2>
       <p className="mt-2 text-sm">{birth.time ? birth.time + " waktu setempat" : "Jam lahir tidak diketahui"} · {saved ? "Snapshot saat disimpan" : "Hasil sementara"}</p>
       <p className="mt-2 text-xs text-stone-500">Dihitung {detail.generatedAt.slice(0, 10)}. Otonan berikutnya dan periode usia mengikuti waktu penghitungan ini.</p>
       {!birth.time && <p className="mt-3 rounded-xl bg-amber-50 p-3 text-sm text-amber-950">{UNKNOWN_BIRTH_TIME_NOTICE}</p>}
     </section>
-    <section className="rounded-2xl border border-[#c59b3d]/30 p-4">
+    <section className="netra-result-summary border">
       <h2 className="font-display text-xl font-bold">Ringkasan interpretasi simbolis</h2>
       <p className="mt-2 text-sm leading-relaxed">{c.saptawara.hari} · {c.pancawara.nama} · Wuku {c.wuku.nama_wuku}{c.lintang ? " · Lintang " + c.lintang.lintang : ""}.</p>
       <p className="mt-2 text-sm leading-relaxed">{c.wuku.sifat_umum}</p>
@@ -59,7 +59,7 @@ export default function NetraDetailSections({ detail, candidateStatus, candidate
     <Section title="Mencari Jodoh — 3 hasil teratas" open>
       <p>Rekomendasi <strong>tanggal lahir pasangan</strong>, bukan tanggal pernikahan. Rentang {matches.range.startYear}–{matches.range.endYear}; semua bulan.</p>
       <p className="text-xs text-stone-600">Urutan mengikuti engine existing: tanggal menaik yang lolos Hybrid Score ≥95. Nomor menunjukkan urutan hasil, bukan ranking orang atau jaminan kecocokan.</p>
-      <ol className="space-y-3">{matches.top.map((match) => <li key={match.date} className="rounded-2xl border border-stone-200 p-4">
+      <ol className="netra-match-list">{matches.top.map((match) => <li key={match.date} className="netra-match-card border">
         <h3 className="font-bold">Urutan {match.rank} · {match.date}</h3><p className="mt-1">Wuku {match.wuku} · {match.pancawara} · {match.saptawara}</p>
         <p className="mt-2 font-bold">{match.category} · {match.hybridStatus} · Hybrid Score {match.hybridScore}%</p>
         <p className="mt-2">{match.meaning}</p><p className="mt-1">{match.mod16Label}: {match.mod16Meaning}</p>
@@ -69,7 +69,7 @@ export default function NetraDetailSections({ detail, candidateStatus, candidate
     </Section>
     <Section title="Analisis Rekha dan statusnya" open>
       <p>{candidateStatus === "automatic_candidate" ? (candidateCount === undefined ? "Kandidat lipatan otomatis tercatat saat scan." : candidateCount + " segmen kandidat otomatis tersedia.") : "Kandidat lipatan belum dapat dipastikan atau detektor memilih abstain."} Sumber: browser, dark-ridge-v1; belum tervalidasi.</p>
-      <ul className="grid gap-3 sm:grid-cols-2">{["Heart", "Head", "Life", "Fate"].map((name) => <li key={name} className="rounded-xl bg-stone-50 p-3"><strong>{name}</strong> · belum didukung{ name === "Fate" ? ". Model riset existing juga belum memiliki kelas Fate." : ". Browser belum mengklasifikasikan kelas ini dan belum ada hasil pengguna yang tervalidasi."}</li>)}</ul>
+      <ul className="netra-rekha-grid grid gap-3 sm:grid-cols-2">{["Heart", "Head", "Life", "Fate"].map((name) => <li key={name} className="rounded-xl bg-stone-50 p-3"><strong>{name}</strong> · belum didukung{ name === "Fate" ? ". Model riset existing juga belum memiliki kelas Fate." : ". Browser belum mengklasifikasikan kelas ini dan belum ada hasil pengguna yang tervalidasi."}</li>)}</ul>
       <p className="text-xs text-stone-600">Tidak ada garis manual yang diklaim otomatis, gambar atau koordinat yang disimpan, maupun tafsir empat Rekha yang dibuat.</p>
     </Section>
   </div>;

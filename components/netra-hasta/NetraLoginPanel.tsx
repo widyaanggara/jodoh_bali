@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import NetraIcon from "./NetraIcon";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNetraAccount } from "./NetraAccountProvider";
@@ -15,11 +16,14 @@ export default function NetraLoginPanel() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   return (
-    <section className="rounded-3xl border border-[#c59b3d]/25 bg-white p-5 sm:p-8">
-      <p className="text-xs font-bold uppercase tracking-widest text-[#9f3e2f]">Netra-Hasta · Akun Firebase</p>
+    <section className="netra-login">
+      <div className="netra-login-intro">
+      <NetraIcon name="shield" className="netra-section-symbol" />
+      <p className="mt-5 netra-section-kicker">Netra Hasta</p>
       <h1 className="mt-3 font-display text-3xl font-bold">{account.uid ? "Anda sudah masuk" : register ? "Daftar untuk membuka detail" : "Masuk untuk membuka detail"}</h1>
       <p className="mt-4 text-sm leading-relaxed">Hasil dasar tetap dapat dipakai tanpa akun. Login diverifikasi oleh Firebase dan server Metemu. Password tidak disimpan oleh Metemu.</p>
-      <p className="mt-3 rounded-2xl bg-stone-50 p-3 text-sm">{state.result ? "Ringkasan pindai masih tersedia di memori. Login pada halaman ini untuk melanjutkan." : "Belum ada hasil pindai di memori. Setelah login, pindai ulang atau buka riwayat yang telah disimpan."} Berpindah tab atau memuat ulang halaman dapat menghapus hasil sementara; citra kamera tidak dipertahankan untuk login.</p>
+      </div><div className="netra-login-content">
+      <p className="rounded-2xl bg-stone-50 p-3 text-sm">{state.result ? "Ringkasan pindai masih tersedia di memori. Login pada halaman ini untuk melanjutkan." : "Belum ada hasil pindai di memori. Setelah login, pindai ulang atau buka riwayat yang telah disimpan."} Berpindah tab atau memuat ulang halaman dapat menghapus hasil sementara; citra kamera tidak dipertahankan untuk login.</p>
       {account.loading && <p className="mt-4 text-sm" role="status">Memeriksa sesi akun...</p>}
       {account.configured === false && <p className="mt-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-950" role="alert">{account.configurationMessage}</p>}
       {account.uid ? (
@@ -43,6 +47,7 @@ export default function NetraLoginPanel() {
       )}
       {error && <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-900" role="alert">{error}</p>}
       <Link href="/netra-hasta" className="mt-6 inline-block text-sm underline">Kembali ke hasil dasar</Link>
+      </div>
     </section>
   );
 }
