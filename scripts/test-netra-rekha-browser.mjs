@@ -1,6 +1,7 @@
 // Explicit local CDP test. No camera fixture or file is available in the product UI.
 // --roi <local PNG> is an opt-in diagnostic input, never uploaded to an HTTP endpoint.
 // --screenshots exports locally under ignored coverage; never runs in build.
+import { createBrowserEmulatorAccount } from "./helpers/netra-auth-emulator-browser.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -14,6 +15,7 @@ const localPng = roiIndex >= 0 ? fs.readFileSync(process.argv[roiIndex + 1]).toS
 const label = roiIndex >= 0 ? path.basename(process.argv[roiIndex + 1]).replace(/[^a-zA-Z0-9-]/g, "-") : "synthetic";
 const shots = process.argv.includes("--screenshots") ? path.resolve("coverage/rekha-web") : null;
 if (shots) fs.mkdirSync(shots, { recursive: true });
+const emulator = await createBrowserEmulatorAccount();
 const target = await (await fetch("http://127.0.0.1:9327/json/new?about:blank", { method: "PUT" })).json();
 const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((resolve) => ws.addEventListener("open", resolve, { once: true }));
@@ -21,6 +23,7 @@ let id = 0; const pending = new Map(); const exceptions = []; let biometricUploa
 ws.addEventListener("message", ({ data }) => {
   const m = JSON.parse(data);
   if (m.id) { const r = pending.get(m.id); pending.delete(m.id); if (m.error) r.reject(new Error(m.error.message)); else r.resolve(m.result); }
+  if (m.method === "Fetch.requestPaused") void emulator.intercept(m.params, send);
   if (m.method === "Runtime.exceptionThrown") exceptions.push(m.params.exceptionDetails.text);
   if (m.method === "Network.requestWillBeSent" && /data:image|candidateId|user_drawn|user_confirmed|points":/.test(m.params.request.postData ?? "")) biometricUploads++;
 });
@@ -31,7 +34,7 @@ async function evaluate(expression) {
   if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description ?? r.exceptionDetails.text);
   return r.result.value;
 }
-async function until(expression) { for (let n = 0; n < 300; n++) { if (await evaluate("Boolean(" + expression + ")")) return; await pause(100); } throw new Error("Browser timeout: " + expression); }
+async function until(expression) { for (let n = 0; n < 300; n++) { if (await evaluate("Boolean(" + expression + ")")) return; await pause(100); } console.error(JSON.stringify(await evaluate('({alerts:Array.from(document.querySelectorAll("[role=alert]")).map(e=>e.textContent),login:!!document.getElementById("netra-email"),locked:!!document.querySelector(".netra-locked-placeholder"),editor:!!document.getElementById("rekha-editor-heading"),range:!!document.querySelector(".netra-range")})'))); throw new Error("Browser timeout: " + expression); }
 async function fill(id, value) { await evaluate("(()=>{const el=document.getElementById(" + JSON.stringify(id) + ");Object.getOwnPropertyDescriptor(el.tagName==='SELECT'?HTMLSelectElement.prototype:HTMLInputElement.prototype,'value').set.call(el," + JSON.stringify(value) + ");el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));})()"); await pause(100); }
 async function click(text) { await evaluate("Array.from(document.querySelectorAll('button')).find(b=>b.textContent.trim()===" + JSON.stringify(text) + ").click()"); await pause(150); }
 const provider = "(()=>{let el=document.querySelector('main');let f=el[Object.keys(el).find(k=>k.startsWith('__reactFiber'))];while(f.return)f=f.return;const find=n=>{const v=n.memoizedProps?.value;if(v?.state&&Object.hasOwn(v.state,'draft')&&typeof v.dispatch==='function')return v;for(let c=n.child;c;c=c.sibling){const v=find(c);if(v)return v;}return null;};return find(f.stateNode.current);})()";
@@ -49,17 +52,23 @@ async function layouts() {
 }
 try {
   await send("Page.enable"); await send("Runtime.enable"); await send("Network.enable");
-  await send("Network.setBlockedURLs", { urls: ["https://fonts.googleapis.com/*", "https://fonts.gstatic.com/*"] });
+  await send("Fetch.enable", { patterns: [{ urlPattern: "https://identitytoolkit.googleapis.com/*" }, { urlPattern: "https://securetoken.googleapis.com/*" }] });
+  await send("Network.setBlockedURLs", { urls: ["https://fonts.googleapis.com/*", "https://fonts.gstatic.com/*", "https://firestore.googleapis.com/*"] });
   await send("Page.navigate", { url: base + "/netra-hasta" }); await send("Page.bringToFront");
   await until('document.querySelector("#netra-birth-date") && Object.keys(document.querySelector("form")).some(k=>k.startsWith("__reactProps"))');
   await fill("netra-birth-date", "2005-07-27"); await click("Lanjut Pindai Telapak");
-  await until('document.querySelector("[role=radio]")');
+  await until('document.querySelector("#netra-scan-heading")');
   // Inject a known capture into existing React hooks ONLY from this developer test.
   // The existing worker receives real image pixels and runs unchanged.
   const injection = "(async()=>{const png=" + JSON.stringify(localPng) + ";const canvas=document.createElement('canvas');let width=240,height=340;let context=canvas.getContext('2d');if(png){const bytes=Uint8Array.from(atob(png),c=>c.charCodeAt(0));const bitmap=await createImageBitmap(new Blob([bytes],{type:'image/png'}));width=bitmap.width;height=bitmap.height;canvas.width=width;canvas.height=height;context.drawImage(bitmap,0,0);bitmap.close();bytes.fill(0);}else{canvas.width=width;canvas.height=height;context.fillStyle='#c9c0ac';context.fillRect(0,0,width,height);context.strokeStyle='#524b40';context.lineWidth=5;for(let n=0;n<5;n++){context.beginPath();context.moveTo(30,40+n*52);context.bezierCurveTo(60,30+n*52,160,80+n*52,210,45+n*52);context.stroke();}}const pixels=context.getImageData(0,0,width,height);const original={width,height,data:new Uint8ClampedArray(pixels.data)};const capture={original,grayscale:{width,height,data:new Uint8ClampedArray(pixels.data)},enhanced:{width,height,data:new Uint8ClampedArray(pixels.data)},capturedAt:Date.now(),handedness:null,rotationDegrees:0,qualityMode:'normal',qualityWarnings:[]};canvas.width=0;canvas.height=0;let f=document.querySelector('main')[Object.keys(document.querySelector('main')).find(k=>k.startsWith('__reactFiber'))];while(f.return)f=f.return;const find=node=>{if(node.memoizedProps?.productMode===true&&node.memoizedProps?.onPalmSummaryChange)return node;for(let child=node.child;child;child=child.sibling){const found=find(child);if(found)return found;}return null;};const client=find(f);if(!client)throw new Error('Camera client not found');client.memoizedState.queue.dispatch(true);const artifacts={capture,capturedQualityMetrics:{..." + JSON.stringify(report) + ",capturedAt:capture.capturedAt}};client.memoizedState.next.next.queue.dispatch(artifacts);for(let h=client.memoizedState;h;h=h.next){if(h.memoizedState?.current?.capture===null&&'capturedQualityMetrics'in h.memoizedState.current)h.memoizedState.current=artifacts;}return {width,height};})()";
   const dimensions = await evaluate(injection);
+  await until('document.getElementById("netra-email") && !document.querySelector(".netra-login button[type=submit]").disabled');
+  assert.equal(await evaluate('document.getElementById("rekha-editor-heading")===null'), true);
+  await fill("netra-email", emulator.email); await fill("netra-password", emulator.password); await click("Masuk dan lanjutkan");
   await until('document.querySelector("#rekha-editor-heading") && document.querySelector("#rekha-candidate").options.length>1 || document.body.innerText.includes("Detektor memilih abstain")');
   await until(provider + '.result !== null'.replace(".result", ".state.result"));
+  await evaluate('document.querySelector("#netra-preview-disclosure summary").click()');
+  await until('document.getElementById("netra-preview-disclosure").open');
   const candidateCount = await evaluate('document.querySelector("#rekha-candidate").options.length-1');
   const before = await evaluate("JSON.stringify(" + provider + ".state.result.rekha.classes)");
   assert(!before.includes("user_drawn") && !before.includes("user_confirmed"));
@@ -92,7 +101,7 @@ try {
     await click("Gunakan penandaan Life");
     assert.equal(await evaluate(provider + ".state.result.rekha.classes[2].status"), "user_drawn");
     await evaluate("void(window.__rekhaCanvas=document.querySelector('.netra-rekha-photo canvas'))");
-    await click("Ambil Ulang");
+    await click("Ambil Ulang Gambar");
     await until('!document.querySelector("#rekha-editor-heading")');
     assert.equal(await evaluate("window.__rekhaCanvas.width+window.__rekhaCanvas.height"), 0);
     assert.equal(await evaluate(provider + ".state.result"), null);
@@ -102,4 +111,4 @@ try {
   assert.equal(await evaluate('document.querySelector("#netra-birth-date").value'), "");
   assert.equal(biometricUploads, 0); assert.deepEqual(exceptions, []);
   console.log("PASS native ROI overlay alignment, 320/390/1440, reset, zero biometric HTTP uploads, zero rendering exceptions");
-} finally { await send("Page.close").catch(() => {}); ws.close(); }
+} finally { await send("Page.close").catch(() => {}); ws.close(); await emulator.cleanup(); }

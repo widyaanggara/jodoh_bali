@@ -136,7 +136,7 @@ test("new product paths cannot invoke logging, transport or persistent storage",
   assert.doesNotMatch(code, /\bfetch\s*\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB|from\s+["'][^"']*firebase|useSession|logActivity|saveToDatabase|user_confirmed"\s*,\s*origin/i);
   const provider = fs.readFileSync(path.join(root, files.at(-1)), "utf8");
   assert.match(provider, /pagehide/);
-  assert.match(provider, /visibilitychange/);
+  assert.doesNotMatch(provider, /visibilitychange/);
 });
 
 test("capture normal and manual sharpness 6.5 preserve the existing quality threshold", () => {

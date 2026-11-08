@@ -7,7 +7,7 @@ import NetraIcon from "@/components/netra-hasta/NetraIcon";
 
 export const metadata: Metadata = {
   title: "Netra-Hasta — Beta | Metemu",
-  description: "Jelajahi kalender kelahiran Bali dan pindai telapak secara lokal. Hasil dasar tanpa akun, ramalan detail dengan login.",
+  description: "Jelajahi kalender kelahiran Bali dan pindai telapak secara lokal. Otonan tanpa akun; hasil pasangan dan analisis Rekha dengan login.",
 };
 
 export default function NetraHastaPage() {
@@ -20,7 +20,7 @@ export default function NetraHastaPage() {
             <span className="netra-beta"><span aria-hidden="true" />Beta · Dalam Pengembangan</span>
             <h1>Netra Hasta</h1>
             <p className="netra-hero-lead">Kalender kelahiran Bali.<br />Cerita di balik telapak Anda.</p>
-            <p className="netra-hero-description">Mulai dari hari kelahiran, lalu pindai telapak untuk melihat kandidat lipatan. Jelajahi hasil dasar tanpa akun, atau masuk untuk membuka Ramalan Detail.</p>
+            <p className="netra-hero-description">Mulai dari hari kelahiran, lalu pindai telapak untuk melihat kandidat lipatan. Otonan tampil di bawah pemindaian tanpa akun. Masuk untuk membuka hasil pasangan, analisis Rekha, dan penyimpanan.</p>
             <div className="netra-hero-actions">
               <a href="#mulai-netra" className="netra-button-primary">Mulai Netra Hasta<NetraIcon name="arrow" /></a>
               <Link href="/netra-hasta/riwayat" prefetch={false} className="netra-text-link"><NetraIcon name="history" />Riwayat saya</Link>

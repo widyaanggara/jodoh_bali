@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import CameraStage from "./CameraStage";
 import ConsentPanel from "./ConsentPanel";
 import FaceTrackingPanel from "./FaceTrackingPanel";
@@ -32,13 +32,16 @@ import {
 
 interface NetraHastaClientProps {
   productMode?: boolean;
+  renderPalmResults?: (preview: ReactNode, captureId: number) => ReactNode;
   onPalmSummaryChange?: (snapshot: PalmProductSnapshot | null) => void;
   onRekhaReview?: (captureId: number, classes: RekhaClassResult[]) => void;
 }
 
-export default function NetraHastaClient({ productMode = false, onPalmSummaryChange, onRekhaReview }: NetraHastaClientProps = {}) {
+export default function NetraHastaClient({ productMode = false, renderPalmResults, onPalmSummaryChange, onRekhaReview }: NetraHastaClientProps = {}) {
   const [hasConsented, setHasConsented] = useState(false);
-  const [mode, setMode] = useState<ScanMode>("hand");
+  const [selectedMode, setMode] = useState<ScanMode>("hand");
+  // Product mode always derives hand, even if a previous developer state selected face.
+  const mode: ScanMode = productMode ? "hand" : selectedMode;
   const [palmArtifacts, setPalmArtifacts] = useState(
     createEmptyPalmCaptureArtifacts,
   );
@@ -50,6 +53,8 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
   const palmCapture = palmArtifacts.capture;
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resultHeadingRef = useRef<HTMLHeadingElement>(null);
+  const scanHeadingRef = useRef<HTMLHeadingElement>(null);
   const camera = useCamera();
   const handTracking = useHandLandmarker({
     enabled: camera.status === "active" && mode === "hand",
@@ -67,8 +72,23 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
   });
 
   useEffect(() => {
+    // A remounted scanner has no image buffers; do not keep a previous route's result.
+    onPalmSummaryChange?.(null);
+  }, [onPalmSummaryChange]);
+
+  useEffect(() => {
     if (palmCapture) onPalmSummaryChange?.(createPalmProductSnapshot(palmCapture, palmLineExtraction));
   }, [palmCapture, palmLineExtraction, onPalmSummaryChange]);
+
+  useEffect(() => {
+    if (!productMode || !palmCapture) return;
+    const frame = requestAnimationFrame(() => {
+      const heading = resultHeadingRef.current;
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [productMode, palmCapture]);
 
   const handleConsent = () => {
     onPalmSummaryChange?.(null);
@@ -94,7 +114,8 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
 
   useEffect(() => {
     const clearWhenPageLeaves = () => {
-      if (document.hidden) clearPalmCapture();
+      // Product results survive tab switches; useCamera separately releases the stream.
+      if (document.hidden && !productMode) clearPalmCapture();
     };
     const clearOnPageHide = () => clearPalmCapture();
 
@@ -107,14 +128,18 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
         palmArtifactsRef.current,
       );
     };
-  }, [clearPalmCapture]);
+  }, [clearPalmCapture, productMode]);
 
   const handlePalmRetry = () => {
     clearPalmCapture();
-    if (productMode && hasConsented) void camera.startCamera();
+    if (productMode && hasConsented) {
+      void camera.startCamera();
+      requestAnimationFrame(() => scanHeadingRef.current?.focus({ preventScroll: true }));
+    }
   };
 
   const handleModeChange = (nextMode: ScanMode) => {
+    if (productMode) return;
     clearPalmCapture();
     setMode(nextMode);
   };
@@ -253,13 +278,19 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
     }
   };
 
+  const capturePreview = palmCapture && palmArtifacts.capturedQualityMetrics ? (
+    <PalmPreviewPanel key={palmCapture.capturedAt} capture={palmCapture}
+      quality={palmArtifacts.capturedQualityMetrics} lineExtraction={palmLineExtraction}
+      onRekhaReview={onRekhaReview} onRetry={handlePalmRetry} onDelete={clearPalmCapture} />
+  ) : null;
+
   return (
     <div className="space-y-6">
-      <ScanModePicker
+      {productMode ? <div className="netra-scan-heading"><h2 id="netra-scan-heading" ref={scanHeadingRef} tabIndex={-1} className="font-display text-2xl">Pindai telapak tangan</h2><p className="mt-2 text-sm text-stone-600">Aktifkan kamera setelah menyetujui pemrosesan, lalu ikuti panduan telapak.</p></div> : <ScanModePicker
         mode={mode}
         disabled={camera.status === "requesting"}
         onChange={handleModeChange}
-      />
+      />}
 
       {!hasConsented ? (
         <ConsentPanel
@@ -375,16 +406,14 @@ export default function NetraHastaClient({ productMode = false, onPalmSummaryCha
           </div>
           )}
 
-          {mode === "hand" && palmCapture && palmArtifacts.capturedQualityMetrics && (
-            <PalmPreviewPanel
-              key={palmCapture.capturedAt}
-              capture={palmCapture}
-              quality={palmArtifacts.capturedQualityMetrics}
-              lineExtraction={palmLineExtraction}
-              onRekhaReview={onRekhaReview}
-              onRetry={handlePalmRetry}
-              onDelete={clearPalmCapture}
-            />
+          {mode === "hand" && palmCapture && capturePreview && (
+            <>
+              {productMode && <div className="netra-capture-complete" role="status"><p className="font-semibold">Gambar telapak berhasil diambil</p><p className="mt-1 text-sm text-stone-600">Kamera telah dihentikan. Periksa hasil di bawah atau pilih Ambil Ulang Gambar.</p><button type="button" onClick={handlePalmRetry} className="mt-3 rounded-full border border-stone-300 px-4 py-2 text-sm font-semibold">Ambil Ulang Gambar</button></div>}
+              <section id="netra-capture-results" className="netra-capture-results space-y-6" aria-labelledby="netra-capture-results-heading">
+                <h2 id="netra-capture-results-heading" ref={resultHeadingRef} tabIndex={-1} className="font-display text-3xl">Hasil Netra Hasta</h2>
+                {productMode && renderPalmResults ? renderPalmResults(capturePreview, palmCapture.capturedAt) : capturePreview}
+              </section>
+            </>
           )}
         </>
       )}

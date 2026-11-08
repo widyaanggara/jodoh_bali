@@ -8,13 +8,11 @@ const ProductContext = createContext<{ state: ProductState; dispatch: Dispatch<P
 export default function NetraHastaProductProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reduceProductState, INITIAL_PRODUCT_STATE);
   useEffect(() => {
+    // Switching browser tabs keeps the in-memory result. Full document exit clears it.
     const clear = () => dispatch({ type: "reset" });
-    const visibility = () => { if (document.hidden) clear(); };
     window.addEventListener("pagehide", clear);
-    document.addEventListener("visibilitychange", visibility);
     return () => {
       window.removeEventListener("pagehide", clear);
-      document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
   return <ProductContext.Provider value={{ state, dispatch }}>{children}</ProductContext.Provider>;

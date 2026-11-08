@@ -30,7 +30,7 @@ Pengguna sasaran: masyarakat yang ingin mempelajari kalender/tradisi Bali serta 
 | Ramalan Detail | `/netra-hasta/detail`: login wajib; hasil Otonan, maksimal tiga kandidat tanggal lahir Jodoh sesuai engine/rentang, dan status Rekha sesi. |
 | Akun dan riwayat | `/netra-hasta/akses-detail`, `/netra-hasta/riwayat`: daftar/masuk/keluar, simpan dengan persetujuan, buka kembali, dan hapus hasil milik sendiri, jika layanan/rules telah aktif. |
 
-Tanpa login, pengguna tetap dapat memakai alur hasil dasar. Mode wajah menampilkan landmark/rasio geometris teknis, tanpa tafsir karakter atau kesehatan.
+Tanpa login, pengguna dapat melihat Otonan setelah capture. Hasil pasangan dan Rekha dibuka melalui login pada halaman yang sama. Hasta Rekha menjadi mode default; pilihan mode wajah disembunyikan, sementara implementasi tracking wajah tetap dipertahankan. Tidak ada tafsir karakter atau kesehatan dari landmark.
 
 ## Tech Stack
 
