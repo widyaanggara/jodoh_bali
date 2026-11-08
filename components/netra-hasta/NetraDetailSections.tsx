@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import RekhaStatusList from "./RekhaStatusList";
 import type { RekhaClassResult } from "@/lib/netra-hasta/product-flow";
-import type { DetailSnapshot } from "@/lib/netra-hasta/detail-result";
+import type { CalendarDetailSnapshot, DetailSnapshot } from "@/lib/netra-hasta/detail-result";
 import { getLabelRezeki } from "@/lib/pal-sri-sedana";
 import { UNKNOWN_BIRTH_TIME_NOTICE } from "@/lib/netra-hasta/product-flow";
 
@@ -11,11 +11,13 @@ function Section({ title, children, open = false }: { title: string; children: R
 function Info({ label, value }: { label: string; value: ReactNode }) {
   return <div className="netra-info min-w-0"><dt className="text-xs text-stone-500">{label}</dt><dd className="mt-1 break-words font-medium">{value}</dd></div>;
 }
-export default function NetraDetailSections({ detail, candidateStatus, candidateCount, rekhaClasses, saved = false }: {
-  detail: DetailSnapshot; candidateStatus: "automatic_candidate" | "uncertain"; candidateCount?: number; rekhaClasses?: RekhaClassResult[]; saved?: boolean;
+export default function NetraDetailSections({ detail, candidateStatus, candidateCount, rekhaClasses, saved = false, sectionGroup = "all", candidatePhase = "ready" }: {
+  detail: CalendarDetailSnapshot | DetailSnapshot; candidateStatus: "automatic_candidate" | "uncertain"; candidateCount?: number; rekhaClasses?: RekhaClassResult[]; saved?: boolean; sectionGroup?: "all" | "calendar" | "supporting"; candidatePhase?: "processing" | "ready" | "error";
 }) {
-  const { calendar: c, zodiac: z, matches, pal, birth } = detail;
+  const { calendar: c, zodiac: z, pal, birth } = detail;
+  const matches = "matches" in detail ? detail.matches : undefined;
   return <div className="netra-details">
+    {sectionGroup !== "supporting" && <>
     <section aria-label="Identitas hasil" className="netra-result-identity">
       <h2 className="font-display text-2xl font-bold">Kelahiran {birth.date}</h2>
       <p className="mt-2 text-sm">{birth.time ? birth.time + " waktu setempat" : "Jam lahir tidak diketahui"} · {saved ? "Snapshot saat disimpan" : "Hasil sementara"}</p>
@@ -58,7 +60,9 @@ export default function NetraDetailSections({ detail, candidateStatus, candidate
         {c.sadwara && <p><strong>Sadwara {c.sadwara.nama}:</strong> {c.sadwara.arti} {c.sadwara.sifat} {c.sadwara.pesan}</p>}
       </Section>
     </Section>
-    <Section title="Mencari Jodoh — 3 hasil teratas" open>
+    </>}
+    {sectionGroup !== "calendar" && <>
+    {matches && <Section title="Mencari Jodoh — 3 hasil teratas" open>
       <p>Rekomendasi <strong>tanggal lahir pasangan</strong>, bukan tanggal pernikahan. Rentang {matches.range.startYear}–{matches.range.endYear}; semua bulan.</p>
       <p className="text-xs text-stone-600">Urutan mengikuti engine existing: tanggal menaik yang lolos Hybrid Score ≥95. Nomor menunjukkan urutan hasil, bukan ranking orang atau jaminan kecocokan.</p>
       <ol className="netra-match-list">{matches.top.map((match) => <li key={match.date} className="netra-match-card border">
@@ -68,11 +72,12 @@ export default function NetraDetailSections({ detail, candidateStatus, candidate
       </li>)}</ol>
       {matches.top.length < 3 && <p role="status">Hanya {matches.top.length} hasil tersedia karena engine tidak menemukan tiga tanggal yang memenuhi syarat pada rentang ini.</p>}
       <p className="text-xs text-stone-500">{matches.totalFound} tanggal memenuhi syarat; ditampilkan paling banyak tiga hasil pertama. Nilai simbolis existing bukan probabilitas ilmiah.</p>
-    </Section>
+    </Section>}
     <Section title="Analisis Rekha dan statusnya" open>
-      <p>{candidateStatus === "automatic_candidate" ? (candidateCount === undefined ? "Kandidat lipatan otomatis tercatat saat scan." : candidateCount + " segmen kandidat otomatis tersedia.") : "Kandidat lipatan belum dapat dipastikan atau detektor memilih abstain."} Sumber: browser, dark-ridge-v1; belum tervalidasi.</p>
+      <p role="status" aria-live="polite">{candidatePhase === "processing" ? "Kandidat lipatan sedang diproses lokal. Tunggu hasil sebelum memberi label." : candidatePhase === "error" ? "Pemrosesan kandidat gagal. Hasil kalender tetap tersedia; ambil ulang gambar untuk mencoba lagi." : candidateStatus === "automatic_candidate" ? (candidateCount === undefined ? "Kandidat lipatan otomatis tercatat saat scan." : candidateCount + " segmen kandidat otomatis tersedia.") : "Kandidat lipatan belum dapat dipastikan atau detektor memilih abstain."} Sumber: browser, dark-ridge-v1; belum tervalidasi.</p>
       {rekhaClasses ? <><RekhaStatusList classes={rekhaClasses} /><p className="text-xs text-stone-600">Status pengguna hanya tersedia untuk sesi ini, tidak disimpan ke riwayat. Belum ada tafsir empat Rekha.</p></> : <ul className="netra-rekha-grid grid gap-3 sm:grid-cols-2">{["Heart", "Head", "Life", "Fate"].map((name) => <li key={name} className="rounded-xl bg-stone-50 p-3"><strong>{name}</strong> · belum didukung{ name === "Fate" ? ". Model riset existing juga belum memiliki kelas Fate." : ". Browser belum mengklasifikasikan kelas ini dan belum ada hasil pengguna yang tervalidasi."}</li>)}</ul>}
       <p className="text-xs text-stone-600">Tidak ada garis manual yang diklaim otomatis, gambar atau koordinat yang disimpan, maupun tafsir empat Rekha yang dibuat.</p>
     </Section>
+    </>}
   </div>;
 }

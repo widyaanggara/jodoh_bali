@@ -2,27 +2,31 @@
 
 import Link from "next/link";
 import NetraIcon from "./NetraIcon";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import NetraHastaClient from "./NetraHastaClient";
-import NetraHastaBasicResult from "./NetraHastaBasicResult";
+import NetraCaptureResults from "./NetraCaptureResults";
 import { useNetraHastaProduct } from "./NetraHastaProductProvider";
 import { getWitaToday, validateBirthInput, type BirthErrors, type PalmProductSnapshot, type RekhaClassResult } from "@/lib/netra-hasta/product-flow";
 
 export default function NetraHastaFlow() {
   const { state, dispatch } = useNetraHastaProduct();
   const [errors, setErrors] = useState<BirthErrors>({});
+  const birthSubmittedRef = useRef(false);
+  useEffect(() => {
+    if (!state.birth) birthSubmittedRef.current = false;
+  }, [state.birth]);
   const onPalmSummaryChange = useCallback((snapshot: PalmProductSnapshot | null) => {
     dispatch({ type: "capture", snapshot });
   }, [dispatch]);
   const onRekhaReview = useCallback((captureId: number, classes: RekhaClassResult[]) => {
     dispatch({ type: "review-rekha", captureId, classes });
   }, [dispatch]);
-  const reset = () => { dispatch({ type: "reset" }); setErrors({}); };
+  const reset = () => { birthSubmittedRef.current = false; dispatch({ type: "reset" }); setErrors({}); };
 
   return (
     <div className="space-y-6">
       <ol aria-label="Tahapan Netra Hasta" className="netra-progress">
-        {["Data kelahiran", "Pindai telapak", "Hasil dasar"].map((label, index) => (
+        {["Data kelahiran", "Pindai telapak", "Hasil"].map((label, index) => (
           <li key={label} aria-current={index === (state.result ? 2 : state.birth ? 1 : 0) ? "step" : undefined} className="min-w-0">
             <span className="netra-step-number">{index + 1}</span>{label}
           </li>
@@ -36,17 +40,19 @@ export default function NetraHastaFlow() {
             <h2 id="netra-birth-heading">Setiap perjalanan dimulai dari hari kelahiran.</h2>
             <p>Data kelahiran menjadi dasar perhitungan kalender Bali Anda. Setelah ini, siapkan telapak untuk dipindai.</p>
             <ul className="netra-birth-hints">
-              <li><NetraIcon name="check" />Hasil dasar bisa dilihat tanpa akun.</li>
+              <li><NetraIcon name="check" />Otonan tanpa akun; pasangan dan Rekha setelah login.</li>
               <li><NetraIcon name="check" />Jam lahir boleh dikosongkan.</li>
-              <li><NetraIcon name="shield" />Data dihitung lokal, belum disimpan.</li>
+              <li><NetraIcon name="shield" />Foto dan koordinat telapak tetap diproses lokal.</li>
             </ul>
           </div>
           <div className="netra-birth-form">
           <h3>Data kelahiran Anda</h3>
           <form noValidate autoComplete="off" className="mt-6 space-y-5" onSubmit={(event) => {
             event.preventDefault();
+            if (birthSubmittedRef.current) return;
             const validation = validateBirthInput(state.draft);
             if (!validation.valid) { setErrors(validation.errors); return; }
+            birthSubmittedRef.current = true;
             setErrors({});
             dispatch({ type: "start", birth: validation.value });
           }}>
@@ -77,11 +83,13 @@ export default function NetraHastaFlow() {
             <p className="text-sm text-stone-700">Kelahiran: <strong>{state.birth.date}</strong> · {state.birth.time ? state.birth.time + " waktu setempat" : "Jam lahir tidak diketahui"}</p>
             <button type="button" onClick={reset} className="cursor-pointer rounded-full border border-stone-300 px-4 py-2 text-sm font-bold">Ubah data / mulai ulang</button>
           </div>
-          {state.result && <NetraHastaBasicResult result={state.result} onReset={reset} />}
-          <NetraHastaClient productMode onPalmSummaryChange={onPalmSummaryChange} onRekhaReview={onRekhaReview} />
+          <NetraHastaClient productMode onPalmSummaryChange={onPalmSummaryChange} onRekhaReview={onRekhaReview}
+            renderPalmResults={(preview, captureId) => state.result?.rekha.snapshot.captureId === captureId
+              ? <NetraCaptureResults preview={preview} />
+              : preview} />
         </>
       )}
-      <p className="netra-footnote">Interpretasi kalender bersifat simbolis berdasarkan data tradisional existing, bukan asesmen ilmiah tentang kesehatan, nasib, atau karakter. Foto dan hasil sementara dibersihkan saat tab ditinggalkan atau halaman ditutup.</p>
+      <p className="netra-footnote">Interpretasi kalender bersifat simbolis berdasarkan data tradisional existing, bukan asesmen ilmiah tentang kesehatan, nasib, atau karakter. Hasil sementara tetap tersedia saat berpindah tab. Kamera berhenti saat tab tidak aktif. Ambil ulang, reset, meninggalkan halaman, atau memuat ulang akan membersihkan hasil sementara.</p>
       <p className="text-center text-xs text-stone-500"><Link href="/netra-hasta/akses-detail" className="underline underline-offset-4">Informasi akses detail dan penyimpanan akun</Link></p>
     </div>
   );

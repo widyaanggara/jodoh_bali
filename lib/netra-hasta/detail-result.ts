@@ -19,22 +19,32 @@ export function validateMatchRange(range: MatchRange): MatchRange {
 export function civilDateString(date: Date): string {
   return String(date.getFullYear()).padStart(4, "0") + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0");
 }
-export function createDetailSnapshot(birth: BirthInput, requested: MatchRange = defaultMatchRange()) {
+export function createCalendarDetailSnapshot(birth: BirthInput) {
   if (!validateBirthInput(birth).valid) throw new Error("Data kelahiran belum valid.");
-  const range = validateMatchRange(requested);
   const [year, month, day] = birth.date.split("-").map(Number);
   const civil = new Date(year, month - 1, day, 12);
   const calendar = getBalineseDate(civil, birth.time || undefined);
   const zodiac = getZodiak(civil);
   const palData = getPalSriSedanaData(calendar.totalUrip);
   const analysis = palData ? getCurrentPeriodAnalysis(civil, palData) : null;
-  // Preserve the existing engine's iteration order. No score sorting or new ranking.
-  const matches = findIdealMatches(civil, birth.time, range.startYear, range.endYear);
   return {
     version: DETAIL_VERSION, generatedAt: new Date().toISOString(), birth: { ...birth },
     methods: { calendar: "calendar-web-8d154cb", matches: "jodoh-web-8d154cb", pal: "pal-sri-sedana-web-8d154cb" },
     calendar, zodiac,
     pal: palData && analysis ? { data: palData, analysis, label: getLabelRezeki(analysis.value) } : null,
+  };
+}
+export type CalendarDetailSnapshot = ReturnType<typeof createCalendarDetailSnapshot>;
+
+export function createDetailSnapshot(birth: BirthInput, requested: MatchRange = defaultMatchRange()) {
+  const range = validateMatchRange(requested);
+  const calendarDetail = createCalendarDetailSnapshot(birth);
+  const [year, month, day] = birth.date.split("-").map(Number);
+  const civil = new Date(year, month - 1, day, 12);
+  const matches = findIdealMatches(civil, birth.time, range.startYear, range.endYear);
+  return {
+    ...calendarDetail,
+    generatedAt: new Date().toISOString(),
     matches: {
       range, ordering: "engine-chronological" as const, totalFound: matches.length,
       top: matches.slice(0, 3).map((match, index) => ({

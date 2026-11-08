@@ -16,6 +16,7 @@ interface PalmPreviewPanelProps {
   quality: PalmQualitySnapshot;
   lineExtraction: PalmLineLiveState;
   onRekhaReview?: (captureId: number, classes: RekhaClassResult[]) => void;
+  rekhaReviewEnabled?: boolean;
   onRetry: () => void;
   onDelete: () => void;
 }
@@ -25,6 +26,7 @@ export default function PalmPreviewPanel({
   quality,
   lineExtraction,
   onRekhaReview,
+  rekhaReviewEnabled = true,
   onRetry,
   onDelete,
 }: PalmPreviewPanelProps) {
@@ -51,8 +53,8 @@ export default function PalmPreviewPanel({
         </div>
       </div>
 
-      <PalmLineResultPanel state={lineExtraction} />
-      {onRekhaReview && <RekhaCaptureEditor key={capture.capturedAt} capture={capture} extraction={lineExtraction} onReview={onRekhaReview} />}
+      {rekhaReviewEnabled ? <PalmLineResultPanel state={lineExtraction} /> : <p className="mt-4 text-sm text-stone-600">Masuk untuk melihat kandidat garis dan melakukan penandaan Rekha.</p>}
+      {rekhaReviewEnabled && onRekhaReview && <RekhaCaptureEditor key={capture.capturedAt} capture={capture} extraction={lineExtraction} onReview={onRekhaReview} />}
 
       <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)]">
         <PalmQualityPanel quality={quality} source="captured" />
@@ -97,8 +99,8 @@ export default function PalmPreviewPanel({
 
       <p className="mt-5 rounded-2xl bg-stone-50 p-3 text-xs leading-relaxed text-stone-600">
         Kontras ditingkatkan secara linear dan dibatasi tanpa sharpening, agar tidak
-        membentuk detail garis baru. Semua buffer akan dibersihkan saat hasil dihapus,
-        kamera dihentikan, mode diganti, tab ditinggalkan, atau halaman ditutup.
+        membentuk detail garis baru. Buffer tetap lokal saat berpindah tab. Buffer dibersihkan saat ambil ulang,
+        hasil dihapus, mode diganti, atau halaman ditinggalkan.
       </p>
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -108,7 +110,7 @@ export default function PalmPreviewPanel({
           className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#9f3e2f] px-5 py-3 font-bold text-white transition hover:bg-[#7f2f24]"
         >
           <NetraIcon name="replay" />
-          Ambil Ulang
+          Ambil Ulang Gambar
         </button>
         <button
           type="button"

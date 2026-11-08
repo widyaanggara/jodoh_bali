@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { syntheticPalmCaptureExpression } from "./helpers/netra-single-flow-fixture.mjs";
 
 const base = process.env.METEMU_LIVE_BASE_URL ?? "http://127.0.0.1:3027";
 if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) throw new Error("Only a local test application is allowed.");
@@ -59,7 +60,7 @@ function check(name) { checks.push(name); console.log("PASS " + name); }
 try {
   await send("Page.enable"); await send("Runtime.enable"); await send("Network.enable");
   // External icon fonts are deliberately unavailable. New Netra controls use local SVG.
-  await send("Network.setBlockedURLs", { urls: ["https://fonts.googleapis.com/*", "https://fonts.gstatic.com/*"] });
+  await send("Network.setBlockedURLs", { urls: ["https://fonts.googleapis.com/*", "https://fonts.gstatic.com/*", "https://firestore.googleapis.com/*"] });
   await send("Page.navigate", { url: base + "/netra-hasta" }); await send("Page.bringToFront");
   await until('document.querySelector("#netra-birth-date") && Object.keys(document.querySelector("form")).some(k=>k.startsWith("__reactProps"))');
   await layouts("start");
@@ -73,23 +74,22 @@ try {
   await fill("netra-birth-date", "2005-07-27");
   await evaluate('document.querySelector("button[type=submit]").focus()');
   await key("Enter", "Enter", "\r");
-  await until('document.querySelector("[role=radio]")');
+  await until('document.querySelector("#netra-scan-heading")');
   assert.equal(await evaluate('document.querySelector("video") === null'), true);
   check("optional_birth_time_and_camera_requires_explicit_consent");
   await layouts("consent");
-  await evaluate('document.querySelector("[role=radio]").focus()');
-  await key("ArrowRight", "ArrowRight");
-  assert.equal(await evaluate('document.activeElement.getAttribute("aria-checked") === "true" && document.activeElement.textContent.includes("Rupa Lakshana")'), true);
-  await key("Home", "Home");
-  assert.equal(await evaluate('document.activeElement.getAttribute("aria-checked") === "true" && document.activeElement.textContent.includes("Hasta Rekha")'), true);
-  check("mode_picker_arrow_home_focus_and_selection");
-  // Summary fixture validates the redesigned result; it does not claim physical hand detection.
-  await evaluate("(()=>{const el=document.querySelector('main');let f=el[Object.keys(el).find(k=>k.startsWith('__reactFiber'))];while(f){const v=f.memoizedProps?.value;if(v?.state?.birth&&typeof v.dispatch==='function'){v.dispatch({type:'capture',snapshot:{captureId:808,width:241,height:338,qualityMode:'manual-override',qualityWarnings:['Synthetic warning'],phase:'ready',candidateStatus:'automatic_candidate',candidateCount:3,reason:null}});return;}f=f.return;}throw new Error('Product context not found');})()");
-  await until('document.querySelector("#netra-basic-heading")');
+  assert.equal(await evaluate('document.querySelector("[role=radio]") === null && document.querySelector("[role=radiogroup]") === null'), true);
+  check("product_mode_picker_not_in_dom_or_keyboard_path");
+  // Synthetic pixels exercise the real worker/UI; this is not a physical hand inference test.
+  await evaluate(syntheticPalmCaptureExpression("manual-override"));
+  await until('document.querySelector("#netra-capture-results-heading") && document.querySelector(".netra-detail")');
+  assert.equal(await evaluate('document.getElementById("netra-preview-disclosure").open'), false);
+  await evaluate('document.querySelector("#netra-preview-disclosure summary").click()');
   await layouts("basic");
-  assert.equal(await evaluate('document.body.innerText.includes("3 segmen kandidat otomatis") && document.body.innerText.includes("Heart, Head, Life, dan Fate belum diklasifikasikan") && document.body.innerText.includes("Capture manual dengan peringatan kualitas")'), true);
-  check("basic_calendar_candidate_and_manual_warning_preserved");
-  await evaluate('Array.from(document.querySelectorAll("button")).find(b=>b.textContent==="Mulai ulang").focus()');
+  assert.equal(await evaluate('document.body.innerText.includes("Ramalan Otonan lengkap") && document.body.innerText.includes("Hasil diambil melalui manual override") && document.body.innerText.includes("Mencari Jodoh")'), true);
+  assert.equal(await evaluate('document.querySelector(".netra-range")===null && document.getElementById("rekha-editor-heading")===null && Boolean(document.querySelector(".netra-locked-placeholder"))'), true);
+  check("public_calendar_manual_warning_and_protected_detail_placeholder");
+  await evaluate('Array.from(document.querySelectorAll("button")).find(b=>b.textContent==="Ubah data / mulai ulang").focus()');
   await key(" ", "Space", " ");
   await until('document.querySelector("#netra-birth-date")');
   assert.equal(await evaluate('document.querySelector("#netra-birth-date").value + document.querySelector("#netra-birth-time").value'), "");

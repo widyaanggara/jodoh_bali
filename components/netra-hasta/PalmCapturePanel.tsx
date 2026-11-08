@@ -103,7 +103,7 @@ export default function PalmCapturePanel({
           ? "Memproses frame…"
           : decision.mode === "manual"
             ? "Ambil Gambar Sekarang"
-            : "Jepret Telapak"}
+            : "Ambil Gambar Telapak Tangan"}
       </button>
 
       {!decision.canCapture && hasCaptureConsent && decision.failedHardChecks.length > 0 && (

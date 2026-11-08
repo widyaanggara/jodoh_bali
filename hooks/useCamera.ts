@@ -126,7 +126,8 @@ export function useCamera() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden && streamRef.current) {
+      // Also invalidate pending getUserMedia requests, not only active streams.
+      if (document.hidden) {
         stopCamera("Kamera dihentikan otomatis saat tab tidak aktif.");
       }
     };
