@@ -134,14 +134,14 @@ test("source UI memuat disclaimer, responsivitas, navigasi, dan tanpa transport 
     "lib/samyoga-position-recommendation.ts",
   ];
   const source = files.map((file) => fs.readFileSync(path.resolve(projectRoot, file), "utf8")).join("\n");
-  const pairPage = fs.readFileSync(path.resolve(projectRoot, "app/pawongan-sinergi/page.tsx"), "utf8");
+  const headerSource = fs.readFileSync(path.resolve(projectRoot, "components/Header.tsx"), "utf8");
 
   assert.match(source, /Interpretasi simbolis berdasarkan perhitungan kalender tradisional Bali/);
   assert.match(source, /Bukan asesmen ilmiah tentang kepribadian, kompetensi, kesehatan, atau kinerja kelompok/);
   assert.match(source, /sm:grid-cols-2|md:grid-cols-2/);
   assert.match(source, /lg:grid-cols-2|lg:grid-cols-5/);
   assert.match(source, /aria-invalid|aria-labelledby|role="alert"/);
-  assert.match(pairPage, /href="\/pawongan-sinergi\/kelompok"/);
+  assert.match(headerSource, /name:\s*'Sinergi Kelompok',\s*href:\s*'\/pawongan-sinergi\/kelompok'/);
   assert.equal(/\bfetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|indexedDB|firebase|useSession/.test(source), false);
 });
 
