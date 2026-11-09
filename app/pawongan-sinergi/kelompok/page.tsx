@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import NetraAccountProvider from "@/components/netra-hasta/NetraAccountProvider";
 import ExperimentalSamyogaGroupClient from "@/components/samyoga-group/ExperimentalSamyogaGroupClient";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export default function SamyogaGroupPage() {
     return (
         <div className="min-h-screen bg-background-light font-sans">
             <Header />
-            <ExperimentalSamyogaGroupClient />
+            <NetraAccountProvider><ExperimentalSamyogaGroupClient /></NetraAccountProvider>
             <Footer />
         </div>
     );

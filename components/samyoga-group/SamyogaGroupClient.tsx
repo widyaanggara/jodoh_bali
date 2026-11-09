@@ -97,21 +97,6 @@ export default function SamyogaGroupClient({ renderPositions }: {
             </section>
 
             <div className="mx-auto max-w-6xl space-y-10 px-4 sm:px-6">
-                <section className="rounded-3xl border border-stone-200 bg-stone-50 p-4 sm:p-6">
-                    <div className="flex items-start gap-3 text-sm leading-relaxed text-stone-700">
-                        <span aria-hidden="true" className="material-icons-outlined mt-0.5 text-primary">privacy_tip</span>
-                        <div>
-                            <h2 className="font-bold text-primary">Privasi dan batas penggunaan</h2>
-                            <p className="mt-1">
-                                Seluruh perhitungan berlangsung lokal di browser. Tanggal dan jam lahir tidak dikirim atau disimpan.
-                            </p>
-                            <p className="mt-2 font-medium">
-                                Interpretasi simbolis berdasarkan perhitungan kalender tradisional Bali. Bukan asesmen ilmiah tentang kepribadian, kompetensi, kesehatan, atau kinerja kelompok.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
                 {!state.result && !isAnalyzing && (
                 <form onSubmit={analyze} noValidate className="space-y-6" aria-labelledby="form-kelompok-title">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
