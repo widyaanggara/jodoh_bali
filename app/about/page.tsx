@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AboutWarigaMethod, { WARIGA_REFERENCE_URL } from '@/components/samyoga-group/AboutWarigaMethod';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 import { wukuData, dataSodasaRsi, dataLintang, dataZodiak } from '@/lib/data';
@@ -15,6 +16,7 @@ export default function AboutPage() {
         { id: 'jodoh', label: 'Peramalan Jodoh', icon: 'favorite' },
         { id: 'otonan', label: 'Otonan & Astro', icon: 'auto_awesome' },
         { id: 'pal-sri', label: 'Pal Sri Sedana', icon: 'trending_up' },
+        { id: 'profesi', label: 'Ramalan Profesi', icon: 'work_outline' },
     ];
 
     return (
@@ -44,6 +46,8 @@ export default function AboutPage() {
                                 {tabs.map((tab) => (
                                     <button
                                         key={tab.id}
+                                        type="button"
+                                        aria-pressed={activeTab === tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${activeTab === tab.id
                                             ? 'bg-white text-primary shadow-md ring-1 ring-stone-200'
@@ -65,13 +69,13 @@ export default function AboutPage() {
                 <article className="prose prose-stone max-w-none text-stone-700 leading-relaxed space-y-8">
                     {activeTab === 'jodoh' && (
                         <p className="text-xl font-medium text-stone-800 italic border-l-4 border-accent-gold pl-6">
-                            "Perkawinan dalam tradisi Bali bukanlah sekadar pertemuan dua insan, melainkan sinkronisasi energi semesta (Tri Hita Karana) yang tertuang dalam perhitungan Wariga."
+                            &quot;Perkawinan dalam tradisi Bali bukanlah sekadar pertemuan dua insan, melainkan sinkronisasi energi semesta (Tri Hita Karana) yang tertuang dalam perhitungan Wariga.&quot;
                         </p>
                     )}
 
                     {activeTab === 'jodoh' && (
                         <p>
-                            Dalam pandangan hidup masyarakat Hindu Bali, setiap individu lahir dengan membawa "bekal" energi yang disebut <span className="font-bold text-primary">Urip</span> atau <span className="font-bold text-primary">Neptu</span>. Energi ini bukanlah angka acak, melainkan representasi dari posisi kosmik saat seseorang menghirup napas pertama di dunia. Aplikasi Jodoh Bali hadir untuk mentransparansi perhitungan sakral ini ke dalam algoritma modern tanpa mengurangi esensi spiritualnya.
+                            Dalam pandangan hidup masyarakat Hindu Bali, setiap individu lahir dengan membawa &quot;bekal&quot; energi yang disebut <span className="font-bold text-primary">Urip</span> atau <span className="font-bold text-primary">Neptu</span>. Energi ini bukanlah angka acak, melainkan representasi dari posisi kosmik saat seseorang menghirup napas pertama di dunia. Aplikasi Jodoh Bali hadir untuk mentransparansi perhitungan sakral ini ke dalam algoritma modern tanpa mengurangi esensi spiritualnya.
                         </p>
                     )}
 
@@ -221,7 +225,7 @@ export default function AboutPage() {
                                 Siklus 5 Tahunan: Memahami Bahwa Hubungan Ber-Evolusi
                             </h2>
                             <blockquote className="bg-stone-50 p-8 rounded-3xl border-l-4 border-stone-300 text-stone-600 italic">
-                                "Hubungan perkawinan seperti lautan; ada pasang dan ada surut. Tradisi Bali memetakan pasang surut ini setiap 5 tahun melalui metode pengurangan bertahap (Recursive Reduction)."
+                                &quot;Hubungan perkawinan seperti lautan; ada pasang dan ada surut. Tradisi Bali memetakan pasang surut ini setiap 5 tahun melalui metode pengurangan bertahap (Recursive Reduction).&quot;
                             </blockquote>
                             <p className="mt-8">
                                 Mengapa sistem kami memberikan prediksi yang berubah setiap 5 tahun? Karena energi rumah tangga tidak bersifat statis. Metode <span className="font-bold text-primary">Recursive Reduction</span> mencerminkan bagaimana pengalaman masa lalu (hasil bagi sebelumnya) mempengaruhi masa depan (nilai urip baru).
@@ -320,7 +324,7 @@ export default function AboutPage() {
                                 Lintang: Sistem Astrologi Tradisional Bali
                             </h2>
                             <p className="mb-4">
-                                Palintangan, adalah sistem astrologi tradisional yang digunakan untuk memahami karakter dan nasib seseorang berdasarkan pada pertemuan waktu tertentu. Secara harfiah, "palintangan" berasal dari bahasa Bali yang dapat diartikan sebagai <span className="font-bold text-primary">penjelmaan</span> atau <span className="font-bold text-primary">penafsiran</span>. Dalam praktiknya, palintangan menggambarkan hubungan antara hari kelahiran seseorang dengan serangkaian hari dalam kalender Bali, baik <span className="font-bold text-primary">Saptawara</span> maupun <span className="font-bold text-primary">Pancawara</span>.
+                                Palintangan, adalah sistem astrologi tradisional yang digunakan untuk memahami karakter dan nasib seseorang berdasarkan pada pertemuan waktu tertentu. Secara harfiah, &quot;palintangan&quot; berasal dari bahasa Bali yang dapat diartikan sebagai <span className="font-bold text-primary">penjelmaan</span> atau <span className="font-bold text-primary">penafsiran</span>. Dalam praktiknya, palintangan menggambarkan hubungan antara hari kelahiran seseorang dengan serangkaian hari dalam kalender Bali, baik <span className="font-bold text-primary">Saptawara</span> maupun <span className="font-bold text-primary">Pancawara</span>.
                             </p>
                             <p className="mb-4">
                                 Dalam Wariga, setiap orang lahir di bawah naungan <span className="font-bold text-primary">Lintang</span> (Bintang) tertentu yang ditentukan oleh pertemuan antara <span className="font-bold text-primary">Saptawara</span> and <span className="font-bold text-primary">Pancawara</span>. Lintang ini memberikan rincian karakter yang lebih spesifik daripada zodiak barat.
@@ -331,7 +335,7 @@ export default function AboutPage() {
                                     <span className="material-icons-outlined text-xs">auto_awesome</span>
                                     Logika Pencocokan Lintang
                                 </h4>
-                                <p className="text-sm mb-6">Sistem memproses "Matrix Pertemuan" (7x5) untuk menemukan 1 dari 35 Lintang unik. Berikut adalah daftar lengkap kombinasi Saptawara dan Pancawara beserta Lintang yang dihasilkan:</p>
+                                <p className="text-sm mb-6">Sistem memproses &quot;Matrix Pertemuan&quot; (7x5) untuk menemukan 1 dari 35 Lintang unik. Berikut adalah daftar lengkap kombinasi Saptawara dan Pancawara beserta Lintang yang dihasilkan:</p>
 
                                 <div className="max-h-[600px] overflow-y-auto pr-2 custom-scrollbar mt-6 border-y border-stone-100 py-4">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -347,7 +351,7 @@ export default function AboutPage() {
                                                             <p className="text-sm text-stone-900 font-bold">
                                                                 {item.saptawara} + {item.pancawara}
                                                             </p>
-                                                            <span className="text-[11px] font-bold text-accent-gold italic">"{item.label}"</span>
+                                                            <span className="text-[11px] font-bold text-accent-gold italic">&quot;{item.label}&quot;</span>
                                                         </div>
                                                         <div className="space-y-2">
                                                             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter">Interpretasi Tradisional</p>
@@ -443,7 +447,7 @@ export default function AboutPage() {
 
                             <div className="bg-stone-50 p-6 rounded-3xl border border-stone-200 my-8">
                                 <p className="text-sm italic leading-relaxed">
-                                    "Sistem memetakan tanggal lahir Anda ke dalam 12 rasi bintang (Aries hingga Pisces) berdasarkan standar rentang tanggal astrologi modern, untuk memberikan gambaran psikologis yang lebih komprehensif."
+                                    &quot;Sistem memetakan tanggal lahir Anda ke dalam 12 rasi bintang (Aries hingga Pisces) berdasarkan standar rentang tanggal astrologi modern, untuk memberikan gambaran psikologis yang lebih komprehensif.&quot;
                                 </p>
                             </div>
                         </section>
@@ -653,13 +657,15 @@ export default function AboutPage() {
                         </section>
                     )}
 
+                    {activeTab === 'profesi' && <AboutWarigaMethod />}
+
                     {/* Reference Section */}
                     <section className="mt-24 pt-12 border-t border-stone-200">
                         <h3 className="text-3xl font-bold text-primary mb-4 flex items-center gap-2">
                             <span className="material-icons-outlined text-stone-400">menu_book</span>
                             Sumber Literasi & Otoritas Dasar
                         </h3>
-                        <p className="text-sm text-stone-500 mb-6">Seluruh algoritma dan narasi dalam sistem ini bersumber dari kajian literatur Lontar Wariga yang telah didigitalkan untuk keberlanjutan tradisi.</p>
+                        <p className="text-sm text-stone-500 mb-6">Penjelasan metode menggunakan sumber Wariga, astrologi, dan Pranata Mangsa yang dicantumkan di bawah. Tafsir tradisional tidak menjadi bukti validitas prediksi ilmiah.</p>
 
                         <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200 mb-8">
                             <h4 className="font-bold text-stone-700 text-sm uppercase tracking-wide mb-4">Daftar Pustaka</h4>
@@ -670,6 +676,9 @@ export default function AboutPage() {
                                 <li className="pl-4 -indent-4">[4] Aryana, I.B.Putra Manik. <i>Tenung Wariga-Kunci Ramalan Astrologi Bali.</i> Surabaya: Paramitha. 2010.</li>
                                 <li className="pl-4 -indent-4">[5] Arwati, Ni Made Sri. <i>Ramalan Terhadap Hari Kelahiran Manusia.</i> Denpasar. 2010.</li>
                                 <li className="pl-4 -indent-4">[6] Saelan, Athia. <i>Logika Fuzzy.</i> Bandung: Institut Teknologi Bandung. 2009.</li>
+                                <li id="tenung-wariga-gemet-reference" className="scroll-mt-40 break-words pl-4 -indent-4">
+                                    [7] <a href={WARIGA_REFERENCE_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-accent-gold"><i>Tenung Wariga Gemet.</i></a> Dokumen digital pada Scribd; atribusi naskah: komangputra.com.
+                                </li>
                             </ul>
                         </div>
 

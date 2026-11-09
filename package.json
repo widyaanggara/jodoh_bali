@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "lint": "eslint",
-    "test:palm:runtime": "node --test tests/netra-hasta-runtime.test.mjs"
+    "test:palm:runtime": "node --test tests/netra-hasta-runtime.test.mjs",
+    "test:samyoga": "node --test tests/samyoga-*.test.mjs tests/otonan-palintangan.test.mjs"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.1.1",

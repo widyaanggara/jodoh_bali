@@ -1,9 +1,8 @@
 "use client";
 
-import Link from 'next/link';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getBalineseDate } from '@/lib/balinese-calendar';
+import { calculateOtonanCalendar, parseOtonanCivilDate } from '@/lib/otonan-calendar';
 import { BalineseDate, Zodiak } from '@/lib/types';
 import { getZodiak } from '@/lib/jodoh-logic';
 import Header from '@/components/Header';
@@ -23,7 +22,7 @@ function RamalanOtonanContent() {
     const [result, setResult] = useState<BalineseDate | null>(null);
     const [zodiak, setZodiak] = useState<Zodiak | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { sessionID, recentDates, logActivity } = useSession();
+    const { sessionID, logActivity } = useSession();
 
     const handleCalculate = () => {
         if (!birthDate) {
@@ -33,16 +32,18 @@ function RamalanOtonanContent() {
 
         setIsLoading(true);
         setTimeout(() => {
-            const date = new Date(birthDate);
-            // [NEW] Memasukkan birthTime ke dalam fungsi kalkulasi
-            const balineseDate = getBalineseDate(date, birthTime);
-            const zodiakData = getZodiak(date);
-            setResult(balineseDate);
-            setZodiak(zodiakData);
+            try {
+                const date = parseOtonanCivilDate(birthDate);
+                const balineseDate = calculateOtonanCalendar(birthDate, birthTime);
+                const zodiakData = getZodiak(date);
+                setResult(balineseDate);
+                setZodiak(zodiakData);
 
-            // [NEW] Menambahkan jam lahir ke log aktivitas (lokal)
-            logActivity('ramalan_otonan', birthDate, undefined, birthTime);
-
+                // [NEW] Menambahkan jam lahir ke log aktivitas (lokal)
+                logActivity('ramalan_otonan', birthDate, undefined, birthTime);
+            } catch {
+                alert('Mohon isi tanggal dan jam lahir yang valid.');
+            }
             setIsLoading(false);
         }, 3000);
     };
@@ -156,7 +157,7 @@ function RamalanOtonanContent() {
                                         <div className="flex flex-col sm:flex-row sm:items-end gap-4">
                                             <div className="flex-1">
                                                 <p className="font-display text-3xl md:text-4xl font-bold text-stone-900 leading-tight">
-                                                    {new Date(birthDate).toLocaleDateString('id-ID', {
+                                                    {parseOtonanCivilDate(birthDate).toLocaleDateString('id-ID', {
                                                         weekday: 'long',
                                                         day: 'numeric',
                                                         month: 'long',
@@ -220,7 +221,7 @@ function RamalanOtonanContent() {
                                                     <span className="text-xs uppercase tracking-widest font-bold">Lintang Kelahiran</span>
                                                 </div>
                                                 <h3 className="font-display text-3xl font-bold mb-1">Lintang {result.lintang.lintang}</h3>
-                                                <p className="text-accent-gold/80 italic text-sm mb-6">"{result.lintang.label}"</p>
+                                                <p className="text-accent-gold/80 italic text-sm mb-6">&quot;{result.lintang.label}&quot;</p>
 
                                                 <div className="space-y-6">
                                                     <div>
@@ -280,7 +281,7 @@ function RamalanOtonanContent() {
                                 <div className="mt-12">
                                     <PalSriSedanaChart
                                         totalUrip={result.totalUrip}
-                                        birthDate={new Date(birthDate)}
+                                        birthDate={parseOtonanCivilDate(birthDate)}
                                     />
                                 </div>
                             )}
