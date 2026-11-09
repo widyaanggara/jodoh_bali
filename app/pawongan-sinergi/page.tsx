@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SplashScreen from '@/components/SplashScreen';
@@ -62,13 +61,6 @@ export default function Samyoga() {
                         <p className="text-stone-600 text-lg leading-relaxed max-w-2xl mx-auto">
                             Samyoga adalah fitur analisis kecocokan strategis yang dirancang untuk memetakan potensi sinergi antara dua individu dalam struktur organisasi atau pemerintahan. Diambil dari istilah Kawi/Sanskerta yang berarti &quot;Penyatuan&quot; atau &quot;Pertautan yang Harmonis&quot;, fitur ini melampaui sekadar perjodohan kerja biasa.
                         </p>
-                        <Link
-                            href="/pawongan-sinergi/kelompok"
-                            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-primary/20 bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/[0.04] hover:shadow-md"
-                        >
-                            <span className="material-icons-outlined text-base" aria-hidden="true">groups</span>
-                            Coba Samyoga Kelompok
-                        </Link>
                     </div>
                 </section>
 

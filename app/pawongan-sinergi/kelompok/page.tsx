@@ -5,7 +5,7 @@ import NetraAccountProvider from "@/components/netra-hasta/NetraAccountProvider"
 import ExperimentalSamyogaGroupClient from "@/components/samyoga-group/ExperimentalSamyogaGroupClient";
 
 export const metadata: Metadata = {
-    title: "Samyoga Kelompok | Metemu",
+    title: "Sinergi Kelompok | Metemu",
     description: "Interpretasi simbolis Samyoga untuk seluruh pasangan unik dalam kelompok berisi 3–6 anggota.",
 };
 

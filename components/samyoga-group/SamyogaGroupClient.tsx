@@ -89,7 +89,7 @@ export default function SamyogaGroupClient({ renderPositions }: {
                 <div aria-hidden="true" className="absolute inset-x-0 top-0 mx-auto h-72 max-w-5xl rounded-full bg-primary/[0.04] blur-3xl" />
                 <div className="relative mx-auto max-w-4xl text-center">
                     <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Eksperimen kategorikal 3–6 anggota</p>
-                    <h1 className="mt-3 font-display text-4xl font-bold text-primary md:text-5xl">Samyoga Kelompok</h1>
+                    <h1 className="mt-3 font-display text-4xl font-bold text-primary md:text-5xl">Sinergi Kelompok</h1>
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-600 md:text-lg">
                         Lihat kategori tradisional untuk seluruh pasangan unik di dalam kelompok tanpa skor, persentase, atau pemeringkatan anggota.
                     </p>
