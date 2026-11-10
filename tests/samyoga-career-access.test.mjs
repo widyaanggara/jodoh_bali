@@ -73,3 +73,10 @@ test("Career bounds group lifetime to verified session and uses the supplied civ
 test("Career unexpected services failures never serialize exception or secret input",async()=>{
  const s=setup();s.setUser(new Error("secret diagnostic"));const r=await s.request({action:"authorize",members:initial,memberPermissionConfirmed:true});assert.equal(r.status,503);assert.doesNotMatch(await r.text(),/secret|birthDate|2025/);
 });
+
+test('Career server reports a conservative bounded lifetime and still rejects absolute expiry',async()=>{
+ const s=setup(),g=await s.authorize();s.setNow(1050);
+ const body=await(await s.request(read(g))).json();assert.equal(body.expiresAt,1600);assert.equal(body.validForMs,549000);assert(body.validForMs<600000);
+ s.setNow(1599);const near=await(await s.request(read(g))).json();assert.equal(near.validForMs,0);
+ s.setNow(1600);assert.equal((await s.request(read(g))).status,403);
+});
