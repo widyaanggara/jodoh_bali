@@ -24,6 +24,8 @@ export interface CareerReading {
 export interface CareerMemberReading { memberId: string; reading: CareerReading }
 export interface CareerGrant { grant: string; groupId: string; verifiedUid: string; expiresAt: number }
 export interface CareerResponse {
+    /** Conservative server lifetime; never derive private display expiry from the device wall clock. */
+    validForMs: number;
     groupId: string;
     verifiedUid: string;
     expiresAt: number;

@@ -34,7 +34,7 @@ ws.addEventListener("message",({data})=>{
    if(shortExpiry&&m.params.responseStatusCode===200){
     const raw=await send("Fetch.getResponseBody",{requestId:m.params.requestId});
     const value=JSON.parse(raw.base64Encoded?Buffer.from(raw.body,"base64").toString():raw.body);
-    if(value.members){value.expiresAt=Math.floor(Date.now()/1000)+2;shortExpiry=false;
+    if(value.members){value.expiresAt=Math.floor(Date.now()/1000)+2;value.validForMs=1000;shortExpiry=false;
      await send("Fetch.fulfillRequest",{requestId:m.params.requestId,responseCode:200,responseHeaders:[{name:"Content-Type",value:"application/json"},{name:"Cache-Control",value:"private, no-store"}],body:Buffer.from(JSON.stringify(value)).toString("base64")});return;}
    }
    await send("Fetch.continueRequest",{requestId:m.params.requestId});return;

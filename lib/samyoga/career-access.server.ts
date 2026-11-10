@@ -108,6 +108,9 @@ export function createCareerHandler(
                 !equal(access.digest, groupDigest(members)))
                 throw new AccountError(403, "group_access_denied", "Anda tidak memiliki akses ke hasil kelompok ini.");
             return privateJson({ groupId: access.groupId, verifiedUid: identity.uid, expiresAt: access.expiresAt,
+                // now() is whole seconds. Subtract one second and the client subtracts
+                // the entire request duration, so display never gains time from clock skew/transit.
+                validForMs: Math.max(0, (access.expiresAt - now() - 1) * 1000),
                 methodVersion: CAREER_METHOD_VERSION, members: members.map(member => ({ memberId: member.id, reading: calculate(member.birthDate) })) });
         } catch (error) { return accountFailure(error); }
     };
